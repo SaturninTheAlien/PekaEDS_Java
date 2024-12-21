@@ -220,6 +220,11 @@ public class PK2Sprite implements SpritePrototype {
         return imageFileIdentifier;
     }
 
+    @Override
+    public void setSpecialImageFileIdentifier(String identifier){
+        this.imageFileIdentifier = identifier;
+    }
+
     public void setImageFile(String imageFile) {
         this.imageFile = imageFile;
 

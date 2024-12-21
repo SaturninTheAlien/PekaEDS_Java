@@ -3,7 +3,6 @@ package pekaeds.ui.minimappanel;
 import javax.swing.*;
 
 import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.pk2.map.PK2TileArray;
 import pekaeds.tool.Tool;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.TileChangeListener;
@@ -13,7 +12,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
 
 public class MiniMapPanel extends JPanel implements
         PK2SectorConsumer,
@@ -47,15 +45,14 @@ public class MiniMapPanel extends JPanel implements
         repaint();
     }
     
-    private void paintLayer(Graphics g, int[][] layer, boolean bg) {
+    private void paintLayer(Graphics g, final int[] layer, boolean bg) {
         if (currentSector.tilesetImage != null) { // && layer.getWidth() == currentSector.getWidth() && layer.getHeight() == 224) {
             g.setColor(Color.DARK_GRAY);
             g.fillRect(0, 0, currentSector.getWidth(), currentSector.getHeight());
 
-
             for (int x = 0; x < currentSector.getWidth(); x++) {
                 for (int y = 0; y < currentSector.getHeight(); y++) {
-                    int tile = layer[x][y];
+                    int tile = layer[currentSector.getWidth() * y + x]; //map.getLayers().get(layer)[y][x];
             
                     if (tile >= 0 && tile <= 149) { // The tileid should not be able to go out of these bounds, but for some reason one custom map does that?
                         int tileX = (tile % 10) * 32;

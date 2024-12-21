@@ -33,6 +33,11 @@ public final class GFXUtils {
     }
 
     public static BufferedImage makeTransparent(BufferedImage image) {
+
+        if(! (image.getColorModel() instanceof IndexColorModel)){
+            return image;
+        }
+
         var palette = (IndexColorModel) image.getColorModel();
 
         var rs = new byte[256];

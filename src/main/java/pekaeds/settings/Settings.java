@@ -54,9 +54,8 @@ public class Settings {
     private static int autosaveFileCount = 3;
     
     public static boolean showSprites = true;
-    public static boolean showFgSprites = true;
     public static boolean showBgSprites = true;
-
+    
     private static boolean highlightSelection = true;
     
     
@@ -105,9 +104,8 @@ public class Settings {
             highlightSprites = dis.readBoolean();
             showTileNumberInTileset = dis.readBoolean();
             showSprites = dis.readBoolean();
-            showFgSprites = dis.readBoolean();
             showBgSprites = dis.readBoolean();
-
+            
             highlightSelection = dis.readBoolean();
             
             defaultStartupBehavior = dis.readInt();
@@ -115,6 +113,7 @@ public class Settings {
             autosaveInterval = dis.readInt();
             autosaveFileCount = dis.readInt();
 
+           
             int shortcutAmount = dis.readInt();
             for (int i = 0; i < shortcutAmount; i++) {
                 setKeyboardShortcutFor(dis.readUTF(), KeyStroke.getKeyStroke(dis.readInt(), dis.readInt()));
@@ -143,7 +142,6 @@ public class Settings {
             dos.writeBoolean(highlightSprites);
             dos.writeBoolean(showTileNumberInTileset);
             dos.writeBoolean(showSprites);
-            dos.writeBoolean(showFgSprites);
             dos.writeBoolean(showBgSprites);
             dos.writeBoolean(highlightSelection);
             
@@ -166,6 +164,7 @@ public class Settings {
     }
     
     public static void reset() {
+    
         defaultTileset = "tiles01.bmp";
         defaultBackground = "castle.bmp";
     

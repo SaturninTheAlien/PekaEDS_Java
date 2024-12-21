@@ -27,8 +27,6 @@ public class PK2Map {
      */
     private HashMap<String, HashMap<String, BufferedImage>> spriteSheetCache = new HashMap<>();
 
-    // Contains the "raw" sprite sheets, just the loaded BMP image. The palette has not been changed and the last color hasn't been made transparent
-    private HashMap<String, BufferedImage> spriteImages = new HashMap<>();
 
     public String name;
     public String author;
@@ -77,12 +75,13 @@ public class PK2Map {
                 GFXUtils.adjustSpriteColor(spriteSheet, sprite.getColor());
 
                 PK2MapSector.registerSpriteSheet(sprite.getImageFileIdentifier(), spriteSheet);
+                
+                loadSpriteImagesForAllSectors(sprite);
+
             } catch (IOException e) {
                 setSpriteImageMissing(sprite);
             }
         }
-
-        loadSpriteImagesForAllSectors(sprite);
     }
 
     public void loadSpriteImagesForAllSectors(SpritePrototype sprite) {
@@ -178,8 +177,10 @@ public class PK2Map {
         }
     }
 
-    private void setSpriteImageMissing(SpritePrototype sprite) {
-        sprite.setImage(SpriteMissing.getMissingImage());
+    public void setSpriteImageMissing(SpritePrototype sprite) {
+        sprite.setImage(SpriteMissing.getMissingTextureImage());
+
+        sprite.setSpecialImageFileIdentifier("!missing_texture");
         sprite.setFrameX(0);
         sprite.setFrameY(0);
         sprite.setFrameWidth(32);

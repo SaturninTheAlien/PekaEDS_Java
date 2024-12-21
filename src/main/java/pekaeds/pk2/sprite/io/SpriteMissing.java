@@ -8,13 +8,20 @@ import java.io.IOException;
 
 public final class SpriteMissing extends SpriteOld {
     private static BufferedImage image = null;
+    private static BufferedImage image2 = null;
     
     static {
         try {
             image = ImageIO.read(SpriteMissing.class.getClassLoader().getResourceAsStream("missing.png"));
+            image2 = ImageIO.read(SpriteMissing.class.getClassLoader().getResourceAsStream("missing2.png"));
         } catch (IOException e) {
             Logger.error("Unable to load missing.png. This shouldn't happen.");
         }
+    }
+
+    @Override
+    public String getImageFileIdentifier() {
+        return "!missing";
     }
     
     public SpriteMissing(String filename) {
@@ -33,5 +40,9 @@ public final class SpriteMissing extends SpriteOld {
     
     public static BufferedImage getMissingImage() {
         return image;
+    }
+
+    public static BufferedImage getMissingTextureImage() {
+        return image2;
     }
 }

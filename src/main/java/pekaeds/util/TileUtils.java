@@ -15,7 +15,7 @@ public final class TileUtils {
      * @param selectionEnd
      * @return
      */
-    public static Rectangle calculateSelectionRectangle(Point selectionStart, Point selectionEnd, int maxWidth, int maxHeight) {
+    public static Rectangle calculateSelectionRectangle(Point selectionStart, Point selectionEnd, final PK2MapSector sector) {
         int startX = selectionStart.x;
         int startY = selectionStart.y;
     
@@ -43,8 +43,8 @@ public final class TileUtils {
         if (startX < 0) startX = 0;
         if (startY < 0) startY = 0;
 
-        if (endX >= maxWidth) endX = maxWidth - 1;
-        if (endY >= maxHeight) endY = maxHeight - 1;
+        if (endX >= sector.getWidth()) endX = sector.getWidth() - 1;
+        if (endY >= sector.getHeight()) endY = sector.getHeight() - 1;
 
         int selectionWidth = endX - startX;
         int selectionHeight = endY - startY;
@@ -58,8 +58,8 @@ public final class TileUtils {
      * @param selectionEnd
      * @return
      */
-    public static Rectangle calculateSelectionRectangleInScene(Point selectionStart, Point selectionEnd, int maxWidth, int maxHeight) {
-        var r = calculateSelectionRectangle(selectionStart, selectionEnd, maxWidth, maxHeight);
+    public static Rectangle calculateSelectionRectangleInScene(Point selectionStart, Point selectionEnd, PK2MapSector sector) {
+        var r = calculateSelectionRectangle(selectionStart, selectionEnd, sector);
         
         r.x *= 32;
         r.y *= 32;
@@ -79,7 +79,7 @@ public final class TileUtils {
         return new Point(0, 0);
     }
 
-    public static Rectangle calculateOffsets(final int[][] layer, int layerWidth, int layerHeight) {
+    public static Rectangle calculateOffsets(final int[] layer, int layerWidth, int layerHeight) {
         int startX = layerWidth;
         int width = 0;
         int startY = layerHeight;
@@ -87,7 +87,7 @@ public final class TileUtils {
 
         for (int y = 0; y < layerHeight; y++) {
             for (int x = 0; x < layerWidth; x++) {
-                if (layer[x][y] != 255) {
+                if (layer[layerWidth * y + x] != 255) {
                     if (x < startX) {
                         startX = x;
                     }

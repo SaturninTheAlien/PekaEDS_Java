@@ -1,12 +1,10 @@
 package pekaeds.ui.main;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
 import pekaeds.data.PekaEDSVersion;
 import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.settings.Settings;
 import pekaeds.ui.actions.NewLevelAction;
 import pekaeds.ui.actions.OpenFolderAction;
 import pekaeds.ui.actions.OpenLevelAction;
@@ -14,7 +12,6 @@ import pekaeds.ui.actions.SaveLevelAction;
 import pekaeds.ui.episodepanel.EpisodePanel;
 import pekaeds.ui.listeners.MainUIWindowListener;
 import pekaeds.ui.mappanel.MapPanelView;
-import pekaeds.ui.misc.InitialSetupDialog;
 import pekaeds.ui.settings.SettingsDialog;
 import pekaeds.ui.toolpropertiespanel.ToolPropertiesPanel;
 
@@ -60,6 +57,10 @@ public class PekaEDSGUIView {
     private JMenu mOpenRecent;
     private JMenuItem mClearRecentlyOpened;
 
+    private JMenu mView;
+    private JCheckBoxMenuItem mViewLevelPanel;
+    private JCheckBoxMenuItem mViewTilesPanel;
+
     private JTabbedPane tabbedPane;
 
     private PekaEDSGUI edsUI;
@@ -69,6 +70,9 @@ public class PekaEDSGUIView {
     private SettingsDialog settingsDialog = null;
 
     private ToolPropertiesPanel toolPropertiesPanel;
+
+    private JPanel tilesetAndToolsPanel;
+    private JPanel levelPropsPanel;
 
     public PekaEDSGUIView(PekaEDSGUI gui) {
         this.edsUI = gui;
@@ -105,10 +109,10 @@ public class PekaEDSGUIView {
         var panelMiniMap = new JScrollPane(miniMapPanel);
         panelMiniMap.setPreferredSize(new Dimension(257, 225));
 
-        var sp = new JPanel();
-        sp.setLayout(new MigLayout());
-        sp.add(tabbedPane, "dock center");
-        sp.add(panelMiniMap, "dock south");
+        levelPropsPanel = new JPanel();
+        levelPropsPanel.setLayout(new MigLayout());
+        levelPropsPanel.add(tabbedPane, "dock center");
+        levelPropsPanel.add(panelMiniMap, "dock south");
 
         toolPropertiesPanel = edsUI.getToolPropertiesPanel();
 
@@ -160,6 +164,25 @@ public class PekaEDSGUIView {
         mEpisode.addSeparator();
         mEpisode.add(mEpisodeExport);
 
+        mView = new JMenu("View");
+        mViewTilesPanel = new JCheckBoxMenuItem("Tiles menu");
+        mViewTilesPanel.setState(true);
+
+        mViewTilesPanel.addActionListener(e -> {
+            tilesetAndToolsPanel.setVisible(mViewTilesPanel.getState());
+        });
+
+        mViewLevelPanel = new JCheckBoxMenuItem("Level/sector menu");
+        mViewLevelPanel.setState(true);
+
+
+        mViewLevelPanel.addActionListener(e -> {
+            levelPropsPanel.setVisible(mViewLevelPanel.getState());
+        });
+
+        mView.add(mViewTilesPanel);
+        mView.add(mViewLevelPanel);
+
         mOther = new JMenu("Other");
         mOtherSettings = new JMenuItem("Settings");
         mOtherAbout = new JMenuItem("About");
@@ -188,13 +211,14 @@ public class PekaEDSGUIView {
         menuBar.add(mFile);
         menuBar.add(mEpisode);
         menuBar.add(mFolders);
+        menuBar.add(mView);
         menuBar.add(mOther);
 
         toolsToolBar = new ToolsToolBar(edsUI);
 
         setActionListeners();
 
-        var tilesetAndToolsPanel = new JPanel();
+        tilesetAndToolsPanel = new JPanel();
         tilesetAndToolsPanel.setLayout(new MigLayout());
         tilesetAndToolsPanel.add(toolsToolBar, "dock west");
         tilesetAndToolsPanel.add(tilesetAndToolPropPanel, "dock center");
@@ -203,7 +227,7 @@ public class PekaEDSGUIView {
 
         frame.add(tilesetAndToolsPanel, BorderLayout.WEST);
         frame.add(mapView, BorderLayout.CENTER);
-        frame.add(sp, BorderLayout.EAST);
+        frame.add(levelPropsPanel, BorderLayout.EAST);
         frame.add(edsUI.getStatusbar(), BorderLayout.SOUTH);
 
         // Need to set it to do nothing in here, because there is a custom close event

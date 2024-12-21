@@ -67,7 +67,7 @@ public class RectangleTool extends Tool {
     }
     
     private void placeRectangle() {
-        rect = TileUtils.calculateSelectionRectangle(selectionStart, selectionEnd, selectedSector.getWidth(), selectedSector.getHeight());
+        rect = TileUtils.calculateSelectionRectangle(selectionStart, selectionEnd, selectedSector);
         
         for (int x = rect.x; x < rect.x + rect.width; x++) {
             for (int y = rect.y; y < rect.y + rect.height; y++) {
@@ -92,7 +92,7 @@ public class RectangleTool extends Tool {
     public void draw(Graphics2D g) {
         if (getMode() == MODE_TILE) {
             if (selectionStart.x != -1 && selectionStart.y != -1) {
-                rect = TileUtils.calculateSelectionRectangle(selectionStart, selectionEnd, selectedSector.getWidth(),selectedSector.getHeight());
+                rect = TileUtils.calculateSelectionRectangle(selectionStart, selectionEnd, selectedSector);
         
                 for (int x = rect.x; x < rect.x + rect.width; x++) {
                     for (int y = rect.y; y < rect.y + rect.height; y++) {

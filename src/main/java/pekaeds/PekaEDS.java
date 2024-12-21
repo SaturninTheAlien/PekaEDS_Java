@@ -7,9 +7,6 @@ import pekaeds.settings.Settings;
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.misc.InitialSetupDialog;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.Locale;
 import org.tinylog.Logger;
 

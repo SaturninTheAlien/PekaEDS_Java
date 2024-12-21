@@ -3,8 +3,6 @@ package pekaeds.ui.actions;
 import java.util.ArrayList;
 
 import java.io.File;
-import java.io.IOException;
-
 import java.nio.file.Paths;
 
 import javax.swing.*;
@@ -45,11 +43,12 @@ public class PlayLevelAction extends AbstractAction {
             this.executableDirectory = assetsPath;
         }
         else{
-            this.executable = LINUX_AND_MAC_EXECUTABLE;
             if(assetsPath.getName().equals("res")){
+                this.executable = "./bin/pekka-kana-2";
                 this.executableDirectory = assetsPath.getParentFile();
             }
             else{
+                this.executable = LINUX_AND_MAC_EXECUTABLE;
                 this.executableDirectory = assetsPath;
             }
         }

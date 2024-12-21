@@ -94,7 +94,7 @@ public final class CutTool extends Tool {
         if (SwingUtilities.isLeftMouseButton(e)) {
             moveSelectionTo(e.getPoint(), clickXOffset, clickYOffset);
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            if (selecting) selectionRect = TileUtils.calculateSelectionRectangle(selectionStart, e.getPoint(), selectedSector.getWidth(), selectedSector.getHeight());
+            if (selecting) selectionRect = TileUtils.calculateSelectionRectangle(selectionStart, e.getPoint(), selectedSector); // TODO Sector
         }
 
         selectionListener.selectionUpdated(selectionRect);
