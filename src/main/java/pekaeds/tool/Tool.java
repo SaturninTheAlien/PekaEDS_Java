@@ -176,11 +176,7 @@ public abstract class Tool {
             }
         }
     }
-
-    public static void setSelectedSpriteByIndex(int index) {
-        selection.setSelectionSprites(new int[][] {{ index }});
-    }
-
+    
     public static void setToolInformationListener(ChangeListener listener) {
         toolInformationListener = listener;
     }

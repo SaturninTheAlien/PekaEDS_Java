@@ -82,6 +82,8 @@ public class MapPanel extends JComponent implements
         g2.setTransform(transform);*/
 
         painter.drawBackground(g2);
+        g2.setColor(Color.lightGray);
+        g2.drawRect(-1, -1, currentSector.getWidth() * 32 - 1, currentSector.getHeight() * 32 - 1);
 
         if (Settings.showBgSprites) {
             painter.drawBackgroundSprites(g2);
@@ -93,7 +95,7 @@ public class MapPanel extends JComponent implements
             painter.drawRegularSprites(g2);
         }
 
-        if (Settings.showFgSprites) {
+        if (Settings.showBgSprites) {
             painter.drawForegroundSprites(g2);
         }
 
@@ -107,16 +109,16 @@ public class MapPanel extends JComponent implements
             int sh = sectorResizeRect.height;
 
             // left of selection
-            g2.fillRect(0, sy, sx, sh);
+            g2.fillRect(0, 0, sx, sector().getHeight() * 32);
 
             // right of selection
-            g2.fillRect(sx + sw, sy, getWidth(), sh); // getWidth() using the width of the MapPanel itself here
+            g2.fillRect(sx + sw, 0, (sector().getWidth() * 32) - sx, sector().getHeight() * 32);
 
             // top of selection
-            g2.fillRect(0, 0, getWidth(), sy);
+            g2.fillRect(sx, 0, sw, sy);
 
             // bottom of selection
-            g2.fillRect(0, sy + sh, getWidth(), getHeight() - sy);
+            g2.fillRect(sx, sy + sh, sw, sector().getHeight() * 32);
 
             g2.setComposite(compAlphaFull);
 
@@ -138,9 +140,6 @@ public class MapPanel extends JComponent implements
                 rightMouseTool.draw(g2);
             }
         }
-
-        g2.setColor(Color.lightGray);
-        g2.drawRect(-1, -1, currentSector.getWidth() * 32 - 1, currentSector.getHeight() * 32 - 1);
     }
 
     void updateViewportSize(Rectangle newView) {
@@ -164,26 +163,20 @@ public class MapPanel extends JComponent implements
         // Note: It would be cleaner to do this where it belongs but I can't be bothered to figure that out right now
         sectorResizeRect.x /= 32;
         sectorResizeRect.y /= 32;
-        sectorResizeRect.width /= 32;
-        sectorResizeRect.height /= 32;
         currentSector.setSize(sectorResizeRect);
 
-        resizePanel(currentSector);
+        repaint();
     }
 
     @Override
     public void setSector(PK2MapSector sector) {
         currentSector = sector;
 
-        // TODO Ideally Tool should be or have a PK2SectorConsumer but I'm going to do it like this for now, even though its bad
-        Tool.setSector(sector);
-
-        resizePanel(currentSector);
-    }
-
-    private void resizePanel(PK2MapSector sector) {
         setBounds(0, 0, (sector.getWidth() * 32) + 32, (sector.getHeight() * 32) + 32);
         revalidate();
+
+        // TODO Ideally Tool should be or have a PK2SectorConsumer but I'm going to do it like this for now, even though its bad
+        Tool.setSector(sector);
 
         sectorResizeRect.setBounds(0, 0, sector.getWidth() * 32, sector.getHeight() * 32);
 

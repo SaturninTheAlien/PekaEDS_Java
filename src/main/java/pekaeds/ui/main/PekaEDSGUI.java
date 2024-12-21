@@ -208,7 +208,6 @@ public class PekaEDSGUI implements ChangeListener {
         sectorListPanel.addSectorConsumer(spritesPanel);
         sectorListPanel.addSectorConsumer(resizeDialog);
 
-        model.addSectorConsumer(miniMapPanel);
         model.addSectorConsumer(resizeDialog);
     }
 
@@ -239,8 +238,6 @@ public class PekaEDSGUI implements ChangeListener {
     public void resizeSector() {
         mapPanel.resizeCurrentSector();
         mapPanel.setResizingSector(false);
-
-        updateSectorHolders(mapPanel.sector());
 
         setUnsavedChangesPresent(true);
     }
@@ -373,6 +370,8 @@ public class PekaEDSGUI implements ChangeListener {
     }
 
     public void newMap() {
+
+        PK2MapSector.clearBaseSpriteSheets();
         Tool.reset();
         setSelectedTool(Tools.getTool(BrushTool.class));
 

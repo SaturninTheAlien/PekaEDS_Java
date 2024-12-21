@@ -16,13 +16,15 @@ public final class PK2LevelIO {
     private static final int TILES_OFFSET_NEW = 1;
     private static final int TILES_OFFSET_LEGACY = 2;
 
-    private static void readTilesArray(DataInputStream in, int[][] layer, int layerWidth, int compression) throws Exception {
+    private static void readTilesArray(DataInputStream in, int[] layer, int layerWidth, int compression) throws Exception {
+
         switch (compression) {
             case TILES_COMPRESSION_NONE: {
-                for (int x = 0; x < layer.length; ++x) {
-                    for (int y = 0; y < layer[0].length; ++y) {
-                        layer[x][y] = in.readByte() & 0xFF;
-                    }
+                byte[] data = new byte[layer.length];
+                in.read(data);
+
+                for (int i = 0; i < data.length; ++i) {
+                    layer[i] = (int) data[i] & 0xFF;
                 }
             }
             break;
@@ -35,7 +37,7 @@ public final class PK2LevelIO {
 
                 for (int y = startY; y <= startY + height; y++) {
                     for (int x = startX; x <= startX + width; x++) {
-                        layer[x][y] = in.readByte() & 0xFF;
+                        layer[layerWidth * y + x] = in.readByte() & 0xFF;
                     }
                 }
             }
@@ -49,7 +51,7 @@ public final class PK2LevelIO {
 
                 for (int y = startY; y <= startY + height; y++) {
                     for (int x = startX; x <= startX + width; x++) {
-                        layer[x][y] = in.readByte() & 0xFF;
+                        layer[layerWidth * y + x] = in.readByte() & 0xFF;
                     }
                 }
             }
@@ -68,7 +70,7 @@ public final class PK2LevelIO {
         out.write(data);
     }
 
-    static void writeLayerWithOffset(DataOutputStream out, int[][] layer, int layerWidth, int layerHeight) throws Exception {
+    static void writeLayerWithOffset(DataOutputStream out, int[] layer, int layerWidth, int layerHeight) throws Exception {
         Rectangle r = TileUtils.calculateOffsets(layer, layerWidth, layerHeight);
 
         int startX = r.x;
@@ -84,7 +86,7 @@ public final class PK2LevelIO {
         for (int y = startY; y <= startY + height; y++) {
             for (int x = startX; x <= startX + width; x++) {
                 if (x < layerWidth && y < layerHeight) {
-                    out.writeByte(layer[x][y]);
+                    out.writeByte(layer[layerWidth * y + x]);
                 }
             }
         }
@@ -161,26 +163,20 @@ public final class PK2LevelIO {
             int sectorWidth = sector.getWidth();
             int sectorHeight = sector.getHeight();
 
-            int[][] tmpBackgroundLayer = new int[sectorWidth][sectorHeight];
-            for (int x = 0; x < sectorWidth; ++x) {
-                Arrays.fill(tmpBackgroundLayer[x], 255);
-            }
+            int[] tmpBackgroundLayer = new int[sectorWidth * sectorHeight];
+            Arrays.fill(tmpBackgroundLayer, 255);
 
             readTilesArray(in, tmpBackgroundLayer, sectorWidth, compression);
             sector.setBackgroundLayer(tmpBackgroundLayer);
 
-            int[][] tmpForegroundLayer = new int[sectorWidth][sectorHeight];
-            for (int x = 0; x < sectorWidth; ++x) {
-                Arrays.fill(tmpForegroundLayer [x], 255);
-            }
+            int[] tmpForegroundLayer = new int[sectorWidth * sectorHeight];
+            Arrays.fill(tmpForegroundLayer, 255);
 
             readTilesArray(in, tmpForegroundLayer, sectorWidth, compression);
             sector.setForegroundLayer(tmpForegroundLayer);
 
-            int[][] tmpSpritesLayer = new int[sectorWidth][sectorHeight];
-            for (int x = 0; x < sectorWidth; ++x) {
-                Arrays.fill(tmpSpritesLayer [x], 255);
-            }
+            int[] tmpSpritesLayer = new int[sectorWidth * sectorHeight];
+            Arrays.fill(tmpSpritesLayer, 255);
 
             readTilesArray(in, tmpSpritesLayer, sectorWidth, compression);
             sector.setSpriteLayer(tmpSpritesLayer);
@@ -237,26 +233,20 @@ public final class PK2LevelIO {
         int sectorWidth = sector.getWidth();
         int sectorHeight = sector.getHeight();
 
-        int[][] tmpBackgroundLayer = new int[sectorWidth][sectorHeight];
-        for (int i = 0; i < sectorWidth; ++i) {
-            Arrays.fill(tmpBackgroundLayer[i], 255);
-        }
+        int[] tmpBackgroundLayer = new int[sectorWidth * sectorHeight];
+        Arrays.fill(tmpBackgroundLayer, 255);
 
         readTilesArray(in, tmpBackgroundLayer, sectorWidth, TILES_OFFSET_LEGACY);
         sector.setBackgroundLayer(tmpBackgroundLayer);
 
-        int[][] tmpForegroundLayer = new int[sectorWidth][sectorHeight];
-        for (int i = 0; i < sectorWidth; ++i) {
-            Arrays.fill(tmpForegroundLayer[i], 255);
-        }
+        int[] tmpForegroundLayer = new int[sectorWidth * sectorHeight];
+        Arrays.fill(tmpForegroundLayer, 255);
 
         readTilesArray(in, tmpForegroundLayer, sectorWidth, TILES_OFFSET_LEGACY);
         sector.setForegroundLayer(tmpForegroundLayer);
 
-        int[][] tmpSpritesLayer = new int[sectorWidth][sectorHeight];
-        for (int i = 0; i < sectorWidth; ++i) {
-            Arrays.fill(tmpSpritesLayer[i], 255);
-        }
+        int[] tmpSpritesLayer = new int[sectorWidth * sectorHeight];
+        Arrays.fill(tmpSpritesLayer, 255);
 
         readTilesArray(in, tmpSpritesLayer, sectorWidth, TILES_OFFSET_LEGACY);
         sector.setSpriteLayer(tmpSpritesLayer);

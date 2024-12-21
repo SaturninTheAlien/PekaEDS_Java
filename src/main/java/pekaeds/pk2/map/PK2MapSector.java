@@ -1,16 +1,18 @@
 package pekaeds.pk2.map;
 
 import pekaeds.pk2.sprite.SpritePrototype;
+import pekaeds.pk2.sprite.io.SpriteMissing;
 import pekaeds.util.GFXUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+
 public class PK2MapSector {
+
     public static final int CLASSIC_WIDTH = 256;
     public static final int CLASSIC_HEIGHT = 224;
 
@@ -18,7 +20,7 @@ public class PK2MapSector {
     public BufferedImage tilesetBgImage;
     private BufferedImage backgroundImage;
 
-    public String name;
+    public String name = "untitled";
     public String tilesetName;
     public String tilesetBgName;
     public String backgroundName;
@@ -31,9 +33,9 @@ public class PK2MapSector {
 
     public int background_scrolling = 0;
 
-    private int[][] backgroundLayer;
-    private int[][] foregroundLayer;
-    private int[][] spriteLayer;
+    private int[] backgroundLayer;
+    private int[] foregroundLayer;
+    private int[] spriteLayer;
 
     private int width;
     private int height;
@@ -48,21 +50,43 @@ public class PK2MapSector {
         width = sectorWidth;
         height = sectorHeight;
 
-        backgroundLayer = new int[sectorWidth][sectorHeight];
-        foregroundLayer = new int[sectorWidth][sectorHeight];
-        spriteLayer = new int[sectorWidth][sectorHeight];
+        backgroundLayer = new int[sectorWidth * sectorHeight];
+        foregroundLayer = new int[sectorWidth * sectorHeight];
+        spriteLayer = new int[sectorWidth * sectorHeight];
 
-        for (int i = 0; i < sectorWidth; ++i) {
-            Arrays.fill(backgroundLayer[i], 255);
-        }
+        Arrays.fill(backgroundLayer, 255);
+        Arrays.fill(foregroundLayer, 255);
+        Arrays.fill(spriteLayer, 255);
+    }
 
-        for (int i = 0; i < sectorWidth; ++i) {
-            Arrays.fill(foregroundLayer[i], 255);
-        }
+    /**
+     * Copy constructor
+     */
+    public PK2MapSector(PK2MapSector source){
+        this.width = source.width;
+        this.height = source.height;
 
-        for (int i = 0; i < sectorWidth; ++i) {
-            Arrays.fill(spriteLayer[i], 255);
-        }
+        this.backgroundLayer = Arrays.copyOf(source.backgroundLayer, source.backgroundLayer.length);
+        this.foregroundLayer = Arrays.copyOf(source.foregroundLayer, source.foregroundLayer.length);
+        this.spriteLayer = Arrays.copyOf(source.spriteLayer, source.spriteLayer.length);
+
+        this.name = source.name + " (copy)";
+
+        this.tilesetImage = source.tilesetImage;
+        this.tilesetBgImage = source.tilesetBgImage;
+        this.backgroundImage = source.backgroundImage;
+
+        this.tilesetName = source.tilesetName;
+        this.tilesetBgName = source.tilesetBgName;
+        this.backgroundName = source.backgroundName;
+        this.musicName = source.musicName;
+        
+        this.weather = source.weather;
+        this.splash_color = source.splash_color;
+        this.fire_color_1 = source.fire_color_1;
+        this.fire_color_2 = source.fire_color_2;
+
+        this.background_scrolling = source.background_scrolling;
     }
 
     public void setSize(Rectangle rect) {
@@ -71,48 +95,41 @@ public class PK2MapSector {
 
     public void setSize(int startX, int startY, int newWidth, int newHeight) {
         if (width != newWidth || height != newHeight) {
-            backgroundLayer = resizeLayer(backgroundLayer, width, height, startX, startY, newWidth, newHeight);
-            foregroundLayer = resizeLayer(foregroundLayer, width, height, startX, startY, newWidth, newHeight);
-            spriteLayer = resizeLayer(spriteLayer, width, height, startX, startY, newWidth, newHeight);
+            int maxWidth = 0;
+            int maxHeight = 0;
+
+            if (width > newWidth) {
+                maxWidth = newWidth;
+            } else if (width < newWidth) {
+                maxWidth = width;
+            }
+
+            if (height > newHeight) {
+                maxHeight = newHeight;
+            } else if (height < newHeight) {
+                maxHeight = height;
+            }
 
             width = newWidth;
             height = newHeight;
+
+            backgroundLayer = resizeLayer(backgroundLayer, startX, startY, maxWidth, maxHeight);
+            foregroundLayer = resizeLayer(foregroundLayer, startX, startY, maxWidth, maxHeight);
+            spriteLayer = resizeLayer(spriteLayer, startX, startY, maxWidth, maxHeight);
         }
     }
 
     // I would use Arrays.copyOf here, but this method fills the empty parts of the array with 0 instead of 255. 0 is the first tile in the tileset, 255 is the "empty" tile
-    private int[][] resizeLayer(int[][] layer, int currentWidth, int currentHeight, int startX, int startY, int newWidth, int newHeight) {
-        int[][] resizedLayer = new int[ newWidth][newHeight];
-        for (int i = 0; i <  newWidth; i++) {
-            Arrays.fill(resizedLayer[i], 255);
-        }
+    private int[] resizeLayer(int[] layer, int startX, int startY, int layerWidth, int layerHeight) {
+        // TODO This needs to be fixed
+        int[] resizedLayer = new int[width * height];
+        Arrays.fill(resizedLayer, 255);
 
-        if (startX + newWidth > currentWidth) {
-            currentWidth = currentWidth - startX;
-        }
+        for (int y = startY; y < layerHeight; ++y) {
+            for (int x = startX; x < layerWidth; ++x) {
+                int index = layerWidth * y + x;
 
-        if (startY + newHeight > currentHeight) {
-            currentHeight = currentHeight - startY;
-        }
-
-        int maxWidth = 0;
-        int maxHeight = 0;
-
-        if ( newWidth < currentWidth) {
-            maxWidth =  newWidth;
-        } else if ( newWidth > currentWidth) {
-            maxWidth = currentWidth;
-        }
-
-        if (newHeight < currentHeight) {
-            maxHeight = newHeight;
-        } else if (newHeight > currentHeight) {
-            maxHeight = currentHeight;
-        }
-
-        for (int srcX = startX; srcX < startX + maxWidth; ++srcX) {
-            for (int srcY = startY; srcY < startY + maxHeight; ++srcY) {
-                resizedLayer[srcX - startX][srcY - startY] = layer[srcX][srcY];
+                resizedLayer[index] = layer[index];
             }
         }
 
@@ -136,10 +153,32 @@ public class PK2MapSector {
     }
 
     public final BufferedImage getSpriteImage(String spriteImageIdentifier) {
+        /**
+         * Image identifiers starting with "!" are reserved for special purposes
+         */
+        if(spriteImageIdentifier!=null && spriteImageIdentifier.startsWith("!")){
+            if(spriteImageIdentifier.equals("!missing")){
+                return SpriteMissing.getMissingImage();
+            }
+            else if(spriteImageIdentifier.equals("!missing_texture")){
+                return SpriteMissing.getMissingTextureImage();
+            }
+        }
         return adjustedSpriteSheets.get(spriteImageIdentifier);
     }
 
+
+    public static void clearBaseSpriteSheets(){
+        baseSpriteSheets.clear();
+    }
+
+
     public static void registerSpriteSheet(String imageFileIdentifier, BufferedImage image) {
+
+        if(imageFileIdentifier==null || imageFileIdentifier.startsWith("!")){
+            return;
+        }
+
         baseSpriteSheets.put(imageFileIdentifier, image);
     }
 
@@ -161,7 +200,7 @@ public class PK2MapSector {
 
     public int getBGTile(int posX, int posY) {
         if (posX >= 0 && posX < width && posY >= 0 && posY < height) {
-            return backgroundLayer[posX][posY];
+            return backgroundLayer[width * posY + posX];
         }
 
         return 255;
@@ -169,7 +208,7 @@ public class PK2MapSector {
 
     public int getFGTile(int posX, int posY) {
         if (posX >= 0 && posX < width && posY >= 0 && posY < height) {
-            return foregroundLayer[posX][posY];
+            return foregroundLayer[width * posY + posX];
         }
 
         return 255;
@@ -177,20 +216,18 @@ public class PK2MapSector {
 
     public int getSpriteTile(int posX, int posY) {
         if (posX >= 0 && posX < width && posY >= 0 && posY < height) {
-            return spriteLayer[posX][posY];
+            return spriteLayer[width * posY + posX];
         }
 
         return 255;
     }
 
     public void removeSprite(int id) {
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y) {
-                if (spriteLayer[x][y] == id) {
-                    spriteLayer[x][y] = 255;
-                } else if (spriteLayer[x][y] > id && spriteLayer[x][y] != 255) {
-                    spriteLayer[x][y]--;
-                }
+        for (int i = 0; i < spriteLayer.length; ++i) {
+            if (spriteLayer[i] == id) {
+                spriteLayer[i] = 255;
+            } else if (spriteLayer[i] > id && spriteLayer[i] != 255) {
+                spriteLayer[i] -= 1;
             }
         }
     }
@@ -198,26 +235,24 @@ public class PK2MapSector {
     public int countTiles(int id) {
         int result = 0;
 
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y) {
-                if (spriteLayer[x][y] == id) {
-                    ++result;
-                }
+        for (int i = 0; i < spriteLayer.length; ++i) {
+            if (spriteLayer[i] == id) {
+                ++result;
             }
         }
 
         return result;
     }
 
-    public final int[][] getForegroundLayer() {
+    public final int[] getForegroundLayer() {
         return foregroundLayer;
     }
 
-    public final int[][] getBackgroundLayer() {
+    public final int[] getBackgroundLayer() {
         return backgroundLayer;
     }
 
-    public final int[][] getSpritesLayer() {
+    public final int[] getSpritesLayer() {
         return spriteLayer;
     }
 
@@ -230,26 +265,26 @@ public class PK2MapSector {
     }
 
     public void setBackgroundTile(int posX, int posY, int value) {
-        backgroundLayer[posX][posY] = value;
+        backgroundLayer[width * posY + posX] = value;
     }
 
     public void setForegroundTile(int posX, int posY, int value) {
-        foregroundLayer[posX][posY] = value;
+        foregroundLayer[width * posY + posX] = value;
     }
 
     public void setSpriteTile(int posX, int posY, int value) {
-        spriteLayer[posX][posY] = value;
+        spriteLayer[width * posY + posX] = value;
     }
 
-    public void setBackgroundLayer(int[][] newLayer) {
+    public void setBackgroundLayer(int[] newLayer) {
         backgroundLayer = newLayer;
     }
 
-    public void setForegroundLayer(int[][] newLayer) {
+    public void setForegroundLayer(int[] newLayer) {
         foregroundLayer = newLayer;
     }
 
-    public void setSpriteLayer(int[][] newLayer) {
+    public void setSpriteLayer(int[] newLayer) {
         spriteLayer = newLayer;
     }
 

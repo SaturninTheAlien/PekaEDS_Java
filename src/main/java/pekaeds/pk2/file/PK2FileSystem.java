@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.nio.file.Paths;
-import java.util.*;
 
 public class PK2FileSystem {
 

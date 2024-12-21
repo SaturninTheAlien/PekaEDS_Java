@@ -7,7 +7,6 @@ import pekaeds.util.GFXUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 
 public class ImagePanel extends JComponent {
     private BufferedImage image = null;

@@ -17,7 +17,6 @@ public final class MapPanelMouseHandler extends MouseAdapter {
     private final MapPanel mapPanel; // TODO Create a repaintListener, use PropertyChangeSupport instead for repaint?
 
     private Point lastPanPoint = new Point();
-    private Rectangle lastViewportPosition = new Rectangle();
 
     public MapPanelMouseHandler(MapPanel panel) {
         this.mapPanel = panel;
@@ -57,7 +56,6 @@ public final class MapPanelMouseHandler extends MouseAdapter {
 
         if (SwingUtilities.isMiddleMouseButton(e)) {
             lastPanPoint = e.getPoint();
-            lastViewportPosition = mapPanel.viewport();
         }
 
         mapPanel.repaint();
@@ -209,6 +207,9 @@ public final class MapPanelMouseHandler extends MouseAdapter {
                 Rectangle bounds = mapPanel.sectorResizeRect;
 
                 switch (resizeDirection) {
+                    case NONE -> {
+
+                    }
                     case NORTH_WEST -> {
                         bounds.setBounds(p.x, p.y, clickBounds.width - (p.x - clickBounds.x), clickBounds.height - (p.y - clickBounds.y));
 

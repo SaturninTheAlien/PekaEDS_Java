@@ -112,6 +112,8 @@ public class PK2LevelUtils {
     }
 
     public static void loadLevelAssets(PK2Map map) {
+
+        PK2MapSector.clearBaseSpriteSheets();
         map.sprites.clear();
 
         for (PK2MapSector sector : map.sectors) {
@@ -137,8 +139,9 @@ public class PK2LevelUtils {
                 SpritePrototype sprite = new SpriteMissing(spriteName);
                 sprite.setPlacedAmount(map.countSprites(id));
 
-                //map.sprites.add(sprite);
-                map.loadSpriteImage(sprite);
+                map.sprites.add(sprite);
+                map.setSpriteImageMissing(sprite);
+                //map.loadSpriteImage(sprite);
             }
 
             id += 1;

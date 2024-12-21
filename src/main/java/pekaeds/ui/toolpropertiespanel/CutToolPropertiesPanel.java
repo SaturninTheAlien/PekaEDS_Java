@@ -17,9 +17,6 @@ public class CutToolPropertiesPanel extends JPanel implements ToolChangeListener
     private JCheckBox cbSpritesLayer;
 
     private JCheckBox cbReplaceEmptyTiles;
-
-    private JLabel lblClickDrag;
-    private JLabel lblClick;
     
     private JRadioButton rbCut, rbRemove;
 
@@ -40,8 +37,8 @@ public class CutToolPropertiesPanel extends JPanel implements ToolChangeListener
         cbReplaceEmptyTiles = new JCheckBox("Replace empty tiles");
         cbReplaceEmptyTiles.setSelected(true);
 
-        lblClickDrag = new JLabel("Right click and drag to select");
-        lblClick = new JLabel("Right click again to place selection");
+        /*lblClickDrag = new JLabel("Right click and drag to select");
+        lblClick = new JLabel("Right click again to place selection");*/
         
         rbCut = new JRadioButton("Cut");
         rbRemove = new JRadioButton("Remove");

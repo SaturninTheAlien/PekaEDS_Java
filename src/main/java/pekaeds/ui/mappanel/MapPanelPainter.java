@@ -38,7 +38,7 @@ public class MapPanelPainter {
         if (mapPanel.sector() != null) {
             int currentLayer = mapPanel.getSelectedLayer();
 
-            int[][] foregroundLayer = mapPanel.sector().getForegroundLayer();
+            final int[] foregroundLayer = mapPanel.sector().getForegroundLayer();
             BufferedImage foregroundTilesetImage = mapPanel.sector().getTilesetImage();
 
             switch (currentLayer) {
@@ -70,7 +70,7 @@ public class MapPanelPainter {
     }
 
     private void drawBackgroundLayer(Graphics2D g) {
-        final int[][] layer = mapPanel.sector().getBackgroundLayer();
+        final int[] layer = mapPanel.sector().getBackgroundLayer();
 
         if (mapPanel.sector().getBackgroundTilesetImage() != null) {
             drawLayer(g, layer, mapPanel.sector().getBackgroundTilesetImage());
@@ -79,7 +79,7 @@ public class MapPanelPainter {
         }
     }
 
-    public void drawLayer(Graphics2D g, final int[][] layer, BufferedImage tileset) {
+    public void drawLayer(Graphics2D g, final int[] layer, BufferedImage tileset) {
         int sectorWidth = mapPanel.sector().getWidth();
         int sectorHeight = mapPanel.sector().getHeight();
 
@@ -97,13 +97,14 @@ public class MapPanelPainter {
                 int screenX = (x - mapViewport.x) * 32;
                 int screenY = (y - mapViewport.y) * 32;
 
-                drawTile(g, screenX, screenY, layer[x][y], tileset);
+                drawTile(g, screenX, screenY, layer[sectorWidth * y + x], tileset);
             }
         }
     }
 
     public void drawBackgroundSprites(Graphics2D g) {
         if (mapPanel.sector() != null) {
+
             PK2MapSector sector = mapPanel.sector();
             PK2Map map = mapPanel.map();
 

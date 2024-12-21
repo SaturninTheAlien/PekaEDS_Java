@@ -220,6 +220,11 @@ public class SpriteOld implements SpritePrototype {
         return imageFileIdentifier;
     }
 
+    @Override
+    public void setSpecialImageFileIdentifier(String identifier){
+        this.imageFileIdentifier = identifier;
+    }
+
     public void setHeight(int height) {
         this.height = height;
     }

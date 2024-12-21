@@ -1,16 +1,8 @@
 package pekaeds.pk2.sprite.io;
 
 import org.tinylog.Logger;
-
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.pk2.sprite.SpritePrototype;
-import pekaeds.util.GFXUtils;
-
 import java.io.*;
 import java.util.Arrays;
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
 
 
 public class SpriteIO {

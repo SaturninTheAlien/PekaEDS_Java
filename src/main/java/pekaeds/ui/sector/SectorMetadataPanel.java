@@ -161,10 +161,10 @@ public class SectorMetadataPanel extends JPanel
 
         btnRemoveBgTileset = new JButton("No different BG tileset");
 
-        widthSpinnerModel = new SpinnerNumberModel(PK2MapSector.CLASSIC_WIDTH, 0, 100000, 1);
+        widthSpinnerModel = new SpinnerNumberModel(PK2MapSector.CLASSIC_WIDTH, 25, 100000, 1);
         spWidth = new JSpinner(widthSpinnerModel);
 
-        heightSpinnerModel = new SpinnerNumberModel(PK2MapSector.CLASSIC_HEIGHT, 0, 100000, 1);
+        heightSpinnerModel = new SpinnerNumberModel(PK2MapSector.CLASSIC_HEIGHT, 15, 100000, 1);
         spHeight = new JSpinner(heightSpinnerModel);
 
         // Lay out components
@@ -225,6 +225,21 @@ public class SectorMetadataPanel extends JPanel
         p.add(new JSeparator(JSeparator.HORIZONTAL), "span 3");
 
         if (!editingExistingSector) {
+
+            JButton btnClassicSize = new JButton("Classic size");
+            JButton btnMinimalSize = new JButton("Minimal size");
+
+            btnClassicSize.addActionListener(e->{
+                spWidth.setValue(PK2MapSector.CLASSIC_WIDTH);
+                spHeight.setValue(PK2MapSector.CLASSIC_HEIGHT);
+            });
+
+
+            btnMinimalSize.addActionListener(e->{
+                spWidth.setValue(25);
+                spHeight.setValue(15);
+            });
+
             p.add(new JLabel("Width:"));
             p.add(spWidth);
 
@@ -232,9 +247,15 @@ public class SectorMetadataPanel extends JPanel
 
             p.add(new JLabel("Height:"));
             p.add(spHeight);
-        } else {
+
+            p.add(new JSeparator(JSeparator.HORIZONTAL), "span 3");
+            p.add(btnClassicSize);
+            p.add(new JSeparator(JSeparator.HORIZONTAL), "span 3");
+            p.add(btnMinimalSize);
+
+        } /*else {
             p.add(btnResizeSector);
-        }
+        }*/
 
         add(p, BorderLayout.CENTER);
     }

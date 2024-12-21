@@ -18,7 +18,8 @@ public interface SpritePrototype {
 
     public String getImageFile();
 
-    String getImageFileIdentifier();
+    public String getImageFileIdentifier();
+    public void setSpecialImageFileIdentifier(String identifier);
 
     public int getColor();
     public int getFrameX();

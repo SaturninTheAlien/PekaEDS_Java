@@ -124,30 +124,7 @@ public class BrushTool extends Tool {
                 int selectedSprite = selection.getSelectionSprites()[y][x];
 
                 if (selectedSprite != 255 && selectedSprite >= 0) {
-                    int offsetX = (x - (selection.getWidth() / 2)) * 32;
-                    int offsetY = (y - (selection.getHeight() / 2)) * 32;
-
-                    getMapPanelPainter().drawSprite(g, level.getSprite(selectedSprite), getMousePosition().x + offsetX, getMousePosition().y + offsetY);
-
-                    if (Settings.highlightSelection()) {
-                        int xPos = getMousePosition().x;
-                        int yPos = getMousePosition().y;
-                        int sWidth = selection.getWidth() * 32;
-                        int sHeight = selection.getHeight() * 32;
-
-                        xPos -= (sWidth / 2);
-                        yPos -= (sHeight / 2);
-
-                        if (selection.getWidth() % 2 != 0) {
-                            xPos += 16;
-                        }
-
-                        if (selection.getHeight() % 2 != 0) {
-                            yPos += 16;
-                        }
-
-                        drawSelectionRect(g, xPos, yPos, sWidth, sHeight);
-                    }
+                    getMapPanelPainter().drawSprite(g, level.getSprite(selectedSprite), getMousePosition().x, getMousePosition().y);
                 }
             }
         }
