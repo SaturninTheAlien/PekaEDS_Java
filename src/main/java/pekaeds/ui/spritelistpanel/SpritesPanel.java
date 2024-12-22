@@ -20,7 +20,6 @@ import pekaeds.ui.main.PekaEDSGUI;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileFilter;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -38,8 +37,7 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
     private JButton btnAdd;
     private JButton btnRemove;
     private JButton btnSetPlayer;
-    
-    private JButton btnReplace;
+    //private JButton btnReplace;
 
     private PekaEDSGUI gui;
 
@@ -59,7 +57,7 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
         btnAdd = new JButton("Add");
         btnRemove = new JButton("Remove");
         btnSetPlayer = new JButton("Set Player");
-        btnReplace = new JButton("Replace");
+        //btnReplace = new JButton("Replace");
 
         var btnPanel = new JPanel();
         btnPanel.add(btnAdd);
@@ -84,59 +82,52 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
         add(btnPanel, "dock north");
     }
 
+
+    private SpritePrototype selectSprite(){
+        var fc = new SpriteFileChooser(PK2FileSystem.getAssetsPath(PK2FileSystem.SPRITES_DIR));
+        var res = fc.showOpenDialog(this);
+        
+        if (res == JFileChooser.APPROVE_OPTION){
+
+            try{
+                File file = fc.getSelectedFile();
+                SpritePrototype spr = SpriteIO.getSpriteReader(file).readSpriteFile(file);
+                return spr;
+            }
+            catch(Exception exception){
+                Logger.error(exception);
+                StringBuilder builder = new StringBuilder();
+                builder.append(fc.getSelectedFile());
+                builder.append(exception);
+
+                JOptionPane.showMessageDialog(this, builder.toString(),
+                "Cannot load a sprite!", JOptionPane.ERROR_MESSAGE);    
+            }
+            
+        }
+        return null;
+    }
+
     private void addListeners() {
         btnAdd.addActionListener(e -> {
-            var fc = new SpriteFileChooser(PK2FileSystem.getAssetsPath(PK2FileSystem.SPRITES_DIR));
-
-            fc.setFileFilter(new FileFilter() {
-                @Override
-                public boolean accept(File f) {
-                    if (f.isDirectory()) return true;
-                    else {
-                        String name = f.getName();
-                        return name.endsWith(".spr2") || name.toLowerCase().endsWith(".spr");
-                    }
+            SpritePrototype spr = SpritesPanel.this.selectSprite();
+            if(spr!=null){
+                int index = currentMap.addSprite(spr);               
+                if (index == currentMap.getLastSpriteIndex()) {
+                    // if added a new sprite
+                    listModel.addElement(spr);
+                } else {
+                    // sprite already existed in the list
+                    spr = currentMap.getSprite(index);
                 }
 
-                @Override
-                public String getDescription() {
-                    return "Pekka Kana 2 Sprite file (*.spr)";
-                }
-            });
+                spriteList.ensureIndexIsVisible(listModel.indexOf(spr));
+                spriteList.setSelectedValue(spr, true);
 
-            var res = fc.showOpenDialog(this);
+                Tool.setSelectedSprite(spr);
+                Tool.setMode(Tool.MODE_SPRITE);
 
-            if (res == JFileChooser.APPROVE_OPTION) {
-                try {
-                    File file = fc.getSelectedFile();
-                    SpritePrototype spr = SpriteIO.getSpriteReader(file).readSpriteFile(file);
-
-                    int index = currentMap.addSprite(spr);
-
-                    if (index == currentMap.getLastSpriteIndex()) {
-                        // if added a new sprite
-                        listModel.addElement(spr);
-                    } else {
-                        // sprite already existed in the list
-                        spr = currentMap.getSprite(index);
-                    }
-
-                    spriteList.ensureIndexIsVisible(listModel.indexOf(spr));
-                    spriteList.setSelectedValue(spr, true);
-
-                    Tool.setSelectedSprite(spr);
-                    Tool.setMode(Tool.MODE_SPRITE);
-
-                    changeListener.stateChanged(changeEvent);
-                } catch (Exception spriteException) {
-                    Logger.error(spriteException);
-
-                    StringBuilder builder = new StringBuilder();
-                    builder.append(fc.getSelectedFile());
-                    builder.append(spriteException);
-
-                    JOptionPane.showMessageDialog(this, builder.toString(), "Cannot load a sprite!", JOptionPane.ERROR_MESSAGE);
-                }
+                changeListener.stateChanged(changeEvent);
             }
         });
 
