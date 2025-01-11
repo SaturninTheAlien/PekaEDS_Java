@@ -54,6 +54,7 @@ public class SectorMetadataPanel extends JPanel
     private JTextField tfBgTileset;
     private JTextField tfBackground;
     private JTextField tfMusic;
+    private JTextField tfPK2stuff;
 
     private JComboBox<String> cbWeather;
     private JComboBox<String> cbScrollingType;
@@ -121,6 +122,9 @@ public class SectorMetadataPanel extends JPanel
     
         JLabel lblMusic = new JLabel("Music:");
         tfMusic = new JTextField();
+
+        JLabel lblPK2stuff = new JLabel("Custom gfx texture:");
+        tfPK2stuff = new JTextField();
     
         JLabel lblWeather = new JLabel("Weather:");
         cbWeather = new JComboBox<>();
@@ -224,6 +228,11 @@ public class SectorMetadataPanel extends JPanel
 
         p.add(new JSeparator(JSeparator.HORIZONTAL), "span 3");
 
+        p.add(lblPK2stuff);
+        p.add(tfPK2stuff);
+
+        p.add(new JSeparator(JSeparator.HORIZONTAL), "span 3");
+
         if (!editingExistingSector) {
 
             JButton btnClassicSize = new JButton("Classic size");
@@ -268,6 +277,7 @@ public class SectorMetadataPanel extends JPanel
         tfBackground.getDocument().addDocumentListener(tfl);
         tfMusic.getDocument().addDocumentListener(tfl);
         tfBgTileset.getDocument().addDocumentListener(tfl);
+        tfPK2stuff.getDocument().addDocumentListener(tfl);
 
         cbWeather.addActionListener(this);
         cbScrollingType.addActionListener(this);
@@ -419,6 +429,7 @@ public class SectorMetadataPanel extends JPanel
         tfBackground.setText(sector.backgroundName);
         tfMusic.setText(sector.musicName);
         tfBgTileset.setText(sector.tilesetBgName);
+        tfPK2stuff.setText(sector.pk2stuffName);
 
         cbWeather.setSelectedIndex(sector.weather);
         cbScrollingType.setSelectedIndex(sector.background_scrolling);
@@ -443,6 +454,7 @@ public class SectorMetadataPanel extends JPanel
         sector.tilesetName = tfTileset.getText();
         sector.backgroundName = tfBackground.getText();
         sector.tilesetBgName = tfBgTileset.getText();
+        sector.pk2stuffName = tfPK2stuff.getText();
 
         sector.musicName = tfMusic.getText();
 
@@ -514,6 +526,7 @@ public class SectorMetadataPanel extends JPanel
         sector.backgroundName = tfBackground.getText();
         sector.musicName = tfMusic.getText();
         sector.tilesetBgName = tfBgTileset.getText();
+        sector.pk2stuffName = tfPK2stuff.getText();
 
         sector.weather = cbWeather.getSelectedIndex();
         sector.background_scrolling = cbScrollingType.getSelectedIndex();

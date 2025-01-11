@@ -138,6 +138,13 @@ public final class PK2LevelIO {
 
             sector.tilesetName = sector_header.getString("tileset");
 
+            if(sector_header.has("gfx")){
+                sector.pk2stuffName = sector_header.getString("gfx");
+            }
+            else{
+                sector.pk2stuffName = "";
+            }
+
             if (sector_header.has("tileset_bg")) {
                 sector.tilesetBgName = sector_header.getString("tileset_bg");
             }
@@ -348,6 +355,8 @@ public final class PK2LevelIO {
             sector_header.put("splash_color", sector.splash_color);
             sector_header.put("fire_color_1", sector.fire_color_1);
             sector_header.put("fire_color_2", sector.fire_color_2);
+
+            sector_header.put("gfx", sector.pk2stuffName);
 
             PK2FileUtils.writeCBOR(out, sector_header);
 

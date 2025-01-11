@@ -25,6 +25,7 @@ public class PK2MapSector {
     public String tilesetBgName;
     public String backgroundName;
     public String musicName;
+    public String pk2stuffName;
 
     public int weather = 0;
     public int splash_color = -1; //based on the tileset
