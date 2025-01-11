@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import pekaeds.pk2.file.PK2FileSystem;
 import pekaeds.pk2.map.PK2Map;
 import pekaeds.pk2.map.PK2MapSector;
 import pekaeds.ui.listeners.PK2MapConsumer;
@@ -42,7 +43,14 @@ public class PekaEDSGUIModel {
         }
     }
     
-    public void setCurrentMapFile(File file) { this.currentMapFile = file; }
+    public void setCurrentMapFile(File file)
+    {
+        this.currentMapFile = file;
+        if(file!=null){
+            PK2FileSystem.setEpisodeDir(file.getParentFile());
+        }
+        
+    }
     public File getCurrentMapFile() {
         return currentMapFile;
     }

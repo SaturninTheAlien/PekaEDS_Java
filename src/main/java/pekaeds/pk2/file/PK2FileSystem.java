@@ -19,7 +19,9 @@ public class PK2FileSystem {
     public static final String LUA_DIR = "lua";
 
     private static File mAssetsPath;
-    private static String mEpisodeName;
+    private static File mEpisodePath;
+    
+    //private static String mEpisodeName;
 
     public static void setAssetsPath(String assetsPath) throws FileNotFoundException {
         setAssetsPath(new File(assetsPath));
@@ -54,27 +56,41 @@ public class PK2FileSystem {
     }
 
     public static File getEpisodeAssetsPath(String subFolder){
-        if(mEpisodeName!=null && !mEpisodeName.isEmpty()){
-            File f = Paths.get(mAssetsPath.getPath(), EPISODES_DIR, mEpisodeName, subFolder).toFile();
-            if(f.exists() && f.isDirectory())return f;
-        }
-        return null;
+        
+        return Paths.get(mEpisodePath.getPath(), subFolder).toFile();
     }
 
     public static File getPK2StuffFile() {
         return Paths.get(mAssetsPath.getPath(), "gfx", PK2_STUFF_NAME).toFile();
     }
 
-    public static void setEpisodeName(String name) {
-        mEpisodeName = name;
+    public static void setEpisodeDir(File dir){
+        if(dir.exists()){
+            mEpisodePath = dir;
+        }
+        else{
+            mEpisodePath = null;
+        }        
     }
 
-    public static String getEpisodeName() {
-        return mEpisodeName;
-    }
+    /*public static void setEpisodeName(String name){
 
+        if(name==null || name.isEmpty()){
+            mEpisodePath = null;
+        }
+        else{
+            File f = new File(name);
+            if(f.isAbsolute()){
+                mEpisodePath = f;
+            }
+            else{
+                mEpisodePath = Paths.get(mAssetsPath.getPath(), EPISODES_DIR, name).toFile();
+            }
+        }
+    }*/
+    
     public static boolean isEpisodeSet() {
-        return mEpisodeName != null && !mEpisodeName.equals("");
+        return mEpisodePath != null;
     }
 
 
@@ -97,11 +113,11 @@ public class PK2FileSystem {
         String lowercase = f.getName().toLowerCase();
 
         if (isEpisodeSet()) {
-            f = findFile(Paths.get(mAssetsPath.getPath(), EPISODES_DIR, mEpisodeName).toFile(), lowercase);
+            f = findFile(mEpisodePath, lowercase);
 
             if (f != null) return f;
 
-            f = findFile(Paths.get(mAssetsPath.getPath(), EPISODES_DIR, mEpisodeName, defaultDir).toFile(), lowercase);
+            f = findFile(Paths.get(mEpisodePath.getPath(), defaultDir).toFile(), lowercase);
 
             if (f != null) return f;
         }

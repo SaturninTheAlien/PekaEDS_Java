@@ -272,15 +272,6 @@ public class PekaEDSGUI implements ChangeListener {
         if (mapFile != null) {
             session.putLevelFile(mapFile);
             setupOpenRecentMenu(session.getRecentLevelFiles());
-
-            File episodeDir = mapFile.getParentFile();
-            if (episodeDir.exists()) {
-                PK2FileSystem.setEpisodeName(episodeDir.getName());
-            } else {
-                PK2FileSystem.setEpisodeName(null);
-            }
-        } else {
-            PK2FileSystem.setEpisodeName(null);
         }
 
         PK2LevelUtils.loadLevelAssets(map);
@@ -350,11 +341,6 @@ public class PekaEDSGUI implements ChangeListener {
             {
                 session.putLevelFile(file);
                 setupOpenRecentMenu(session.getRecentLevelFiles());
-                File episodeDir = file.getParentFile();
-
-                if (episodeDir.exists()) {
-                    PK2FileSystem.setEpisodeName(episodeDir.getName());
-                }
             }
             mapMetadataPanel.commitValues();
             sectorMetadataPanel.commitValues();
