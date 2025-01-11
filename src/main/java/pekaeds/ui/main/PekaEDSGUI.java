@@ -235,11 +235,15 @@ public class PekaEDSGUI implements ChangeListener {
         resizeDialog.setVisible(true);
     }
 
-    public void resizeSector() {
-        mapPanel.resizeCurrentSector();
-        mapPanel.setResizingSector(false);
+    public void resizeSector(int startX, int startY, int newWidth, int newHeight) {
+        mapPanel.resizeCurrentSector(startX,startY,newWidth,newHeight);
+        //mapPanel.setResizingSector(false);
 
         setUnsavedChangesPresent(true);
+    }
+
+    public void cancelResizing(){
+        mapPanel.setResizingSector(false);
     }
 
     private void registerPropertyListeners() {
@@ -341,6 +345,8 @@ public class PekaEDSGUI implements ChangeListener {
 
     public void saveLevel(File file) {
         if (file != null) {
+            model.setCurrentMapFile(file);
+            
             {
                 session.putLevelFile(file);
                 setupOpenRecentMenu(session.getRecentLevelFiles());

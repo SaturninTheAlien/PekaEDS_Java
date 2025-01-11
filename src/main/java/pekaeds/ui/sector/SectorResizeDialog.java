@@ -23,6 +23,8 @@ public class SectorResizeDialog extends JDialog
     private JSpinner spWidth;
     private JSpinner spHeight;
 
+    private JButton btnApply;
+
     private Rectangle resizeRect = new Rectangle();
 
     private PekaEDSGUI eds;
@@ -30,10 +32,25 @@ public class SectorResizeDialog extends JDialog
     public SectorResizeDialog(PekaEDSGUI edsUI) {
         eds = edsUI;
 
-        spStartX = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
-        spStartY = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
-        spWidth = new JSpinner(new SpinnerNumberModel(1, 1, 10000, 1));
-        spHeight = new JSpinner(new SpinnerNumberModel(1, 1, 10000, 1));
+        spStartX = new JSpinner(new SpinnerNumberModel(0, -100000, 10000, 1));
+        spStartY = new JSpinner(new SpinnerNumberModel(0, -100000, 10000, 1));
+        spWidth = new JSpinner(new SpinnerNumberModel(PK2MapSector.CLASSIC_WIDTH, 25, 10000, 1));
+        spHeight = new JSpinner(new SpinnerNumberModel(PK2MapSector.CLASSIC_HEIGHT, 15, 10000, 1));
+
+        btnApply = new JButton("Apply");
+
+        btnApply.addActionListener(e->{
+
+            int startX = (int) spStartX.getValue();
+            int startY = (int) spStartY.getValue();
+            int width = (int) spWidth.getValue();
+            int height = (int) spHeight.getValue();
+
+            eds.resizeSector(startX, startY, width, height);
+
+            spStartX.setValue(0);
+            spStartY.setValue(0);
+        });
 
         spStartX.addChangeListener(this);
         spStartY.addChangeListener(this);
@@ -50,6 +67,7 @@ public class SectorResizeDialog extends JDialog
         pnl.add(spWidth);
         pnl.add(new JLabel("Height:"));
         pnl.add(spHeight);
+        pnl.add(btnApply);
 
         add(pnl);
 
@@ -99,7 +117,7 @@ public class SectorResizeDialog extends JDialog
 
     @Override
     public void windowClosing(WindowEvent e) {
-       eds.resizeSector();
+       eds.cancelResizing();
     }
 
     @Override

@@ -95,46 +95,37 @@ public class PK2MapSector {
     }
 
     public void setSize(int startX, int startY, int newWidth, int newHeight) {
-        if (width != newWidth || height != newHeight) {
-            int maxWidth = 0;
-            int maxHeight = 0;
+        if (width != newWidth || height != newHeight || startX != 0 || startY != 0) {
+            this.foregroundLayer = this.resizeLayer(this.foregroundLayer, startX, startY, newWidth, newHeight);
+            this.backgroundLayer = this.resizeLayer(this.backgroundLayer, startX, startY, newWidth, newHeight);
+            this.spriteLayer = this.resizeLayer(this.spriteLayer, startX, startY, newWidth, newHeight);
 
-            if (width > newWidth) {
-                maxWidth = newWidth;
-            } else if (width < newWidth) {
-                maxWidth = width;
-            }
-
-            if (height > newHeight) {
-                maxHeight = newHeight;
-            } else if (height < newHeight) {
-                maxHeight = height;
-            }
-
-            width = newWidth;
-            height = newHeight;
-
-            backgroundLayer = resizeLayer(backgroundLayer, startX, startY, maxWidth, maxHeight);
-            foregroundLayer = resizeLayer(foregroundLayer, startX, startY, maxWidth, maxHeight);
-            spriteLayer = resizeLayer(spriteLayer, startX, startY, maxWidth, maxHeight);
+            this.width = newWidth;
+            this.height = newHeight;
         }
     }
 
     // I would use Arrays.copyOf here, but this method fills the empty parts of the array with 0 instead of 255. 0 is the first tile in the tileset, 255 is the "empty" tile
-    private int[] resizeLayer(int[] layer, int startX, int startY, int layerWidth, int layerHeight) {
-        // TODO This needs to be fixed
-        int[] resizedLayer = new int[width * height];
-        Arrays.fill(resizedLayer, 255);
+    private int[] resizeLayer(int[] layer, int startX, int startY, int newWidth, int newHeight) {
 
-        for (int y = startY; y < layerHeight; ++y) {
-            for (int x = startX; x < layerWidth; ++x) {
-                int index = layerWidth * y + x;
+        int[] newLayer = new int[newWidth*newHeight];
+        Arrays.fill(newLayer, 255);
 
-                resizedLayer[index] = layer[index];
+        for(int y=0; y<this.height;++y){
+
+            int new_y = y - startY;
+            if(new_y>=0 && new_y < newHeight){
+
+                for(int x=0; x<this.width; ++x){
+                    int new_x = x - startX;
+                    if(new_x>=0 && new_x < newWidth){
+                        newLayer[new_y*newWidth + new_x] = layer[y*width + x];
+                    }
+                }
             }
         }
 
-        return resizedLayer;
+        return newLayer;
     }
 
     public void addSpriteSheet(SpritePrototype sprite) {

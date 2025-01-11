@@ -159,11 +159,9 @@ public class MapPanel extends JComponent implements
         }
     }
 
-    public void resizeCurrentSector() {
+    public void resizeCurrentSector(int startX, int startY, int newWidth, int newHeight) {
         // Note: It would be cleaner to do this where it belongs but I can't be bothered to figure that out right now
-        sectorResizeRect.x /= 32;
-        sectorResizeRect.y /= 32;
-        currentSector.setSize(sectorResizeRect);
+        currentSector.setSize(startX, startY, newWidth, newHeight);
 
         repaint();
     }

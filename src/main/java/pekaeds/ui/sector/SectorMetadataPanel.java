@@ -262,9 +262,9 @@ public class SectorMetadataPanel extends JPanel
             p.add(new JSeparator(JSeparator.HORIZONTAL), "span 3");
             p.add(btnMinimalSize);
 
-        } /*else {
+        } else {
             p.add(btnResizeSector);
-        }*/
+        }
 
         add(p, BorderLayout.CENTER);
     }

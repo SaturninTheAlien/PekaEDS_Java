@@ -110,7 +110,7 @@ public class PlayLevelAction extends AbstractAction {
             }
 
             commands.add("--test");
-            commands.add(PK2FileSystem.getEpisodeName() + "/" + gui.getCurrentFile().getName());
+            commands.add(gui.getCurrentFile().getPath());
 
             ProcessBuilder builder = new ProcessBuilder();
             builder.directory(dir);
