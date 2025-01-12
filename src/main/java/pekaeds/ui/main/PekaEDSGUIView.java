@@ -187,7 +187,7 @@ public class PekaEDSGUIView {
         mOtherSettings = new JMenuItem("Settings");
         mOtherAbout = new JMenuItem("About");
         mOtherAbout.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, PekaEDSVersion.VERSION_STRING, "PekaEDS", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(frame, PekaEDSVersion.VERSION_STRING + "\nhttps://github.com/SaturninTheAlien/PekaEDS_Java", "PekaEDS", JOptionPane.INFORMATION_MESSAGE);
         });
 
         mOther.add(mOtherSettings);
