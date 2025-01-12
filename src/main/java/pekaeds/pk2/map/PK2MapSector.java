@@ -32,6 +32,8 @@ public class PK2MapSector {
     public int fire_color_1 = 64;  //red
     public int fire_color_2 = 128; //orange
 
+    public int rain_color = 40; //rain color
+
     public int background_scrolling = 0;
 
     private int[] backgroundLayer;

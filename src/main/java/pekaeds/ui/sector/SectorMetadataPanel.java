@@ -63,6 +63,8 @@ public class SectorMetadataPanel extends JPanel
     private JComboBox<String> cbFireColor1;
     private JComboBox<String> cbFireColor2;
 
+    private JSpinner spRainColor;
+
     private JButton btnBrowseTileset;
     private JButton btnBrowseBgTileset;
     private JButton btnBrowseBackground;
@@ -140,6 +142,9 @@ public class SectorMetadataPanel extends JPanel
 
         JLabel lblFireColor2 = new JLabel("Fire color 2:");
         cbFireColor2 = new JComboBox<>();
+
+        JLabel lblRainColor = new JLabel("Rain color:");
+        spRainColor = new JSpinner(new SpinnerNumberModel(0, 0, 254, 1));
         
         DefaultComboBoxModel<String> scrollingModel = (DefaultComboBoxModel<String>) cbScrollingType.getModel();
         scrollingModel.addAll(Settings.getMapProfile().getScrollingTypes());
@@ -207,6 +212,10 @@ public class SectorMetadataPanel extends JPanel
 
         p.add(lblFireColor2);
         p.add(cbFireColor2);
+
+        p.add(new JSeparator(JSeparator.HORIZONTAL), "span 3");
+        p.add(lblRainColor);
+        p.add(spRainColor);
 
         p.add(new JSeparator(JSeparator.HORIZONTAL), "span 3");
         p.add(new JLabel("Optional:"));
@@ -285,6 +294,8 @@ public class SectorMetadataPanel extends JPanel
         cbSplashColor.addActionListener(this);
         cbFireColor1.addActionListener(this);
         cbFireColor2.addActionListener(this);
+
+        spRainColor.addChangeListener(this);
 
         addButtonActions();
     }
@@ -441,6 +452,7 @@ public class SectorMetadataPanel extends JPanel
 
         cbFireColor1.setSelectedItem(fireColors.get(sector.fire_color_1));
         cbFireColor2.setSelectedItem(fireColors.get(sector.fire_color_2));
+        spRainColor.setValue(sector.rain_color);
 
         spWidth.setValue(sector.getWidth());
         spHeight.setValue(sector.getHeight());
@@ -455,7 +467,6 @@ public class SectorMetadataPanel extends JPanel
         sector.backgroundName = tfBackground.getText();
         sector.tilesetBgName = tfBgTileset.getText();
         sector.pk2stuffName = tfPK2stuff.getText();
-
         sector.musicName = tfMusic.getText();
 
         sector.weather = cbWeather.getSelectedIndex();
@@ -487,6 +498,7 @@ public class SectorMetadataPanel extends JPanel
             }
         }
 
+        sector.rain_color = (int)spRainColor.getValue();
         sector.setSize(0, 0, (int) spWidth.getValue(), (int) spHeight.getValue());
     }
 
@@ -537,6 +549,8 @@ public class SectorMetadataPanel extends JPanel
         sector.splash_color = getMapColor(splashColors, (String) cbSplashColor.getSelectedItem());
         sector.fire_color_1 = getMapColor(fireColors, (String) cbFireColor1.getSelectedItem());
         sector.fire_color_2 = getMapColor(fireColors, (String) cbFireColor2.getSelectedItem());
+
+        sector.rain_color = (int) spRainColor.getValue();
     }
 
     @Override

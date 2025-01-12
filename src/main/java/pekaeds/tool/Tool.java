@@ -144,7 +144,7 @@ public abstract class Tool {
         layerHandler.setSector(selectedSector);
         //undoManager.setMap(m);
 
-        reset();
+        //reset();
     }
     
     public static void reset() {

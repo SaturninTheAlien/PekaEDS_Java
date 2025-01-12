@@ -157,7 +157,13 @@ public final class PK2LevelIO {
                 sector.name = "";
             }
 
-
+            if(sector_header.has("rain_color")){
+                sector.rain_color = sector_header.getInt("rain_color");
+            }
+            else{
+                sector.rain_color = 40;
+            }
+            
             sector.musicName = sector_header.getString("music");
 
             sector.background_scrolling = sector_header.getInt("scrolling");
@@ -357,6 +363,8 @@ public final class PK2LevelIO {
             sector_header.put("fire_color_2", sector.fire_color_2);
 
             sector_header.put("gfx", sector.pk2stuffName);
+
+            sector_header.put("rain_color", sector.rain_color);
 
             PK2FileUtils.writeCBOR(out, sector_header);
 
