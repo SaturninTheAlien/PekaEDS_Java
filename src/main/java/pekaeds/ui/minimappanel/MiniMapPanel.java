@@ -7,6 +7,7 @@ import pekaeds.tool.Tool;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.TileChangeListener;
 import pekaeds.ui.mappanel.MapPanel;
+import pekaeds.ui.misc.LookAndFeelHelper;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -47,7 +48,7 @@ public class MiniMapPanel extends JPanel implements
     
     private void paintLayer(Graphics g, final int[] layer, boolean bg) {
         if (currentSector.tilesetImage != null) { // && layer.getWidth() == currentSector.getWidth() && layer.getHeight() == 224) {
-            g.setColor(Color.DARK_GRAY);
+            g.setColor(LookAndFeelHelper.getBGColor());
             g.fillRect(0, 0, currentSector.getWidth(), currentSector.getHeight());
 
             for (int x = 0; x < currentSector.getWidth(); x++) {
@@ -75,13 +76,13 @@ public class MiniMapPanel extends JPanel implements
         super.paintComponent(g);
 
         if (currentSector != null) {
-            g.setColor(Color.DARK_GRAY);
+            g.setColor(LookAndFeelHelper.getBGColor());
             g.fillRect(0, 0, currentSector.getWidth(), currentSector.getHeight());
 
             paintLayer(g, currentSector.getBackgroundLayer(), true);
             paintLayer(g, currentSector.getForegroundLayer(), false);
 
-            g.setColor(Color.white);
+            g.setColor(LookAndFeelHelper.getFGColor());
             g.drawRect(viewport.x, viewport.y, viewport.width, viewport.height);
         }
     }

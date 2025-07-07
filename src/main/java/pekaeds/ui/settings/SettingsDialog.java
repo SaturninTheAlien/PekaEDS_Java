@@ -21,13 +21,16 @@ public class SettingsDialog extends JDialog {
         PanelDefaults panelDefaults = new PanelDefaults();
         PanelShortcuts panelShortcuts = new PanelShortcuts(pkeds);
         PanelTesting panelTesting = new PanelTesting();
+        PanelLookAndFeel panelAppearance = new PanelLookAndFeel(pkeds, this);
 
         tabbedPane.add("General", new JScrollPane(panelGeneral));
+        tabbedPane.add("Appearance", panelAppearance);
         tabbedPane.add("Defaults", panelDefaults);
         tabbedPane.add("Shortcuts", new JScrollPane(panelShortcuts));
         tabbedPane.add("Testing", new JScrollPane(panelTesting));
 
         settingPanels.add(panelGeneral);
+        settingPanels.add(panelAppearance);
         settingPanels.add(panelDefaults);
         settingPanels.add(panelShortcuts);
         settingPanels.add(panelTesting);

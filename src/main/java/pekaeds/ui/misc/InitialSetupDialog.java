@@ -9,13 +9,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class InitialSetupDialog extends JDialog {
     private JTextField tfPath = new JTextField();
     private JTextField tfDefaultAuthor = new JTextField();
     private JCheckBox cbUseAutosaves = new JCheckBox("Use autosaves");
+    private JComboBox<String> cbTheme = new JComboBox<>();
 
-    private final Color panelColor = new Color(30, 30, 30);
+
+    //private final Color panelColor = new Color(30, 30, 30);
 
     private boolean setupDone = false;
 
@@ -23,9 +26,40 @@ public class InitialSetupDialog extends JDialog {
     public InitialSetupDialog(Dialog owner) {
         super(owner);
 
-        var lblPath = new JLabel("Pekka Kana 2 Greta folder location:");
+        var lblPath = new JLabel("Pekka Kana 2 folder location:");
         var btnBrowse = new JButton("Browse");
         var btnOk = new JButton("OK");
+
+
+        
+
+
+        ArrayList<String> themes = LookAndFeelHelper.getSupportedThemesList();
+
+        DefaultComboBoxModel<String> themeModel = (DefaultComboBoxModel<String>) this.cbTheme.getModel();
+        themeModel.addAll(themes);
+
+        String currentTheme = Settings.getLookAndFeel();
+        if(currentTheme==null || currentTheme.isEmpty()){
+            currentTheme = LookAndFeelHelper.getDefaultTheme();
+        }
+
+        int theme_index = themes.indexOf(currentTheme);
+        if(theme_index==-1){
+            theme_index = themes.size();
+            themes.add(currentTheme);
+        }
+        this.cbTheme.setSelectedIndex(theme_index);   
+
+        this.cbTheme.addActionListener(e -> {
+
+            String theme = (String)this.cbTheme.getSelectedItem();
+            Settings.setLookAndFeel(theme);          
+            LookAndFeelHelper.updateTheme(theme);
+            SwingUtilities.updateComponentTreeUI(InitialSetupDialog.this);
+        });
+
+
 
         tfDefaultAuthor.setText("Unknown");
         cbUseAutosaves.setSelected(true);
@@ -59,7 +93,7 @@ public class InitialSetupDialog extends JDialog {
                 setupDone = true;
                 setVisible(false);
             } else {
-                JOptionPane.showMessageDialog(this, "Please provide the location of your Pekka Kana 2 Greta folder!", "No location provided!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please provide the location of your Pekka Kana 2 folder!", "No location provided!", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -72,7 +106,7 @@ public class InitialSetupDialog extends JDialog {
         lblVersion.setFont(new Font(lblVersion.getFont().getFontName(), Font.PLAIN, 12));
 
         var pnlInitSetup = new JPanel(new MigLayout("fillx"));
-        pnlInitSetup.setBackground(panelColor);
+        //pnlInitSetup.setBackground(panelColor);
         pnlInitSetup.add(lblSetup);
         pnlInitSetup.add(lblVersion, "gapx push");
 
@@ -81,19 +115,25 @@ public class InitialSetupDialog extends JDialog {
         var lblDefaultAuthor = new JLabel("Default author:");
         var pnlPath = new JPanel();
         pnlPath.setLayout(new MigLayout("align 50% 10%"));
-        pnlPath.setBackground(new Color(45, 45, 46));
 
-        pnlPath.add(lblDefaultAuthor, "cell 0 0");
-        pnlPath.add(tfDefaultAuthor, "cell 0 1, width 200px");
+
+        var lblTheme = new JLabel("Theme:");
+       
+        //pnlPath.setBackground(new Color(45, 45, 46));
+        pnlPath.add(lblTheme, "cell 0 0");
+        pnlPath.add(this.cbTheme, "cell 0 1, width 200px");
+
+        pnlPath.add(lblDefaultAuthor, "cell 0 2");
+        pnlPath.add(tfDefaultAuthor, "cell 0 3, width 200px");
         pnlPath.add(cbUseAutosaves, "cell 1 0, align right");
 
-        pnlPath.add(lblPath, "cell 0 2");
-        pnlPath.add(tfPath, "cell 0 3, width 400px");
-        pnlPath.add(btnBrowse, "cell 1 3");
+        pnlPath.add(lblPath, "cell 0 4");
+        pnlPath.add(tfPath, "cell 0 5, width 400px");
+        pnlPath.add(btnBrowse, "cell 1 5");
 
         var pnlOkButton = new JPanel();
         pnlOkButton.setLayout(new MigLayout("fillx"));
-        pnlOkButton.setBackground(panelColor);
+        //pnlOkButton.setBackground(panelColor);
         pnlOkButton.add(btnOk, "gapx push");
 
         add(pnlPath, "dock center");

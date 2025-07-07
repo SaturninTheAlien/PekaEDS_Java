@@ -79,6 +79,11 @@ public class PekaEDSGUI implements ChangeListener {
         showEditor();
     }
 
+
+    public JFrame getFrame(){
+        return this.view.getFrame();
+    }
+
     void showEditor() {
         // This has to be done before PekaEDSGUIView gets initialized, because it relies on the toolsList in the Tools class.
         registerTools();

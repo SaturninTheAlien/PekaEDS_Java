@@ -14,6 +14,7 @@ import org.tinylog.Logger;
 
 import pekaeds.profile.LevelProfile;
 import pekaeds.profile.SpriteProfile;
+import pekaeds.ui.misc.LookAndFeelHelper;
 
 /**
  * TODO: This class shouldn't have anything static in it.
@@ -29,6 +30,7 @@ public class Settings {
     }
     
     private static String basePath;
+    private static String lookAndFeel;
     
     private static String defaultTileset = "tiles01.bmp";
     private static String defaultBackground = "castle.bmp";
@@ -93,6 +95,8 @@ public class Settings {
     public static void load(File file) throws IOException {
         try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
             basePath = dis.readUTF();
+            lookAndFeel = dis.readUTF();
+
             defaultTileset = dis.readUTF();
             defaultBackground = dis.readUTF();
             defaultAuthor = dis.readUTF();
@@ -130,12 +134,14 @@ public class Settings {
     
     public static void save() {
         try (var dos = new DataOutputStream(new FileOutputStream("settings.dat"))){
-            dos.writeUTF(Settings.getBasePath());
-            dos.writeUTF(Settings.getDefaultTileset());
-            dos.writeUTF(Settings.getDefaultBackground());
-            dos.writeUTF(Settings.getDefaultAuthor());
-            dos.writeUTF(Settings.getDefaultMapName());
-            dos.writeUTF(Settings.getDefaultMusic());
+            dos.writeUTF(basePath);
+            dos.writeUTF(lookAndFeel);
+
+            dos.writeUTF(defaultTileset);
+            dos.writeUTF(defaultBackground);
+            dos.writeUTF(defaultAuthor);
+            dos.writeUTF(defaultMapName);
+            dos.writeUTF(defaultMusic);
             
             levelTestingSettings.save(dos);
             
@@ -164,6 +170,8 @@ public class Settings {
     }
     
     public static void reset() {
+
+        lookAndFeel = LookAndFeelHelper.getDefaultTheme();
     
         defaultTileset = "tiles01.bmp";
         defaultBackground = "castle.bmp";
@@ -195,6 +203,10 @@ public class Settings {
     public static void setBasePath(String path) {
         basePath = path;
     }
+
+    public static void setLookAndFeel(String theme){
+        lookAndFeel = theme;
+    }
     
     public static void setKeyboardShortcutFor(String actionName, KeyStroke keyStroke) {
         keyboardShortcuts.put(actionName, keyStroke);
@@ -222,6 +234,10 @@ public class Settings {
     
     public static String getBasePath() {
         return basePath;
+    }
+
+    public static String getLookAndFeel(){
+        return lookAndFeel;
     }
     
     public static String getDefaultTileset() {

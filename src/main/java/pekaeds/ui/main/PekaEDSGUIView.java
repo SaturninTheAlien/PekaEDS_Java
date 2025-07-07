@@ -80,6 +80,10 @@ public class PekaEDSGUIView {
         frame = new JFrame("PekaEDS");
     }
 
+    JFrame getFrame(){
+        return this.frame;
+    }
+
     void setupMainUI() {
         var mainToolBar = edsUI.getMainToolBar();
 

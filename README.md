@@ -11,7 +11,7 @@ https://github.com/SaturninTheAlien/pk2_greta
 Keep in mind that the code on the main branch is under active development and may contain bugs. It's strongly advised to backup your levels before using it.
 
 ## FAQ
-### Can I make or edit levels for older versions of Pekka Kana 2 than "Greta" with this software?
+### Can I make or edit levels for older versions of Pekka Kana 2 than 1.5.0 "Greta" with this software?
 
 If you want to make levels that work with older PK2 versions, the answer is no, and we will probably never add support for it.
 
