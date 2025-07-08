@@ -57,7 +57,9 @@ public class ToolPropertiesPanel extends JPanel {
             for (var p : paneList) {
                 p.setSelectedTool(selectedTool);
             }
+            this.setVisible(true);
         } else {
+            this.setVisible(false);
             cardLayout.show(this, NO_PROP_PANEL);
         }
     }

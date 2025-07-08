@@ -125,7 +125,8 @@ public class PekaEDSGUIView {
 
         tilesetAndToolPropPanel.setLayout(new MigLayout("", "fill"));
         tilesetAndToolPropPanel.add(tsetScrollPane, "cell 0 0");
-        tilesetAndToolPropPanel.add(toolPropertiesPanel, "cell 0 1");
+        tilesetAndToolPropPanel.add(toolPropertiesPanel, "cell 0 1, hidemode 3");
+        //tilesetAndToolPropPanel.remove(toolPropertiesPanel);
 
         menuBar = new JMenuBar();
         mFile = new JMenu("File");
