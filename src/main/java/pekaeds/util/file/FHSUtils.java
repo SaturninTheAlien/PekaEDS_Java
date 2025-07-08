@@ -17,7 +17,7 @@ public class FHSUtils {
         //Windows
         if(os.contains("win")){
             String appdata = System.getenv("APPDATA");
-            prefPath = Paths.get(appdata, "Roaming", dotLocalPath).toFile();
+            prefPath = Paths.get(appdata, dotLocalPath).toFile();
         }
         //Linux and MacOS
         else{
