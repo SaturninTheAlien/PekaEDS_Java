@@ -132,8 +132,8 @@ public class Settings {
         }
     }
     
-    public static void save() {
-        try (var dos = new DataOutputStream(new FileOutputStream("settings.dat"))){
+    public static void save(File file) {
+        try (var dos = new DataOutputStream(new FileOutputStream(file))){
             dos.writeUTF(basePath);
             dos.writeUTF(lookAndFeel);
 

@@ -32,12 +32,9 @@ public class LookAndFeelHelper {
         return themes;
     }
 
-    public static void updateTheme(String name){
+    public static void updateTheme(){
         try {
-
             String theme = Settings.getLookAndFeel();
-
-            System.out.println(theme);
             switch (theme) {
                 case "FlatLaf Light":
                     UIManager.setLookAndFeel(new FlatLightLaf());                    

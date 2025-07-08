@@ -3,11 +3,13 @@ package pekaeds.ui.misc;
 import net.miginfocom.swing.MigLayout;
 import pekaeds.data.PekaEDSVersion;
 import pekaeds.settings.Settings;
+import pekaeds.util.file.FHSUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -55,14 +57,23 @@ public class InitialSetupDialog extends JDialog {
 
             String theme = (String)this.cbTheme.getSelectedItem();
             Settings.setLookAndFeel(theme);          
-            LookAndFeelHelper.updateTheme(theme);
+            LookAndFeelHelper.updateTheme();
             SwingUtilities.updateComponentTreeUI(InitialSetupDialog.this);
         });
 
+        String author = FHSUtils.getSystemUserName();
+        if(author==null || author.isEmpty()){
+            author = "Unknown";
+        }
 
-
-        tfDefaultAuthor.setText("Unknown");
+        tfDefaultAuthor.setText(author);
         cbUseAutosaves.setSelected(true);
+
+
+        File installed_pk2 = FHSUtils.findPK2();
+        if(installed_pk2!=null){
+            this.tfPath.setText(installed_pk2.getAbsolutePath());
+        }
 
         btnBrowse.addActionListener(e -> {
             var fc = new JFileChooser();
@@ -88,7 +99,7 @@ public class InitialSetupDialog extends JDialog {
                     Settings.setAutosaveFileCount(0);
                 }
 
-                Settings.save();
+                Settings.save(FHSUtils.getSettingsFile());
 
                 setupDone = true;
                 setVisible(false);

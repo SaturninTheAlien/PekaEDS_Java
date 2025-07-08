@@ -2,7 +2,6 @@ package pekaeds.util.episodemanager;
 
 import org.tinylog.Logger;
 
-import pekaeds.data.EditorConstants;
 import pekaeds.pk2.file.PK2FileSystem;
 import pekaeds.pk2.map.PK2Map;
 import pekaeds.pk2.map.PK2LevelIO;
@@ -33,7 +32,7 @@ public final class EpisodeManager {
     private EpisodeChangeListener changeListener;
     
     public EpisodeManager() {
-        var episodesFolder = new File(EditorConstants.EPISODES_FOLDER);
+        var episodesFolder = PK2FileSystem.getAssetsPath(PK2FileSystem.EPISODES_DIR);
         
         if (!episodesFolder.exists()) {
             episodesFolder.mkdir();
@@ -51,7 +50,7 @@ public final class EpisodeManager {
         episode = new Episode(tmpFiles, folder, folder.getName());
         episodeIO.save(episode);
     
-        loadEpisode(new File(EditorConstants.EPISODES_FOLDER + episode.getEpisodeName() + ".episode"));
+        loadEpisode(new File(PK2FileSystem.getAssetsPath(PK2FileSystem.EPISODES_DIR) + episode.getEpisodeName() + ".episode"));
     }
     
     public void loadEpisode(File episodeFile) {

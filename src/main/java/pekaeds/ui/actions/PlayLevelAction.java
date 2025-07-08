@@ -43,7 +43,15 @@ public class PlayLevelAction extends AbstractAction {
             this.executableDirectory = assetsPath;
         }
         else{
-            if(assetsPath.getName().equals("res")){
+            if(assetsPath.getAbsolutePath().startsWith("/usr/local")){
+                this.executable = "/usr/local/games/pekka-kana-2";
+                this.executableDirectory = assetsPath;
+            }
+            else if(assetsPath.getAbsolutePath().startsWith("/usr")){
+                this.executable = "/usr/games/pekka-kana-2";
+                this.executableDirectory = assetsPath;
+            }
+            else if(assetsPath.getName().equals("res")){
                 this.executable = "./bin/pekka-kana-2";
                 this.executableDirectory = assetsPath.getParentFile();
             }

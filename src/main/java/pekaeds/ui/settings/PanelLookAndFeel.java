@@ -49,7 +49,7 @@ public class PanelLookAndFeel extends JPanel implements ISettingsPanel {
 
         String selectedTheme = (String) this.cbTheme.getSelectedItem();
         Settings.setLookAndFeel(selectedTheme);
-        LookAndFeelHelper.updateTheme(selectedTheme);
+        LookAndFeelHelper.updateTheme();
         SwingUtilities.updateComponentTreeUI(settingsDialog);
         SwingUtilities.updateComponentTreeUI(eds.getFrame());
     }

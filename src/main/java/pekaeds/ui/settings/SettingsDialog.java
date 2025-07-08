@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.miginfocom.swing.MigLayout;
 import pekaeds.settings.Settings;
 import pekaeds.ui.main.PekaEDSGUI;
+import pekaeds.util.file.FHSUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,7 +66,7 @@ public class SettingsDialog extends JDialog {
         for(ISettingsPanel panel:this.settingPanels){
             panel.saveSettings();
         }        
-        Settings.save();
+        Settings.save(FHSUtils.getSettingsFile());
     }
     
     @Override
