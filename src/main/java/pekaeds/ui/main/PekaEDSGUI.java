@@ -125,7 +125,7 @@ public class PekaEDSGUI implements ChangeListener {
             try {
                 Logger.info("Trying to load last.session...");
                 this.session.load(fLastSession);
-                this.setupOpenRecentMenu(this.session.getRecentLevelFiles());
+                this.setupOpenRecentMenu();
 
                 switch (Settings.getDefaultStartupBehavior()) {
                     case StartupBehavior.NEW_MAP -> {
@@ -276,7 +276,7 @@ public class PekaEDSGUI implements ChangeListener {
 
         if (mapFile != null) {
             session.putLevelFile(mapFile);
-            setupOpenRecentMenu(session.getRecentLevelFiles());
+            setupOpenRecentMenu();
         }
 
         PK2LevelUtils.loadLevelAssets(map);
@@ -345,7 +345,7 @@ public class PekaEDSGUI implements ChangeListener {
             
             {
                 session.putLevelFile(file);
-                setupOpenRecentMenu(session.getRecentLevelFiles());
+                setupOpenRecentMenu();
             }
             mapMetadataPanel.commitValues();
             sectorMetadataPanel.commitValues();
@@ -638,8 +638,8 @@ public class PekaEDSGUI implements ChangeListener {
         autosaveManager.setFileCount(Settings.getAutosaveFileCount());
     }
 
-    public void setupOpenRecentMenu(List<File> files) {
-        this.view.setupOpenRecentMenu(files);
+    public void setupOpenRecentMenu() {
+        this.view.setupOpenRecentMenu(session.getRecentLevelFiles());
     }
 
     public void setUnsavedChangesPresent(boolean value) {

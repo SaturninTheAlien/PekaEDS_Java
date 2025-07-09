@@ -18,7 +18,7 @@ public class SettingsDialog extends JDialog {
     public SettingsDialog(PekaEDSGUI pkeds) {
         tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 
-        PanelGeneral panelGeneral = new PanelGeneral();
+        PanelGeneral panelGeneral = new PanelGeneral(pkeds);
         PanelDefaults panelDefaults = new PanelDefaults();
         PanelShortcuts panelShortcuts = new PanelShortcuts(pkeds);
         PanelTesting panelTesting = new PanelTesting();

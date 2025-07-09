@@ -1,8 +1,12 @@
 package pekaeds.ui.settings;
 
 import net.miginfocom.swing.MigLayout;
+import pekaeds.pk2.file.PK2FileSystem;
 import pekaeds.settings.Settings;
 import pekaeds.settings.StartupBehavior;
+import pekaeds.ui.main.PekaEDSGUI;
+
+import java.io.FileNotFoundException;
 
 import javax.swing.*;
 
@@ -25,8 +29,13 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
     
     private JSpinner spAutosaveInterval;
     private JSpinner spAutosaveFileCount;
+
+    private PekaEDSGUI pkeds;
     
-    public PanelGeneral() {
+    public PanelGeneral(PekaEDSGUI pkeds) {
+
+        this.pkeds = pkeds;
+
         setupGamePath();
         setupButtonGroup();
         setupAutosave();
@@ -115,7 +124,19 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
 
     @Override
     public void saveSettings(){
-        Settings.setBasePath(this.tfGamePath.getText());
+
+        //String previousGamePath = Settings.getBasePath();
+        String gamePath = this.tfGamePath.getText();
+
+        try{
+            PK2FileSystem.setAssetsPath(gamePath);
+            Settings.setBasePath(gamePath);
+            this.pkeds.setupOpenRecentMenu();
+        }
+        catch(FileNotFoundException e){
+            JOptionPane.showMessageDialog(this, gamePath + "\nis not a PK2 directory!", "Incorrect game path!", JOptionPane.ERROR_MESSAGE);
+        }
+
         Settings.setDefaultStartupBehavior(this.getStartupBehavior());
         Settings.setShowTileNumberInTileset(this.cbShowTileNumbers.isSelected());
 
@@ -126,7 +147,10 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
     }
     
     @Override
-    public void setupValues() {       
+    public void setupValues() {
+        this.tfGamePath.setText(Settings.getBasePath());
+
+
         rbNewMap.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.NEW_MAP);
         rbLoadMap.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.LOAD_LAST_MAP);
         rbLoadEpisode.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.LOAD_LAST_EPISODE);
