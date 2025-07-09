@@ -42,21 +42,26 @@ public final class GFXUtils {
     }
 
     public static BufferedImage makeTransparent(BufferedImage image) {
+
+        if(! (image.getColorModel() instanceof IndexColorModel)){
+            return image;
+        }
+
         var palette = (IndexColorModel) image.getColorModel();
-        
+
         var rs = new byte[256];
         var gs = new byte[256];
         var bs = new byte[256];
         palette.getReds(rs);
         palette.getGreens(gs);
         palette.getBlues(bs);
-        
+
         var colorModel = new IndexColorModel(8, 256, rs, gs, bs, 255);
-        
-        //var tmpData = image.getRaster();
+
+        var tmpData = image.getRaster();
         var newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, colorModel);
-        newImage.setData(image.getRaster());
-        
+        newImage.setData(tmpData);
+
         return newImage;
     }
 
