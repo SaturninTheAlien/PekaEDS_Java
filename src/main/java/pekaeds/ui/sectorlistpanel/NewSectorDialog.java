@@ -45,7 +45,7 @@ public class NewSectorDialog extends JDialog {
 
         setTitle("Create a new sector...");
         setModal(true);
-        setSize(350, 520);
+        setSize(350, 640);
         setLocationRelativeTo(null);
     }
 
