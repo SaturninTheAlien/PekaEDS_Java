@@ -184,20 +184,24 @@ public final class AnimationPanel extends JPanel {
                    }
                }
            }
-           
-           var frame0 = animation.getSequence()[0];
-           if (frame0 > sprite.getFramesList().size()) {
-               animationPreview.setImage(null);
-           } else {
-               if (frame0 >= 1) { // If the first frame in the animation sequence is greater than 0, show whatever frame it contains
-                   animationPreview.setImage(sprite.getFramesList().get(frame0 - 1));
-               } else { // Otherwise show the first frame of the animation
-                   if (!sprite.getFramesList().isEmpty()) {
-                       animationPreview.setImage(sprite.getFramesList().get(frame0));
-                   } else {
-                       animationPreview.setImage(null);
-                   }
-               }
+
+           if(sequence.length!=0){
+            
+            var frame0 = animation.getSequence()[0];
+            if (frame0 > sprite.getFramesList().size()) {
+                animationPreview.setImage(null);
+            } else {
+                if (frame0 >= 1) { // If the first frame in the animation sequence is greater than 0, show whatever frame it contains
+                    animationPreview.setImage(sprite.getFramesList().get(frame0 - 1));
+                } else { // Otherwise show the first frame of the animation
+                    if (!sprite.getFramesList().isEmpty()) {
+                        animationPreview.setImage(sprite.getFramesList().get(frame0));
+                    } else {
+                        animationPreview.setImage(null);
+                    }
+                }
+            }
+            
            }
            
            if (!sprite.getFramesList().isEmpty()) setPreferredSize(new Dimension((int) getPreferredSize().getWidth(), sprite.getFramesList().get(0).getHeight()));
