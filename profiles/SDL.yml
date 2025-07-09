@@ -1,0 +1,198 @@
+aiPatternMap:
+ 0: No AI
+ 1: Chicken
+ 2: An Egg
+ 3: Baby Chicken
+ 4: Bonus
+ 5: Jumper
+ 6: Basic AI
+ 7: Turn horizontally
+ 8: Looks Out for Cliffs
+ 9: Random Horizontal Change of Direction
+ 10: Random Jumping
+ 11: Follow the Player
+ 12: Random Horizontal Change of Direction
+ 13: Follow the Player if Player is in Front
+ 14: Transformation If Energy Below 2
+ 15: Transformation If Energy above 1
+ 16: Start Directions Towards Player
+ 17: Ammunition
+ 18: Non Stop
+ 19: Attack 1 If Damaged
+ 20: Self Destruction
+ 21: Attack 1 If Player is in Front
+ 22: Attack 1 If Player is Below
+ 23: Damaged by Water
+ 24: Attack 2 If Player is in Front
+ 25: Kill 'em all
+ 26: Affected by Friction
+ 27: Hide
+ 28: Return to Start Position X
+ 29: Return to Start Position Y
+ 30: Teleport
+ 35: Throwable Weapon
+ 36: Falls When Shaken
+ 37: Change Trap Stones If KO'ed
+ 38: Change Trap Stones If Damaged
+ 39: Self Destructs With Mother Sprite
+ 41: Moves X COS
+ 42: Moves Y COS
+ 43: Moves X SIN
+ 44: Moves Y SIN
+ 45: Moves X COS Fast
+ 46: Moves Y SIN Fast
+ 47: Moves X COS Slow
+ 48: Moves Y SIN Slow
+ 49: Moves Y SIN Free
+ 50: Random Turning
+ 51: Jump If Player Is Above
+ 52: Transformation Timer
+ 53: Falls If Switch 1 Is Pressed
+ 54: Falls If Switch 2 Is Pressed
+ 55: Falls If Switch 3 Is Pressed
+ 56: Moves Down If Switch 1 Is Pressed
+ 57: Moves Up If Switch 1 Is Pressed
+ 58: Moves Right If Switch 1 Is Pressed
+ 59: Moves Left If Switch 1 Is Pressed
+ 60: Moves Down If Switch 2 Is Pressed
+ 61: Moves Up If Switch 2 Is Pressed
+ 62: Moves Right If Switch 2 Is Pressed
+ 63: Moves Left If Switch 2 Is Pressed
+ 64: Moves Down If Switch 3 Is Pressed
+ 65: Moves Up If Switch 3 Is Pressed
+ 66: Moves Right If Switch 3 Is Pressed
+ 67: Moves Left If Switch 3 Is Pressed
+ 70: Turns Vertically From Obstacle
+ 71: Random Vertical Starting Direction
+ 72: Starting Direction Towards Player
+ 73: Climber
+ 74: Climber Type 2
+ 75: Runs Away From Player If Sees Player
+ 76: Reborn
+ 77: Arrow Left
+ 78: Arrow Right
+ 79: Arrow Up
+ 80: Arrow Down
+ 81: Move to Arrows Direction
+ 101: Background Sprite Moon
+ 102: Background Sprite Moves to Left
+ 103: Background Sprite Moves to Right
+ 120: Add Time to Clock (Sprite's Load Time)
+ 121: Make Player Invisible
+ 129: Transform if hit
+ 130: Follow the Player Vertic. and Horiz.
+ 131: Follow the Player Vertic. and Horiz., if Player is in Front
+ 132: Random Move Vertic. and Horiz.
+ 133: Frog Jump 1
+ 134: Frog Jump 2
+ 135: Frog Jump 3
+ 136: Attack 2 if Damaged
+ 137: Attack 1 Non Stop
+ 138: Attack 2 Non Stop
+ 139: Turn if Damaged
+ 140: Evil One
+ 150: Max speed player
+ 151: Max speed player on super
+ 152: Swimming
+ 153: Max speed swimming
+ 170: Egg 2
+ 201: Info 1
+ 202: Info 2
+ 203: Info 3
+ 204: Info 4
+ 205: Info 5
+ 206: Info 6
+ 207: Info 7
+ 208: Info 8
+ 209: Info 9
+ 210: Info 10
+ 211: Info 11
+ 212: Info 12
+ 213: Info 13
+ 214: Info 14
+ 215: Info 15
+ 216: Info 16
+ 217: Info 17
+ 218: Info 18
+ 219: Info 19
+
+damageMap:
+ 0: No damage
+ 1: Punch
+ 2: Fall (stomp)
+ 3: Noise
+ 4: Fire
+ 5: Water
+ 6: Snow
+ 7: Bonus
+ 8: Electricity
+ 9: Self destruction
+ 10: Squeeze
+ 11: Smell
+ 12: All
+ 13: Sting
+
+typeMap:
+ 0: None
+ 1: Character
+ 2: Bonus Item
+ 3: Ammo
+ 4: Teleport
+ 5: Background
+
+destructionType:
+ 0: None
+ 100: Animation
+
+destructionEffects:
+ 0: Indestructible
+ 1: Feathers
+ 2: Grey stars
+ 3: Blue stars
+ 4: Red stars
+ 5: Green stars
+ 6: Orange stars
+ 7: Violet stars
+ 8: Turquoise stars
+ 9: Grey explosion
+ 10: Blue explosion
+ 11: Red explosion
+ 12: Green explosion
+ 13: Orange explosion
+ 14: Violet explosion
+ 15: Turquoise explosion
+ 16: Grey smoke	
+ 17: Blue smoke
+ 18: Red smoke
+ 19: Green smoke
+ 20: Orange smoke
+ 21: Violet smoke
+ 22: Turquoise smoke
+ 23: Smoke clouds
+ 100: Animation
+
+immunityMap:
+ 0: None
+ 1: Punch
+ 2: Fall (stomp)
+ 3: Noise
+ 4: Fire
+ 5: Water
+ 6: Snow
+ 7: Bonus
+ 8: Electricity
+ 9: Self destruction
+ 10: Squeeze
+ 11: Smell
+ 12: All
+ 13: Sting
+
+colorMap:
+ 255: Original
+ 0: Grey
+ 32: Blue
+ 64: Red
+ 96: Green
+ 128: Orange
+ 160: Violet
+ 192: Turquoise
