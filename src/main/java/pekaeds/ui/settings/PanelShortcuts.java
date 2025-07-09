@@ -1,9 +1,9 @@
 package pekaeds.ui.settings;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.settings.Settings;
-import pekaeds.settings.Shortcuts;
 import pekaeds.ui.main.PekaEDSGUI;
+import pk2.settings.Settings;
+import pk2.settings.Shortcuts;
 
 import javax.swing.*;
 

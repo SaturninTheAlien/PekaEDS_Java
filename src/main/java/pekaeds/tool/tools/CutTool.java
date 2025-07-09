@@ -1,12 +1,12 @@
 package pekaeds.tool.tools;
 
 import pekaeds.data.Layer;
-import pekaeds.pk2.sprite.PK2Sprite;
 import pekaeds.tool.Tool;
 import pekaeds.tool.undomanager.ActionType;
 import pekaeds.tool.undomanager.UndoAction;
 import pekaeds.ui.listeners.CutToolListener;
-import pekaeds.util.TileUtils;
+import pk2.sprite.PK2Sprite;
+import pk2.util.TileUtils;
 
 import javax.swing.*;
 import java.awt.*;

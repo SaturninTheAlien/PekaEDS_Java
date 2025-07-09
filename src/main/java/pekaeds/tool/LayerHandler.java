@@ -3,19 +3,19 @@ package pekaeds.tool;
 import java.awt.*;
 
 import pekaeds.data.Layer;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2MapSector;
 import pekaeds.ui.listeners.SpritePlacementListener;
 import pekaeds.ui.listeners.TileChangeListener;
-import pekaeds.util.TileUtils;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelSector;
+import pk2.util.TileUtils;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public final class LayerHandler {
     private final ToolSelection selection;
-    private PK2MapSector sector;
-    private PK2Map level;
+    private PK2LevelSector sector;
+    private PK2Level level;
 
     private int gridX = 32, gridY = 32;
     //private int currentLayer;
@@ -300,11 +300,11 @@ public final class LayerHandler {
         // TODO Handle UndoManager
     }
 
-    public void setSector(PK2MapSector sector) {
+    public void setSector(PK2LevelSector sector) {
         this.sector = sector;
     }
 
-    public void setLevel(PK2Map level) {
+    public void setLevel(PK2Level level) {
         this.level = level;
     }
 

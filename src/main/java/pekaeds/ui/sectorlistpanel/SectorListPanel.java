@@ -1,11 +1,11 @@
 package pekaeds.ui.sectorlistpanel;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2MapSector;
 import pekaeds.ui.listeners.PK2MapConsumer;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.main.PekaEDSGUI;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelSector;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class SectorListPanel extends JPanel implements PK2MapConsumer {
     private JButton btnRemove;
     private JButton btnCopy;
 
-    private PK2Map map;
+    private PK2Level map;
 
     private PekaEDSGUI edsGUI;
 
@@ -56,7 +56,7 @@ public class SectorListPanel extends JPanel implements PK2MapConsumer {
         btnAdd.addActionListener(e -> {
             NewSectorDialog newSectorDialog = new NewSectorDialog();
 
-            PK2MapSector newSector = newSectorDialog.showDialog();
+            PK2LevelSector newSector = newSectorDialog.showDialog();
 
             if (newSector != null) {
                 map.addSector(newSector);
@@ -104,7 +104,7 @@ public class SectorListPanel extends JPanel implements PK2MapConsumer {
 
             if(index != -1){
 
-                PK2MapSector sector = map.sectors.get(index);
+                PK2LevelSector sector = map.sectors.get(index);
 
                 int result = JOptionPane.showConfirmDialog(SectorListPanel.this,
                     "Do you really want to duplicate sector \""+sector.name+"\"?",
@@ -114,7 +114,7 @@ public class SectorListPanel extends JPanel implements PK2MapConsumer {
 
 
                 if(result == JOptionPane.YES_OPTION){
-                    PK2MapSector newSector = new PK2MapSector(sector);
+                    PK2LevelSector newSector = new PK2LevelSector(sector);
                     map.addSector(newSector);
                     sectorModel.addElement(newSector.name);
                     edsGUI.setUnsavedChangesPresent(true);
@@ -140,12 +140,12 @@ public class SectorListPanel extends JPanel implements PK2MapConsumer {
     }
 
     @Override
-    public void setMap(PK2Map newMap) {
+    public void setMap(PK2Level newMap) {
         map = newMap;
 
         if (!sectorModel.isEmpty()) sectorModel.clear();
 
-        for (PK2MapSector sector : map.sectors) {
+        for (PK2LevelSector sector : map.sectors) {
             sectorModel.addElement(sector.name);
         }
     }

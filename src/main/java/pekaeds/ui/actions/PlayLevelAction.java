@@ -9,11 +9,11 @@ import javax.swing.*;
 
 import org.tinylog.Logger;
 
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.settings.LevelTestingSettings;
-import pekaeds.settings.Settings;
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.misc.UnsavedChangesDialog;
+import pk2.filesystem.PK2FileSystem;
+import pk2.settings.LevelTestingSettings;
+import pk2.settings.Settings;
 
 import java.awt.event.ActionEvent;
 

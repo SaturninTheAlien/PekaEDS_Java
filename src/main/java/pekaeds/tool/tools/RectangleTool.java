@@ -2,9 +2,9 @@ package pekaeds.tool.tools;
 
 import javax.swing.*;
 
-import pekaeds.settings.Settings;
 import pekaeds.tool.Tool;
-import pekaeds.util.TileUtils;
+import pk2.settings.Settings;
+import pk2.util.TileUtils;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

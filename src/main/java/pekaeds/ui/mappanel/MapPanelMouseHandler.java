@@ -3,7 +3,7 @@ package pekaeds.ui.mappanel;
 import javax.swing.*;
 
 import pekaeds.tool.Tool;
-import pekaeds.util.TileUtils;
+import pk2.util.TileUtils;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

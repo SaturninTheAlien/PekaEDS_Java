@@ -6,18 +6,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2MapSector;
 import pekaeds.ui.listeners.PK2MapConsumer;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.RepaintListener;
+import pk2.filesystem.PK2FileSystem;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelSector;
 
 public class PekaEDSGUIModel {
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     
-    private PK2Map currentLevel;
-    private PK2MapSector currentSector;
+    private PK2Level currentLevel;
+    private PK2LevelSector currentSector;
 
     private File currentMapFile = null;
     
@@ -28,15 +28,15 @@ public class PekaEDSGUIModel {
     private final List<PK2SectorConsumer> sectorConsumers = new ArrayList<>();
     private final List<RepaintListener> repaintListeners = new ArrayList<>();
     
-    public PK2Map getCurrentLevel() {
+    public PK2Level getCurrentLevel() {
         return this.currentLevel;
     }
 
-    public PK2MapSector getCurrentLevelSector(){
+    public PK2LevelSector getCurrentLevelSector(){
         return this.currentSector;
     }
 
-    public void setCurrentMap(PK2Map level) {
+    public void setCurrentMap(PK2Level level) {
         this.currentLevel = level;
         if(level.sectors.size()>0){
             this.currentSector = level.sectors.get(0);

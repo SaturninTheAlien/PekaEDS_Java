@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import pekaeds.data.Layer;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.pk2.sprite.SpritePrototype;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelSector;
+import pk2.sprite.SpritePrototype;
 
 // TODO Optimize drawing
 public class MapPanelPainter {
@@ -105,8 +105,8 @@ public class MapPanelPainter {
     public void drawBackgroundSprites(Graphics2D g) {
         if (mapPanel.sector() != null) {
 
-            PK2MapSector sector = mapPanel.sector();
-            PK2Map map = mapPanel.map();
+            PK2LevelSector sector = mapPanel.sector();
+            PK2Level map = mapPanel.map();
 
             for (int x = 0; x < sector.getWidth(); x++) {
                 for (int y = 0; y < sector.getHeight(); y++) {
@@ -126,8 +126,8 @@ public class MapPanelPainter {
 
     public void drawForegroundSprites(Graphics2D g) {
         if (mapPanel.sector() != null) {
-            PK2MapSector sector = mapPanel.sector();
-            PK2Map map = mapPanel.map();
+            PK2LevelSector sector = mapPanel.sector();
+            PK2Level map = mapPanel.map();
 
             for (int x = 0; x < sector.getWidth(); x++) {
                 for (int y = 0; y < sector.getHeight(); y++) {
@@ -146,8 +146,8 @@ public class MapPanelPainter {
     }
 
     public void drawRegularSprites(Graphics2D g) {
-        PK2MapSector sector = mapPanel.sector();
-        PK2Map map = mapPanel.map();
+        PK2LevelSector sector = mapPanel.sector();
+        PK2Level map = mapPanel.map();
 
         if (sector != null) {
             for (int x = 0; x < sector.getWidth(); x++) {
@@ -199,7 +199,7 @@ public class MapPanelPainter {
     }
 
     public void drawSpriteHighlights(Graphics2D g) {
-        PK2MapSector sector = mapPanel.sector();
+        PK2LevelSector sector = mapPanel.sector();
 
         for (int x = 0; x < sector.getWidth(); x++) {
             for (int y = 0; y < sector.getHeight(); y++) {

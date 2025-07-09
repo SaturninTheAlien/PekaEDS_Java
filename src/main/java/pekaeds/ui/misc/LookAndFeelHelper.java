@@ -12,7 +12,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
-import pekaeds.settings.Settings;
+import pk2.settings.Settings;
 
 public class LookAndFeelHelper {
 

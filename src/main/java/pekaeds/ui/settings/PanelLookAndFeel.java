@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.settings.Settings;
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.misc.LookAndFeelHelper;
+import pk2.settings.Settings;
 
 public class PanelLookAndFeel extends JPanel implements ISettingsPanel {
 

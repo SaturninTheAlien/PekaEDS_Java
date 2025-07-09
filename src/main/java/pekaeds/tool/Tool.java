@@ -4,15 +4,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import pekaeds.data.Layer;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.pk2.sprite.SpritePrototype;
 import pekaeds.tool.undomanager.ToolUndoManager;
 import pekaeds.tool.undomanager.UndoAction;
 import pekaeds.ui.listeners.SpritePlacementListener;
 import pekaeds.ui.listeners.TileChangeListener;
 import pekaeds.ui.mappanel.MapPanelPainter;
-import pekaeds.util.TileUtils;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelSector;
+import pk2.sprite.SpritePrototype;
+import pk2.util.TileUtils;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -38,8 +38,8 @@ public abstract class Tool {
     public static final int MODE_TILE = 0;
     public static final int MODE_SPRITE = 1;
     
-    protected static PK2MapSector selectedSector;
-    protected static PK2Map level;
+    protected static PK2LevelSector selectedSector;
+    protected static PK2Level level;
 
     private MapPanelPainter mapPainter;
     
@@ -133,12 +133,12 @@ public abstract class Tool {
         return mapPainter;
     }
 
-    public static void setLevel(PK2Map m){
+    public static void setLevel(PK2Level m){
         level = m;
         layerHandler.setLevel(m);
     }
 
-    public static void setSector(PK2MapSector m) {
+    public static void setSector(PK2LevelSector m) {
         selectedSector = m;
 
         layerHandler.setSector(selectedSector);

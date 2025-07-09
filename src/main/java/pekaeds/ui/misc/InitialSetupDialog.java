@@ -2,8 +2,8 @@ package pekaeds.ui.misc;
 
 import net.miginfocom.swing.MigLayout;
 import pekaeds.data.PekaEDSVersion;
-import pekaeds.settings.Settings;
-import pekaeds.util.file.FHSUtils;
+import pk2.filesystem.FHSHelper;
+import pk2.settings.Settings;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -61,7 +61,7 @@ public class InitialSetupDialog extends JDialog {
             SwingUtilities.updateComponentTreeUI(InitialSetupDialog.this);
         });
 
-        String author = FHSUtils.getSystemUserName();
+        String author = FHSHelper.getSystemUserName();
         if(author==null || author.isEmpty()){
             author = "Unknown";
         }
@@ -70,7 +70,7 @@ public class InitialSetupDialog extends JDialog {
         cbUseAutosaves.setSelected(true);
 
 
-        File installed_pk2 = FHSUtils.findPK2();
+        File installed_pk2 = FHSHelper.findPK2();
         if(installed_pk2!=null){
             this.tfPath.setText(installed_pk2.getAbsolutePath());
         }
@@ -99,7 +99,7 @@ public class InitialSetupDialog extends JDialog {
                     Settings.setAutosaveFileCount(0);
                 }
 
-                Settings.save(FHSUtils.getSettingsFile());
+                Settings.save(FHSHelper.getSettingsFile());
 
                 setupDone = true;
                 setVisible(false);

@@ -3,12 +3,12 @@ package pekaeds.ui.main;
 import javax.swing.*;
 
 import pekaeds.data.Layer;
-import pekaeds.settings.Settings;
 import pekaeds.tool.Tool;
 import pekaeds.tool.ToolModeListener;
 import pekaeds.ui.actions.NewLevelAction;
 import pekaeds.ui.actions.OpenLevelAction;
 import pekaeds.ui.actions.PlayLevelAction;
+import pk2.settings.Settings;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;

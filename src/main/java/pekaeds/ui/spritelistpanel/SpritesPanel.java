@@ -4,11 +4,6 @@ package pekaeds.ui.spritelistpanel;
 import org.tinylog.Logger;
 import net.miginfocom.swing.MigLayout;
 import pekaeds.filechooser.SpriteFileChooser;
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.pk2.sprite.SpritePrototype;
-import pekaeds.pk2.sprite.io.SpriteIO;
 import pekaeds.tool.Tool;
 import pekaeds.tool.Tools;
 import pekaeds.tool.tools.BrushTool;
@@ -16,6 +11,11 @@ import pekaeds.ui.listeners.PK2MapConsumer;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.SpritePlacementListener;
 import pekaeds.ui.main.PekaEDSGUI;
+import pk2.filesystem.PK2FileSystem;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelSector;
+import pk2.sprite.SpritePrototype;
+import pk2.sprite.io.SpriteIO;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -44,7 +44,7 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
     private JList<SpritePrototype> spriteList;
     private DefaultListModel<SpritePrototype> listModel = new DefaultListModel<>();
 
-    private PK2Map currentMap;
+    private PK2Level currentMap;
     private SpriteListCellRenderer spriteCellRenderer;
 
     public SpritesPanel(PekaEDSGUI ui) {
@@ -185,7 +185,7 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
     }
 
     @Override
-    public void setMap(PK2Map map) {
+    public void setMap(PK2Level map) {
         this.currentMap = map;
 
         listModel.clear();
@@ -207,7 +207,7 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
     }
 
     @Override
-    public void setSector(PK2MapSector sector) {
+    public void setSector(PK2LevelSector sector) {
         SpriteListCellRenderer.setSector(sector);
     }
 }

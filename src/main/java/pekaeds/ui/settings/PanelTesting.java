@@ -1,7 +1,7 @@
 package pekaeds.ui.settings;
 
-import pekaeds.settings.LevelTestingSettings;
-import pekaeds.settings.Settings;
+import pk2.settings.LevelTestingSettings;
+import pk2.settings.Settings;
 
 import javax.swing.*;
 

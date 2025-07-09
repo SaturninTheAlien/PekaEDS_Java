@@ -9,8 +9,8 @@ import java.io.IOException;
 
 import org.tinylog.Logger;
 
-import pekaeds.pk2.file.PK2FileSystem;
 import pekaeds.util.episodemanager.EpisodeManager;
+import pk2.filesystem.PK2FileSystem;
 
 public class MapPositionDialog extends JDialog {
     private BufferedImage backgroundImage = null;

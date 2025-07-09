@@ -1,10 +1,10 @@
 package pekaeds.ui.spritelistpanel;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.pk2.sprite.SpritePrototype;
-import pekaeds.settings.Settings;
 import pekaeds.ui.misc.ImagePanel;
+import pk2.level.PK2LevelSector;
+import pk2.settings.Settings;
+import pk2.sprite.SpritePrototype;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,13 +21,13 @@ public class SpriteListCellRenderer extends JPanel implements ListCellRenderer<S
     private JLabel lblPlacedText;
     private JLabel lblPlacedAmount;
 
-    private static PK2MapSector sector;
+    private static PK2LevelSector sector;
     
     public SpriteListCellRenderer() {
         setup();
     }
 
-    public static void setSector(PK2MapSector newSector) {
+    public static void setSector(PK2LevelSector newSector) {
         sector = newSector;
     }
     

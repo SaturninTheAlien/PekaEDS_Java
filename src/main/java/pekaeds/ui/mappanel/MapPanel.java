@@ -2,12 +2,12 @@ package pekaeds.ui.mappanel;
 
 import javax.swing.*;
 
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.settings.Settings;
 import pekaeds.tool.Tool;
 import pekaeds.ui.listeners.*;
 import pekaeds.ui.minimappanel.MiniMapPanel;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelSector;
+import pk2.settings.Settings;
 
 import java.awt.*;
 
@@ -35,8 +35,8 @@ public class MapPanel extends JComponent implements
     private int bgRepeatX = 0;
     private int bgRepeatY = 0;
 
-    private PK2Map currentMap;
-    private PK2MapSector currentSector;
+    private PK2Level currentMap;
+    private PK2LevelSector currentSector;
 
     private int selectedLayer = 0;
 
@@ -167,7 +167,7 @@ public class MapPanel extends JComponent implements
     }
 
     @Override
-    public void setSector(PK2MapSector sector) {
+    public void setSector(PK2LevelSector sector) {
         currentSector = sector;
 
         setBounds(0, 0, (sector.getWidth() * 32) + 32, (sector.getHeight() * 32) + 32);
@@ -214,7 +214,7 @@ public class MapPanel extends JComponent implements
     }
 
     @Override
-    public void setMap(PK2Map map) {
+    public void setMap(PK2Level map) {
         currentMap = map;
     }
 
@@ -260,11 +260,11 @@ public class MapPanel extends JComponent implements
         return view.getViewport().getViewRect();
     }
 
-    public PK2MapSector sector() {
+    public PK2LevelSector sector() {
         return currentSector;
     }
 
-    final PK2Map map() {
+    final PK2Level map() {
         return currentMap;
     }
 

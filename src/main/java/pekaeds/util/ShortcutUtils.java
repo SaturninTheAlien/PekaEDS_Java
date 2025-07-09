@@ -2,7 +2,7 @@ package pekaeds.util;
 
 import javax.swing.*;
 
-import pekaeds.settings.Settings;
+import pk2.settings.Settings;
 
 /**
  * Helper class to install custom keyboard shortcuts.

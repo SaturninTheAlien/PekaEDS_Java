@@ -2,7 +2,7 @@ package pekaeds.util;
 
 import java.util.List;
 
-import pekaeds.pk2.sprite.SpritePrototype;
+import pk2.sprite.SpritePrototype;
 
 public final class SpriteUtils {
     private SpriteUtils() {}

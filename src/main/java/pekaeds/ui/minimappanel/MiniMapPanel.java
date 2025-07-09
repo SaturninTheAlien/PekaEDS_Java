@@ -2,12 +2,12 @@ package pekaeds.ui.minimappanel;
 
 import javax.swing.*;
 
-import pekaeds.pk2.map.PK2MapSector;
 import pekaeds.tool.Tool;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.TileChangeListener;
 import pekaeds.ui.mappanel.MapPanel;
 import pekaeds.ui.misc.LookAndFeelHelper;
+import pk2.level.PK2LevelSector;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -22,7 +22,7 @@ public class MiniMapPanel extends JPanel implements
 
     private MapPanel mapPanel = null;
 
-    private PK2MapSector currentSector;
+    private PK2LevelSector currentSector;
 
     private final Rectangle viewport = new Rectangle();
 
@@ -36,7 +36,7 @@ public class MiniMapPanel extends JPanel implements
     }
     
     @Override
-    public void setSector(PK2MapSector newSector) {
+    public void setSector(PK2LevelSector newSector) {
         currentSector = newSector;
 
         // Adding 1 to width and height so that the viewport rectangle still gets fully drawn, even if it is at the sectors maximum width/height

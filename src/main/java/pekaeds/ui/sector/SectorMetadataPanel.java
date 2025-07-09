@@ -13,17 +13,17 @@ import java.awt.event.ActionListener;
 
 import net.miginfocom.swing.MigLayout;
 import pekaeds.filechooser.ImagePreviewFileChooser;
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.settings.Settings;
 import pekaeds.ui.filefilters.BMPImageFilter;
 import pekaeds.ui.filefilters.MusicFilter;
 import pekaeds.ui.listeners.PK2MapConsumer;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.TextFieldChangeListener;
 import pekaeds.ui.main.PekaEDSGUI;
-import pekaeds.util.GFXUtils;
+import pk2.filesystem.PK2FileSystem;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelSector;
+import pk2.settings.Settings;
+import pk2.util.GFXUtils;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -46,8 +46,8 @@ public class SectorMetadataPanel extends JPanel
     private PekaEDSGUI gui;
     private boolean canFireChanges = false;
 
-    private PK2MapSector sector;
-    private PK2Map map;
+    private PK2LevelSector sector;
+    private PK2Level map;
 
     private JTextField tfSectorName;
     private JTextField tfTileset;
@@ -170,10 +170,10 @@ public class SectorMetadataPanel extends JPanel
 
         btnRemoveBgTileset = new JButton("No different BG tileset");
 
-        widthSpinnerModel = new SpinnerNumberModel(PK2MapSector.CLASSIC_WIDTH, 25, 100000, 1);
+        widthSpinnerModel = new SpinnerNumberModel(PK2LevelSector.CLASSIC_WIDTH, 25, 100000, 1);
         spWidth = new JSpinner(widthSpinnerModel);
 
-        heightSpinnerModel = new SpinnerNumberModel(PK2MapSector.CLASSIC_HEIGHT, 15, 100000, 1);
+        heightSpinnerModel = new SpinnerNumberModel(PK2LevelSector.CLASSIC_HEIGHT, 15, 100000, 1);
         spHeight = new JSpinner(heightSpinnerModel);
 
         // Lay out components
@@ -248,8 +248,8 @@ public class SectorMetadataPanel extends JPanel
             JButton btnMinimalSize = new JButton("Minimal size");
 
             btnClassicSize.addActionListener(e->{
-                spWidth.setValue(PK2MapSector.CLASSIC_WIDTH);
-                spHeight.setValue(PK2MapSector.CLASSIC_HEIGHT);
+                spWidth.setValue(PK2LevelSector.CLASSIC_WIDTH);
+                spHeight.setValue(PK2LevelSector.CLASSIC_HEIGHT);
             });
 
 
@@ -430,7 +430,7 @@ public class SectorMetadataPanel extends JPanel
     }
 
     @Override
-    public void setSector(PK2MapSector newSector) {
+    public void setSector(PK2LevelSector newSector) {
         sector = newSector;
         canFireChanges = false;
 
@@ -460,7 +460,7 @@ public class SectorMetadataPanel extends JPanel
         canFireChanges = true;
     }
 
-    public void setSectorData(PK2MapSector sector) {
+    public void setSectorData(PK2LevelSector sector) {
         sector.name = tfSectorName.getText();
 
         sector.tilesetName = tfTileset.getText();
@@ -554,7 +554,7 @@ public class SectorMetadataPanel extends JPanel
     }
 
     @Override
-    public void setMap(PK2Map newMap) {
+    public void setMap(PK2Level newMap) {
         map = newMap;
     }
 }

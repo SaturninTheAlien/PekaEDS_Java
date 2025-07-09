@@ -1,11 +1,6 @@
 package pekaeds.filechooser;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.pk2.sprite.SpritePrototype;
-import pekaeds.pk2.sprite.io.SpriteIO;
-import pekaeds.pk2.sprite.io.SpriteMissing;
-import pekaeds.settings.Settings;
 import pekaeds.ui.misc.ImagePanel;
 
 import javax.imageio.ImageIO;
@@ -13,7 +8,13 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import org.tinylog.Logger;
-import pekaeds.util.GFXUtils;
+
+import pk2.filesystem.PK2FileSystem;
+import pk2.settings.Settings;
+import pk2.sprite.SpritePrototype;
+import pk2.sprite.io.SpriteIO;
+import pk2.sprite.io.SpriteMissing;
+import pk2.util.GFXUtils;
 
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;

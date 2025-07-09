@@ -1,8 +1,8 @@
 package pekaeds.ui.misc;
 
-import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.pk2.sprite.SpritePrototype;
-import pekaeds.util.GFXUtils;
+import pk2.level.PK2LevelSector;
+import pk2.sprite.SpritePrototype;
+import pk2.util.GFXUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +32,7 @@ public class ImagePanel extends JComponent {
         repaint();
     }
 
-    public void setImage(SpritePrototype sprite, PK2MapSector sector, boolean centerImage, int maxWidth, int maxHeight) {
+    public void setImage(SpritePrototype sprite, PK2LevelSector sector, boolean centerImage, int maxWidth, int maxHeight) {
         BufferedImage spriteSheet = sector.getSpriteImage(sprite.getImageFileIdentifier());
 
         if (spriteSheet != null) {

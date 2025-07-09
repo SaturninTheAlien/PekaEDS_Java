@@ -10,12 +10,12 @@ import javax.swing.SwingUtilities;
 
 import org.tinylog.Logger;
 
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.settings.Settings;
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.misc.InitialSetupDialog;
 import pekaeds.ui.misc.LookAndFeelHelper;
-import pekaeds.util.file.FHSUtils;
+import pk2.filesystem.FHSHelper;
+import pk2.filesystem.PK2FileSystem;
+import pk2.settings.Settings;
 
 public class PekaEDS {
 
@@ -44,7 +44,7 @@ public class PekaEDS {
         }
         // Is it still necessary?
         //System.setProperty("sun.java2d.noddraw", "true");
-        FHSUtils.preparePaths();
+        FHSHelper.preparePaths();
         Locale.setDefault(Locale.ENGLISH);
 
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
@@ -56,7 +56,7 @@ public class PekaEDS {
 
     private static boolean loadSettings() {
         boolean success = false;
-        File settingsFile =  FHSUtils.getSettingsFile();
+        File settingsFile =  FHSHelper.getSettingsFile();
 
         if(settingsFile.exists()){
             try{

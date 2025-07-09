@@ -1,8 +1,8 @@
 package pekaeds.ui.sectorlistpanel;
 
-import pekaeds.pk2.map.PK2LevelUtils;
-import pekaeds.pk2.map.PK2MapSector;
 import pekaeds.ui.sector.SectorMetadataPanel;
+import pk2.level.PK2LevelSector;
+import pk2.level.PK2LevelUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ import java.awt.event.WindowEvent;
 public class NewSectorDialog extends JDialog {
     private SectorMetadataPanel sectorMetadata;
 
-    private PK2MapSector sector = null;
+    private PK2LevelSector sector = null;
 
     public NewSectorDialog() {
         setup();
@@ -49,7 +49,7 @@ public class NewSectorDialog extends JDialog {
         setLocationRelativeTo(null);
     }
 
-    public PK2MapSector showDialog() {
+    public PK2LevelSector showDialog() {
         sector = PK2LevelUtils.createDefaultSector();
         sector.name = "New Sector";
         sectorMetadata.setSector(sector);

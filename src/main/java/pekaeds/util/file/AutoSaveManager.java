@@ -2,8 +2,8 @@ package pekaeds.util.file;
 
 import org.tinylog.Logger;
 
-import pekaeds.settings.Settings;
 import pekaeds.ui.main.PekaEDSGUI;
+import pk2.settings.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -2,10 +2,10 @@ package pekaeds.ui.actions;
 
 import javax.swing.*;
 
-import pekaeds.pk2.file.PK2FileSystem;
 import pekaeds.ui.filefilters.FileFilters;
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.misc.UnsavedChangesDialog;
+import pk2.filesystem.PK2FileSystem;
 
 import java.awt.event.ActionEvent;
 

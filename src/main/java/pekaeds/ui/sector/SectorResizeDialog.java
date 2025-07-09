@@ -1,10 +1,10 @@
 package pekaeds.ui.sector;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.pk2.map.PK2MapSector;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.RectangleChangeListener;
 import pekaeds.ui.main.PekaEDSGUI;
+import pk2.level.PK2LevelSector;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -34,8 +34,8 @@ public class SectorResizeDialog extends JDialog
 
         spStartX = new JSpinner(new SpinnerNumberModel(0, -100000, 10000, 1));
         spStartY = new JSpinner(new SpinnerNumberModel(0, -100000, 10000, 1));
-        spWidth = new JSpinner(new SpinnerNumberModel(PK2MapSector.CLASSIC_WIDTH, 25, 10000, 1));
-        spHeight = new JSpinner(new SpinnerNumberModel(PK2MapSector.CLASSIC_HEIGHT, 15, 10000, 1));
+        spWidth = new JSpinner(new SpinnerNumberModel(PK2LevelSector.CLASSIC_WIDTH, 25, 10000, 1));
+        spHeight = new JSpinner(new SpinnerNumberModel(PK2LevelSector.CLASSIC_HEIGHT, 15, 10000, 1));
 
         btnApply = new JButton("Apply");
 
@@ -80,7 +80,7 @@ public class SectorResizeDialog extends JDialog
         setTitle("Resizing sector...");
     }
 
-    public void setSector(PK2MapSector sector) {
+    public void setSector(PK2LevelSector sector) {
         spStartX.setValue(0);
         spStartY.setValue(0);
         spWidth.setValue(sector.getWidth());

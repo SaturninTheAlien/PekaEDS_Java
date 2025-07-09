@@ -7,7 +7,6 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.io.*;
 
-import java.util.List;
 
 import java.time.LocalTime;
 
@@ -15,14 +14,6 @@ import org.tinylog.Logger;
 
 import pekaeds.data.Layer;
 import pekaeds.data.PekaEDSVersion;
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.pk2.map.PK2LevelIO;
-import pekaeds.pk2.map.PK2MapSector;
-import pekaeds.pk2.map.PK2LevelUtils;
-import pekaeds.settings.Settings;
-import pekaeds.settings.Shortcuts;
-import pekaeds.settings.StartupBehavior;
 import pekaeds.tool.*;
 import pekaeds.tool.tools.*;
 import pekaeds.ui.actions.*;
@@ -41,8 +32,16 @@ import pekaeds.ui.toolpropertiespanel.ToolPropertiesPanel;
 import pekaeds.util.*;
 import pekaeds.util.episodemanager.EpisodeManager;
 import pekaeds.util.file.AutoSaveManager;
-import pekaeds.util.file.FHSUtils;
 import pekaeds.util.file.Session;
+import pk2.filesystem.FHSHelper;
+import pk2.filesystem.PK2FileSystem;
+import pk2.level.PK2Level;
+import pk2.level.PK2LevelIO;
+import pk2.level.PK2LevelSector;
+import pk2.level.PK2LevelUtils;
+import pk2.settings.Settings;
+import pk2.settings.Shortcuts;
+import pk2.settings.StartupBehavior;
 
 public class PekaEDSGUI implements ChangeListener {
     //private ChangeEvent changeEvent = new ChangeEvent(this);
@@ -120,7 +119,7 @@ public class PekaEDSGUI implements ChangeListener {
     }
 
     private void handleStartup() {
-        var fLastSession = FHSUtils.getLastSessionFile();
+        var fLastSession = FHSHelper.getLastSessionFile();
         if (fLastSession.exists()) {
             try {
                 Logger.info("Trying to load last.session...");
@@ -271,7 +270,7 @@ public class PekaEDSGUI implements ChangeListener {
     /*
      * Map related methods
      */
-    public void loadMap(PK2Map map, File mapFile) {
+    public void loadMap(PK2Level map, File mapFile) {
         model.setCurrentMapFile(mapFile);
 
         if (mapFile != null) {
@@ -299,7 +298,7 @@ public class PekaEDSGUI implements ChangeListener {
 
     public void loadMap(File file) {
         try {
-            PK2Map level = PK2LevelIO.loadLevel(file);
+            PK2Level level = PK2LevelIO.loadLevel(file);
             loadMap(level, file);
 
             unsavedChanges = false;
@@ -368,11 +367,11 @@ public class PekaEDSGUI implements ChangeListener {
 
     public void newMap() {
 
-        PK2MapSector.clearBaseSpriteSheets();
+        PK2LevelSector.clearBaseSpriteSheets();
         Tool.reset();
         setSelectedTool(Tools.getTool(BrushTool.class));
 
-        PK2Map level = PK2LevelUtils.createDefaultLevel();
+        PK2Level level = PK2LevelUtils.createDefaultLevel();
         loadMap(level, null);
 
         model.setCurrentMapFile(null);
@@ -494,7 +493,7 @@ public class PekaEDSGUI implements ChangeListener {
         }
     }
 
-    private void updateSectorHolders(PK2MapSector sector) {
+    private void updateSectorHolders(PK2LevelSector sector) {
         Tool.setSector(sector);
         for (var m : model.getSectorConsumers()) {
             m.setSector(sector);
@@ -513,7 +512,7 @@ public class PekaEDSGUI implements ChangeListener {
      * This method gets called when the whole application shuts down.
      */
     public void close() {
-        session.save(FHSUtils.getLastSessionFile());
+        session.save(FHSHelper.getLastSessionFile());
 
         System.exit(0);
     }

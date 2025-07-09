@@ -3,10 +3,10 @@ package pekaeds.ui.mapmetadatapanel;
 import net.miginfocom.swing.MigLayout;
 import pekaeds.ui.listeners.TextFieldChangeListener;
 import pekaeds.ui.mapposition.MapPositionDialog;
-import pekaeds.util.GFXUtils;
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.pk2.map.PK2Map;
-import pekaeds.settings.Settings;
+import pk2.filesystem.PK2FileSystem;
+import pk2.level.PK2Level;
+import pk2.settings.Settings;
+import pk2.util.GFXUtils;
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.listeners.PK2MapConsumer;
 
@@ -49,7 +49,7 @@ public class MapMetadataPanel extends JPanel implements PK2MapConsumer, ActionLi
     
     private MapPositionDialog mapPositionDialog;
     
-    private PK2Map level = null;
+    private PK2Level level = null;
     
     public MapMetadataPanel(PekaEDSGUI ui) {
         loadIcons();
@@ -165,7 +165,7 @@ public class MapMetadataPanel extends JPanel implements PK2MapConsumer, ActionLi
     }
 
     @Override
-    public void setMap(PK2Map m) {
+    public void setMap(PK2Level m) {
         this.level = m;
         
         this.canFireChanges = false;

@@ -1,6 +1,6 @@
 package pekaeds.ui.listeners;
 
-import pekaeds.pk2.map.PK2Map;
+import pk2.level.PK2Level;
 
 /**
  * Classes should implement this interface if they need to keep a reference to the currently loaded map file.
@@ -10,5 +10,5 @@ import pekaeds.pk2.map.PK2Map;
  * Updating the reference to the current map should only be done through PekaEDSGUI, because it keeps a record of every registered PK2MapConsumer and updates them any time the reference changes.
  */
 public interface PK2MapConsumer {
-    void setMap(PK2Map map);
+    void setMap(PK2Level map);
 }

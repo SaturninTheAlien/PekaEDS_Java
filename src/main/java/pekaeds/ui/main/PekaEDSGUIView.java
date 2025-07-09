@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
 import pekaeds.data.PekaEDSVersion;
-import pekaeds.pk2.file.PK2FileSystem;
 import pekaeds.ui.actions.NewLevelAction;
 import pekaeds.ui.actions.OpenFolderAction;
 import pekaeds.ui.actions.OpenLevelAction;
@@ -14,6 +13,7 @@ import pekaeds.ui.listeners.MainUIWindowListener;
 import pekaeds.ui.mappanel.MapPanelView;
 import pekaeds.ui.settings.SettingsDialog;
 import pekaeds.ui.toolpropertiespanel.ToolPropertiesPanel;
+import pk2.filesystem.PK2FileSystem;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

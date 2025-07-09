@@ -2,7 +2,7 @@ package pekaeds.ui.filefilters;
 
 import javax.swing.filechooser.FileFilter;
 
-import pekaeds.settings.Settings;
+import pk2.settings.Settings;
 
 import java.io.File;
 

@@ -1,10 +1,10 @@
 package pekaeds.ui.settings;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.pk2.file.PK2FileSystem;
-import pekaeds.settings.Settings;
-import pekaeds.settings.StartupBehavior;
 import pekaeds.ui.main.PekaEDSGUI;
+import pk2.filesystem.PK2FileSystem;
+import pk2.settings.Settings;
+import pk2.settings.StartupBehavior;
 
 import java.io.FileNotFoundException;
 
