@@ -1,89 +1,56 @@
 package pk2.profile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SpriteProfile {
-    protected static class AiTablePair {
-        private int id;
-        private String description;
+public final class SpriteProfile {
+    private final Map<Integer, String> aiPatternMap = new HashMap<>();
+    private final Map<Integer, String> damageMap = new HashMap<>();
+    private final Map<Integer, String> typeMap = new HashMap<>();
+    private final Map<Integer, String> destructionEffects = new HashMap<>();
     
-        public int getId() {
-            return id;
-        }
+    private final Map<Integer, String> colorMap = new HashMap<>();
     
-        public void setId(int id) {
-            this.id = id;
-        }
+    private final Map<Integer, String> destructionType = new HashMap<>();
     
-        public String getDescription() {
-            return description;
-        }
+    private final Map<Integer, String> immunityMap = new HashMap<>();
     
-        public void setDescription(String description) {
-            this.description = description;
-        }
+    private int animationsAmount = 10;
+    
+    private String engine;
+    
+    public SpriteProfile() {
     }
     
-    private int stringLengthName = 32;
-    private int stringLengthFiles = 100;
-    private int amountOfSounds = 7;
-    private int amountOfAnimations = 20;
-    private int amountOfAI = 10;
-    
-    private List<String> types = List.of("Character", "Bonus Item", "Ammo", "Teleport", "Background", "Foreground");
-    
-    private List<AiTablePair> aiTable = new ArrayList<>();
-    
-    public List<String> getTypes() {
-        return types;
+    public Map<Integer, String> getAiPatternMap() {
+        return aiPatternMap;
     }
     
-    public int getStringLengthName() {
-        return stringLengthName;
+    public Map<Integer, String> getDamageMap() {
+        return damageMap;
     }
     
-    public void setStringLengthName(int stringLengthName) {
-        this.stringLengthName = stringLengthName;
+    public Map<Integer, String> getTypeMap() {
+        return typeMap;
     }
     
-    public int getStringLengthFiles() {
-        return stringLengthFiles;
+    public Map<Integer, String> getDestructionEffects() {
+        return destructionEffects;
     }
     
-    public void setStringLengthFiles(int stringLengthFiles) {
-        this.stringLengthFiles = stringLengthFiles;
+    public Map<Integer, String> getColorMap() {
+        return colorMap;
     }
     
-    public int getAmountOfSounds() {
-        return amountOfSounds;
+    public Map<Integer, String> getDestructionType() {
+        return destructionType;
     }
     
-    public void setAmountOfSounds(int amountOfSounds) {
-        this.amountOfSounds = amountOfSounds;
+    public Map<Integer, String> getImmunityMap() {
+        return immunityMap;
     }
     
-    public int getAmountOfAnimations() {
-        return amountOfAnimations;
-    }
+    public int getAnimationsAmount() { return animationsAmount; }
     
-    public void setAmountOfAnimations(int amountOfAnimations) {
-        this.amountOfAnimations = amountOfAnimations;
-    }
-    
-    public int getAmountOfAI() {
-        return amountOfAI;
-    }
-    
-    public void setAmountOfAI(int amountOfAI) {
-        this.amountOfAI = amountOfAI;
-    }
-    
-    public List<AiTablePair> getAiTable() {
-        return aiTable;
-    }
-    
-    public void setAiTable(List<AiTablePair> aiTable) {
-        this.aiTable = aiTable;
-    }
+    public String getEngine() { return engine; }
 }

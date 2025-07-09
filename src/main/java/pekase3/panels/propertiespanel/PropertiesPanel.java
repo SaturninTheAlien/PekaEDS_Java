@@ -3,20 +3,21 @@ package pekase3.panels.propertiespanel;
 import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
-import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
+import pk2.filesystem.PK2FileSystem;
+import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
+import pk2.sprite.io.SpriteIO;
+import pk2.sprite.io.UnsupportedSpriteFormatException;
 import pk2.ui.SpriteFileChooser;
-import pekase3.sprite.io.PK2SpriteReader13;
-import pekase3.sprite.io.PK2SpriteReaderGreta;
 import pk2.util.GFXUtils;
-import pekase3.util.UnknownSpriteFormatException;
 
 import org.tinylog.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -352,37 +353,38 @@ public final class PropertiesPanel extends PekaSE2Panel {
     }
     
     private void updateBonusSpritePreview(String file) {
+
+        PK2Sprite bonusSprite = null;
         try {
 
-            PK2Sprite bonusSprite;
+            bonusSprite = SpriteIO.loadSpriteFile(PK2FileSystem.findSprite(file));           
+            bonusSpritePreview.setProperty("Score", bonusSprite.getScore());            
+        }
+        catch(FileNotFoundException e){
+            JOptionPane.showMessageDialog(this,"Bonus sprite \""+ file + "\" not found!" , "Sprite not found!", ERROR);
+        }
 
-            if(file.endsWith(".spr")){
+        catch(IOException e){
+            JOptionPane.showMessageDialog(this,"Unable to load \""+ file + "\"!" , "Sprite loading error!", ERROR);
+            Logger.error(e);
+        }
 
-                try{
-                    bonusSprite = new PK2SpriteReader13().load(new File(settings.getSpritesPath() + File.separatorChar + file));
-                }
-
-                catch (IOException | UnknownSpriteFormatException e){
-                    /**
-                     * fallback to ".spr2"
-                     */
-                    file += "2";
-                    bonusSprite = new PK2SpriteReaderGreta().load(new File(settings.getSpritesPath() + File.separatorChar + file));
-                }
-            }
-            else{
-                bonusSprite = new PK2SpriteReaderGreta().load(new File(settings.getSpritesPath() + File.separatorChar + file));
-            }
-            
-            bonusSpritePreview.setProperty("Score", bonusSprite.getScore());
-            
-            var img = ImageIO.read(new File(settings.getSpritesPath() + File.separatorChar + bonusSprite.getImageFile()));
-            var bonusImg = GFXUtils.makeTransparent(img.getSubimage(bonusSprite.getFrameX(), bonusSprite.getFrameY(), bonusSprite.getFrameWidth(), bonusSprite.getFrameHeight()));
-            
-            bonusSpritePreview.setImage(bonusImg);
-        } catch (Exception e) {
+        catch (Exception e) {
             Logger.warn(e, "Unable to load bonus sprite file '" + file +"'!\n");
             e.printStackTrace();
+        }
+
+
+        if(bonusSprite!=null){
+            try{
+                GFXUtils.loadFirstFrame(bonusSprite);
+                bonusSpritePreview.setImage(bonusSprite.getImage());
+
+            }
+            catch(IOException e){
+                JOptionPane.showMessageDialog(this,"Unable to load \""+ bonusSprite.getImageFile() + "\"!" , "Unable to load sprite image!", ERROR);
+                Logger.error(e);
+            }
         }
     }
     

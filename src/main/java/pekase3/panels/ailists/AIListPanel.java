@@ -4,8 +4,8 @@ import net.miginfocom.swing.MigLayout;
 import pekase3.FileFormat;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
-import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
+import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 
 import javax.swing.*;
@@ -76,21 +76,27 @@ public class AIListPanel extends PekaSE2Panel {
         pnlAddAI.add(btnRemove);
         add(pnlAddAI);
         
-        pnlAddAI.setVisible(false);
+        pnlAddAI.setVisible(true);
 
-        for (int i = 0; i < 10; i++) {
-            addComboBox(i);
-        }
-    }
-
-    public void setFileFormat(FileFormat format) {
-        pnlAddAI.setVisible(format == FileFormat.GRETA);
     }
     
     public void setSprite(PK2Sprite sprite) {
+
+        for(int i=0;i<aiPanelList.size();++i){
+            remove(aiPanelList.get(i));
+        }
+
+        cbAiList.clear();
+        spAiList.clear();
+        aiPanelList.clear();
+
         for (int i = 0; i < sprite.getAiList().size(); i++) {
+            addComboBox(i);
             cbAiList.get(i).setSelectedItem(settings.getSpriteProfile().getAiPatternMap().get(sprite.getAiList().get(i)));
             spAiList.get(i).setValue(sprite.getAiList().get(i));
+
+            cbAiList.get(i).addActionListener(this.unsavedChangesListener);
+            spAiList.get(i).addChangeListener(this.unsavedChangesListener);
         }
     }
     
@@ -108,8 +114,7 @@ public class AIListPanel extends PekaSE2Panel {
     @Override
     public void setValues(PK2Sprite sprite) {
         sprite.getAiList().clear();
-        
-        for (int i = 0; i < 10; i++) {
+        for(int i = 0; i<sprite.getAiList().size(); ++i){
             sprite.getAiList().add((int) spAiList.get(i).getValue());
         }
     }
@@ -136,7 +141,7 @@ public class AIListPanel extends PekaSE2Panel {
     public void setUnsavedChangesListener(UnsavedChangesListener listener) {
         this.unsavedChangesListener = listener;
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < cbAiList.size(); i++) {
             cbAiList.get(i).addActionListener(listener);
             spAiList.get(i).addChangeListener(listener);
         }

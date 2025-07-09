@@ -7,8 +7,8 @@ import pekase3.panels.PekaSE2Panel;
 import pekase3.panels.imagepanel.spritesheetpanel.SpriteSheetPanel;
 import pekase3.panels.imagepanel.spritesheetpanel.FrameEditMode.*;
 import pekase3.panels.spriteeditpane.SpriteEditPaneModel;
-import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
+import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 import pk2.util.GFXUtils;
 
@@ -259,7 +259,7 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
                 
                 if (loadedSprite.getColor() != color) {
                     if (color != 255) {
-                        GFXUtils.adjustSpriteColor(loadedSprite.getImage(), color, loadedSprite.getFrameX(), loadedSprite.getFrameY(), loadedSprite.getFrameWidth(), loadedSprite.getFrameHeight(), loadedSprite.getFramesAmount());
+                        GFXUtils.adjustSpriteColor(loadedSprite.getImage(), color);
                     } else {
                         // If the color is 255 (Original) the image needs to be reloaded, because it's not possible to reverse the color adjustment.
                         BufferedImage img = null;

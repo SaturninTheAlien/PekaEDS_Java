@@ -4,8 +4,8 @@ import net.miginfocom.swing.MigLayout;
 import pekase3.FileFormat;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
-import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
+import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 
 import org.tinylog.Logger;

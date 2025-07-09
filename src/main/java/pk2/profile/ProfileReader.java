@@ -22,7 +22,7 @@ public final class ProfileReader {
         return new LevelProfile();
     }
     
-    public static SpriteProfile readSpriteProfile(String filename) {
+    public static SpriteProfileOld readSpriteProfile(String filename) {
         /*var mapper = new YAMLMapper(new YAMLFactory());
         SpriteProfile spriteProfile = null;
     
@@ -32,6 +32,6 @@ public final class ProfileReader {
             logger.warning("Couldn't load sprite profile.\n" + e.getMessage()); // TODO Load defaults
         }*/
         
-        return new SpriteProfile();
+        return new SpriteProfileOld();
     }
 }

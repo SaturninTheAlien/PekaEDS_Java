@@ -13,8 +13,8 @@ import pekase3.panels.greta.GretaPropertiesPanel;
 import pekase3.panels.imagepanel.ImagePanel;
 import pekase3.panels.propertiespanel.PropertiesPanel;
 import pekase3.panels.soundspanel.SoundsPanel;
-import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
+import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 import pk2.util.GFXUtils;
 

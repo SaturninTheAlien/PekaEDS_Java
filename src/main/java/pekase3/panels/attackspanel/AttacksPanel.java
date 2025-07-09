@@ -3,21 +3,18 @@ package pekase3.panels.attackspanel;
 import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
-import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
+import pk2.filesystem.PK2FileSystem;
+import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
+import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
-import pekase3.sprite.io.PK2SpriteReader;
-import pekase3.sprite.io.PK2SpriteReader13;
-import pekase3.sprite.io.PK2SpriteReaderGreta;
 import pk2.util.GFXUtils;
-import pekase3.util.MessageBox;
-import pekase3.util.UnknownSpriteFormatException;
 
 import org.tinylog.Logger;
 
 import javax.swing.*;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class AttacksPanel extends PekaSE2Panel {
@@ -42,18 +39,9 @@ public class AttacksPanel extends PekaSE2Panel {
     private JComboBox<String> cbDamageType;
     
     private SpriteFileChooser fileChooser;
-    private final PK2SpriteReader13 legacyReader;
-    private final PK2SpriteReaderGreta gretaReader;
-    private PK2SpriteReader spriteReader;
     
     public AttacksPanel(Settings settings) {
-        this.settings = settings;
-        
-        legacyReader = new PK2SpriteReader13();
-        gretaReader = new PK2SpriteReaderGreta();
-        
-        spriteReader = legacyReader;
-        
+        this.settings = settings;        
         setup();
     }
     
@@ -167,33 +155,33 @@ public class AttacksPanel extends PekaSE2Panel {
     }
     
     private void setupAmmoSprite(JTextField tfPath, String ammoSprite, AmmoSpritePreview preview) {
-        var spr = loadAmmoSprite(ammoSprite, spriteReader);
-        
-        if (spr != null) {
-            tfPath.setText(ammoSprite);
-            
+
+        tfPath.setText(ammoSprite);
+
+        PK2Sprite spr = null;
+        try{
+            spr = SpriteIO.loadSpriteFile(PK2FileSystem.findSprite(ammoSprite));    
             preview.setSprite(spr);
         }
-    }
-    
-    private PK2Sprite loadAmmoSprite(String ammoFile, PK2SpriteReader sprReader) {
-        PK2Sprite sprite = null;
-        
-        try {
-            sprite = sprReader.load(new File(settings.getSpritesPath() + File.separatorChar + ammoFile));
-        } catch (IOException e) {
-            Logger.warn(e, "Unable to load ammo sprite '" + ammoFile + "'!");
-        } catch (UnknownSpriteFormatException e) {
-            Logger.warn(e);
-            
-            MessageBox.showUnknownSpriteError(ammoFile, e.getMessage(), "Ammo sprite not version 1.3!");
+        catch(FileNotFoundException e){
+            JOptionPane.showMessageDialog(this,"Ammo sprite \""+ ammoSprite + "\" not found!" , "Sprite not found!", ERROR);
         }
-        
-        if (sprite != null) {
-            GFXUtils.loadFirstFrame(sprite, settings.getSpritesPath());
+
+        catch(IOException e){
+            JOptionPane.showMessageDialog(this,"Unable to load \""+ ammoSprite + "\"!" , "Sprite loading error!", ERROR);
+            Logger.error(e);
         }
+
         
-        return sprite;
+        if(spr!=null){
+            try{
+                GFXUtils.loadFirstFrame(spr);
+            }
+            catch(IOException e){
+                JOptionPane.showMessageDialog(this,"Unable to load \""+ spr.getImageFile() + "\"!" , "Unable to load sprite image!", ERROR);
+                Logger.error(e);
+            }
+        }
     }
     
     @Override

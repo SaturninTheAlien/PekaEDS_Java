@@ -1,4 +1,4 @@
-package pekase3.sprite.io;
+package pk2.sprite.io;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class PK2SpriteWriterGreta extends PK2SpriteWriter {
+class SpriteWriterJson {
     public void save(PK2Sprite sprite, File file) throws IOException {
         JSONObject json = new JSONObject();
 

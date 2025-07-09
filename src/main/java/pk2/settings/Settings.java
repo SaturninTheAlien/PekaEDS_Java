@@ -14,7 +14,7 @@ import org.tinylog.Logger;
 
 import pekaeds.ui.misc.LookAndFeelHelper;
 import pk2.profile.LevelProfile;
-import pk2.profile.SpriteProfile;
+import pk2.profile.SpriteProfileOld;
 
 /**
  * TODO: This class shouldn't have anything static in it.
@@ -43,7 +43,7 @@ public class Settings {
     public static LevelTestingSettings levelTestingSettings = new LevelTestingSettings();
     
     private static LevelProfile mapProfile = LevelProfile.getDefaultProfile();
-    private static SpriteProfile spriteProfile = new SpriteProfile();
+    private static SpriteProfileOld spriteProfile = new SpriteProfileOld();
         
     public static boolean highlightSprites = true;
     private static boolean showTileNumberInTileset = true;
@@ -288,11 +288,11 @@ public class Settings {
         mapProfile = mProfile;
     }
     
-    public static SpriteProfile getSpriteProfile() {
+    public static SpriteProfileOld getSpriteProfile() {
         return spriteProfile;
     }
     
-    public static void setSpriteProfile(SpriteProfile sprProfile) {
+    public static void setSpriteProfile(SpriteProfileOld sprProfile) {
         spriteProfile = sprProfile;
     }
     

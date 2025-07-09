@@ -2,7 +2,7 @@ package pekase3.settings;
 
 import java.io.File;
 
-import pekase3.profile.SpriteProfile;
+import pk2.profile.SpriteProfile;
 
 @Deprecated
 public final class Settings {

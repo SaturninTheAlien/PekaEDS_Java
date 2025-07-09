@@ -4,19 +4,17 @@ import org.tinylog.Logger;
 
 import pekase3.dialogs.SettingsDialog;
 import pekase3.dialogs.UnsavedChangesDialog;
-import pekase3.filefilters.ImageFilter;
 import pekase3.panels.spriteeditpane.SpriteEditPane;
 import pekase3.profile.ProfileReader;
-import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
 import pekase3.settings.SettingsIO;
 import pk2.filesystem.PK2FileSystem;
+import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
+import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
-import pekase3.sprite.io.*;
 import pk2.util.GFXUtils;
 import pekase3.util.MessageBox;
-import pekase3.util.UnknownSpriteFormatException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -53,15 +51,6 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
     
     private SpriteEditPane editPane;
     
-    private PK2SpriteReader13 legacySpriteReader;
-    private PK2SpriteWriter13 legacySpriteWriter;
-    
-    private PK2SpriteReaderGreta gretaSpriteReader;
-    private PK2SpriteWriterGreta gretaSpriteWriter;
-    
-    private PK2SpriteReader spriteReader;
-    private PK2SpriteWriter spriteWriter;
-    
     private SettingsDialog settingsDialog;
     
     private List<File> profileFiles = new ArrayList<>();
@@ -71,16 +60,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
     //private SpriteProfile legacyProfile = null;
     private SpriteProfile gretaProfile = null;
     
-    public void setup() {
-
-
-
-        legacySpriteReader = new PK2SpriteReader13();
-        legacySpriteWriter = new PK2SpriteWriter13();
-        
-        gretaSpriteReader = new PK2SpriteReaderGreta();
-        gretaSpriteWriter = new PK2SpriteWriterGreta();
-        
+    public void setup() {        
         settingsDialog = new SettingsDialog();
         
         createMenuBar();
@@ -156,89 +136,32 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
         }
     }
     
-    private void newTab(File file) {
-        var spriteReader = new PK2SpriteReader13();
-        
-        PK2Sprite sprite = null;
-        try {
-            sprite = spriteReader.load(file, settings.getSpritesPath());
-            
-            var spriteEditPane = new SpriteEditPane(settings);
-            spriteEditPane.setSprite(sprite);
-            
-            tpSprite.add(spriteEditPane, file.getName());
-            
-            tpSprite.setSelectedIndex(tpSprite.getTabCount() - 1);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Unable to load sprite file '" + file.getName() + "'!\n" + e.getMessage(), "Unable to load file", JOptionPane.ERROR_MESSAGE);
-        } catch (UnknownSpriteFormatException e) {
-            MessageBox.showUnknownSpriteError(file.getName());
-        }
-    }
     
-    private void loadSprite(String filename) {       
-        setProfile(gretaProfile);
-        
-        if (filename.endsWith(".spr")) {
-
-            spriteReader = legacySpriteReader;
-            spriteWriter = legacySpriteWriter;
-            loadSpriteFile(filename);
-
-        } else if (filename.endsWith(".spr2")) {
-           
-            spriteReader = gretaSpriteReader;
-            spriteWriter = gretaSpriteWriter;
-            loadSpriteFile(filename);
-        }
-       
-    }
-    
-    private void loadSpriteFile(String filename) {
+    private void loadSprite(String filename) {
         PK2Sprite sprite = null;
         
         try {
             var file = new File(filename);
-            
-            sprite = spriteReader.load(file);
-            
-            if (!new File(settings.getSpritesPath() + File.separatorChar + sprite.getImageFile()).exists()) {
-                int result = JOptionPane.showConfirmDialog(this, "Unable to load sprite's image file '" + sprite.getImageFile() + "'.\nPlease choose a different image file.", "Unable to load image", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-                
-                if (result == JOptionPane.YES_OPTION) {
-                    var fc = new JFileChooser(settings.getSpritesPath());
-                    fc.setFileFilter(new ImageFilter());
-                    fc.setDialogTitle("Choose an image file...");
-                    
-                    if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                        sprite.setImageFile(fc.getSelectedFile().getName());
-                        
-                        GFXUtils.loadSpriteImageSheet(sprite, settings.getSpritesPath());
-                        
-                        editPane.setSprite(sprite);
-                        
-                        loadedFile = file;
-                        
-                        updateTitle(filename);
-                    }
-                }
-            } else {
-                GFXUtils.loadSpriteImageSheet(sprite, settings.getSpritesPath());
-                
+            sprite =  SpriteIO.loadSpriteFile(file);
+            PK2FileSystem.setEpisodeDir(file.getParentFile());
+
+            loadedFile = file;
+
+
+            try {
+                GFXUtils.loadSpriteImageSheet(sprite);
                 editPane.setSprite(sprite);
                 
-                loadedFile = file;
-                
-                updateTitle(filename);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Unable to load the sprite image.\n" + e.getMessage(), "Unable to load sprite!", JOptionPane.ERROR_MESSAGE);
             }
+
+            
+
         } catch (IOException e) {
             Logger.warn(e, "Unable to load sprite '" + filename + "'!\n");
             
-            JOptionPane.showMessageDialog(null, "Can't read sprite file.\n" + e.getMessage(), "Unable to load sprite!", JOptionPane.ERROR_MESSAGE);
-        } catch (UnknownSpriteFormatException e) {
-            Logger.warn(e, "Unable to load sprite '" + filename + "'\n");
-            
-            MessageBox.showUnknownSpriteError(filename, e.getMessage(), "File is not a recognized format!");
+            JOptionPane.showMessageDialog(null, "Unable to load the sprite file.\n" + e.getMessage(), "Unable to load sprite!", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -246,14 +169,8 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
         var sprite = editPane.setValues();
         
         try {
-            if(file.getName().endsWith(".spr")){
-                file = new File(file.getAbsolutePath()+"2");
-            }
-            else if(!file.getName().endsWith(".spr2")){
-                file = new File(file.getAbsolutePath()+".spr2");
-            }
-            
-            spriteWriter.save(sprite, file);
+            SpriteIO.saveSprite(sprite, file);
+
         } catch (IOException e) {
             Logger.warn(e, "Unable to save sprite '" + file.getAbsolutePath() + "'!\n");
             
@@ -324,12 +241,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
             if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 
                 File selected = fc.getSelectedFile();
-                if(selected.getName().endsWith(".spr2")){
-                    loadSprite(selected.getAbsolutePath());
-                }
-                else{
-                    loadSprite(fc.getSelectedFile().getAbsolutePath());
-                }
+                this.loadSprite(selected.getAbsolutePath());
             }
         });
         

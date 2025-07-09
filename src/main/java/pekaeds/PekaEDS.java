@@ -13,6 +13,7 @@ import org.tinylog.Logger;
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.misc.InitialSetupDialog;
 import pekaeds.ui.misc.LookAndFeelHelper;
+import pekase3.PekaSE3GUI;
 import pk2.filesystem.FHSHelper;
 import pk2.filesystem.PK2FileSystem;
 import pk2.settings.Settings;
@@ -52,6 +53,32 @@ public class PekaEDS {
         });
 
         launch();
+        //launchSpriteEditor();
+    }
+
+
+    static void launchSpriteEditor(){
+        File settingsFile =  FHSHelper.getSettingsFile();
+        if(settingsFile.exists()){
+            try{
+                Settings.load(settingsFile);
+                LookAndFeelHelper.updateTheme();
+
+                File file = new File(Settings.getBasePath());
+                /**
+                 * TODO ??? Should an exception be thrown here?
+                 * If there's something wrong (e.g nota  PK2 directory), it throws an exception
+                 */
+                PK2FileSystem.setAssetsPath(file);
+
+                SwingUtilities.invokeLater(() -> {
+                    new PekaSE3GUI().setup();
+                });
+            }
+            catch(IOException e){
+                Logger.error(e);
+            }
+        }
     }
 
     private static boolean loadSettings() {

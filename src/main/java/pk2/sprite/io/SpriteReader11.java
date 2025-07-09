@@ -5,7 +5,7 @@ import java.io.*;
 import pk2.sprite.SpritePrototype;
 import pk2.util.PK2FileUtils;
 
-public class SpriteReader11 implements SpriteReader {
+class SpriteReader11 implements SpriteReader {
 
     @Override
     public SpritePrototype readSpriteFile(File file) throws IOException {

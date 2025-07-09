@@ -2,6 +2,9 @@ package pekase3.profile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import pk2.profile.SpriteProfile;
+
 import org.tinylog.Logger;
 
 import javax.swing.*;
