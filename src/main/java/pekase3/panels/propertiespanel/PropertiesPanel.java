@@ -1,16 +1,15 @@
 package pekase3.panels.propertiespanel;
 
 import net.miginfocom.swing.MigLayout;
-import pekase3.FileFormat;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
 import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
 import pk2.sprite.PK2Sprite;
+import pk2.ui.SpriteFileChooser;
 import pekase3.sprite.io.PK2SpriteReader13;
 import pekase3.sprite.io.PK2SpriteReaderGreta;
 import pk2.util.GFXUtils;
-import pekase3.util.SpriteFileChooser;
 import pekase3.util.UnknownSpriteFormatException;
 
 import org.tinylog.Logger;
@@ -76,17 +75,13 @@ public final class PropertiesPanel extends PekaSE2Panel {
     public PropertiesPanel(Settings settings) {
         this.settings = settings;
         
-        fileChooser = new SpriteFileChooser(settings, FileFormat.LEGACY);
+        fileChooser = new SpriteFileChooser();
         
         bonusSpritePreview = new SpritePreview(null, Map.of("Score", ""));
     
         bonusSpritePreview.setMaxSize(128, 128);
         
         setup();
-    }
-    
-    public void setFileFormat(FileFormat fileFormat) {
-        fileChooser = new SpriteFileChooser(settings, fileFormat);
     }
     
     private void setup() {

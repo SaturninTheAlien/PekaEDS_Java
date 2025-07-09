@@ -1,18 +1,17 @@
 package pekase3.panels.attackspanel;
 
 import net.miginfocom.swing.MigLayout;
-import pekase3.FileFormat;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
 import pekase3.profile.SpriteProfile;
 import pekase3.settings.Settings;
 import pk2.sprite.PK2Sprite;
+import pk2.ui.SpriteFileChooser;
 import pekase3.sprite.io.PK2SpriteReader;
 import pekase3.sprite.io.PK2SpriteReader13;
 import pekase3.sprite.io.PK2SpriteReaderGreta;
 import pk2.util.GFXUtils;
 import pekase3.util.MessageBox;
-import pekase3.util.SpriteFileChooser;
 import pekase3.util.UnknownSpriteFormatException;
 
 import org.tinylog.Logger;
@@ -56,16 +55,6 @@ public class AttacksPanel extends PekaSE2Panel {
         spriteReader = legacyReader;
         
         setup();
-    }
-    
-    public void setFileFormat(FileFormat fileFormat) {
-        fileChooser = new SpriteFileChooser(settings, fileFormat);
-        
-        if (fileFormat == FileFormat.GRETA) {
-            spriteReader = gretaReader;
-        } else {
-            spriteReader = legacyReader;
-        }
     }
     
     private void setup() {

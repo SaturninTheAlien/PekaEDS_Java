@@ -7,6 +7,7 @@ import pekase3.settings.SettingsIO;
 
 import javax.swing.*;
 
+@Deprecated
 public class SetPathPanel extends JPanel {
     private Settings settings;
     private PekaSE3GUI mainGUI;

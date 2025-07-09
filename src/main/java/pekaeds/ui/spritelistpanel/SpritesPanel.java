@@ -3,7 +3,6 @@ package pekaeds.ui.spritelistpanel;
 
 import org.tinylog.Logger;
 import net.miginfocom.swing.MigLayout;
-import pekaeds.filechooser.SpriteFileChooser;
 import pekaeds.tool.Tool;
 import pekaeds.tool.Tools;
 import pekaeds.tool.tools.BrushTool;
@@ -16,6 +15,7 @@ import pk2.level.PK2Level;
 import pk2.level.PK2LevelSector;
 import pk2.sprite.SpritePrototype;
 import pk2.sprite.io.SpriteIO;
+import pk2.ui.SpriteFileChooser;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

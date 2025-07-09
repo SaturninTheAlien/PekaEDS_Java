@@ -1,4 +1,4 @@
-package pekaeds.ui.misc;
+package pk2.ui;
 
 import pk2.level.PK2LevelSector;
 import pk2.sprite.SpritePrototype;

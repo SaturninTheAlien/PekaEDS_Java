@@ -1,10 +1,10 @@
 package pekaeds.ui.spritelistpanel;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.ui.misc.ImagePanel;
 import pk2.level.PK2LevelSector;
 import pk2.settings.Settings;
 import pk2.sprite.SpritePrototype;
+import pk2.ui.ImagePanel;
 
 import javax.swing.*;
 import java.awt.*;

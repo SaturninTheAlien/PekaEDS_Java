@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.filechooser.ImagePreviewFileChooser;
 import pekaeds.ui.filefilters.BMPImageFilter;
 import pekaeds.ui.filefilters.MusicFilter;
 import pekaeds.ui.listeners.PK2MapConsumer;
@@ -23,6 +22,7 @@ import pk2.filesystem.PK2FileSystem;
 import pk2.level.PK2Level;
 import pk2.level.PK2LevelSector;
 import pk2.settings.Settings;
+import pk2.ui.ImagePreviewFileChooser;
 import pk2.util.GFXUtils;
 
 import javax.swing.event.ChangeEvent;

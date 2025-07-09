@@ -1,11 +1,11 @@
 package pekaeds.ui.settings;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.filechooser.ImagePreviewFileChooser;
 import pekaeds.ui.actions.BrowseResourceFilesAction;
 import pekaeds.ui.filefilters.MusicFilter;
 import pk2.filesystem.PK2FileSystem;
 import pk2.settings.Settings;
+import pk2.ui.ImagePreviewFileChooser;
 
 import javax.swing.*;
 

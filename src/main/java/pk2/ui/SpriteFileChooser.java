@@ -1,7 +1,6 @@
-package pekaeds.filechooser;
+package pk2.ui;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.ui.misc.ImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -46,6 +45,11 @@ public class SpriteFileChooser extends JFileChooser implements PropertyChangeLis
     
     private JLabel lblFileModified;
     private JLabel lblFileModifiedVal;
+
+
+    public SpriteFileChooser(){
+        this(PK2FileSystem.getAssetsPath(PK2FileSystem.SPRITES_DIR));
+    }
     
     public SpriteFileChooser(File basePath) {
         super(basePath);
@@ -68,7 +72,7 @@ public class SpriteFileChooser extends JFileChooser implements PropertyChangeLis
 
             @Override
             public String getDescription() {
-                return "Pekka Kana 2 Sprite file (*.spr)";
+                return "Pekka Kana 2 Sprite file (*.spr2, *.spr)";
             }
         });
     }

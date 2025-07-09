@@ -1,8 +1,6 @@
-package pekaeds.filechooser;
+package pk2.ui;
 
 import org.tinylog.Logger;
-
-import pekaeds.ui.misc.ImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
