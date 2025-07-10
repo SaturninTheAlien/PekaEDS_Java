@@ -11,6 +11,8 @@ import javax.swing.SwingUtilities;
 import org.tinylog.Logger;
 
 import pekaeds.ui.main.PekaEDSGUI;
+import pekaeds.ui.misc.AppEnum;
+import pekaeds.ui.misc.AppSelectionDialog;
 import pekaeds.ui.misc.InitialSetupDialog;
 import pekaeds.ui.misc.LookAndFeelHelper;
 import pekase3.PekaSE3GUI;
@@ -19,11 +21,12 @@ import pk2.filesystem.PK2FileSystem;
 import pk2.settings.Settings;
 
 public class PekaEDS {
+    private static AppEnum selectedApp = AppEnum.NOT_SELECTED;
 
     private static InitialSetupDialog initialSetupDialog;
+    private static AppSelectionDialog appSelectionDialog;
 
     public static void main(String[] args) {
-
         //parse args
         int state=0;
         for(String arg: args){
@@ -32,6 +35,9 @@ public class PekaEDS {
             case 0:{
                 if(arg=="--theme"){
                     state = 1;
+                }
+                else if(arg=="--levels-editor"){
+                    selectedApp = AppEnum.LEVEL_EDITOR;
                 }
             }
             break;    
@@ -43,8 +49,12 @@ public class PekaEDS {
                 break;
             }
         }
-        // Is it still necessary?
-        //System.setProperty("sun.java2d.noddraw", "true");
+
+        launch();
+    }
+
+    public static void launch(){
+
         FHSHelper.preparePaths();
         Locale.setDefault(Locale.ENGLISH);
 
@@ -52,32 +62,49 @@ public class PekaEDS {
             Logger.info(e, "TODO: Log Uncaught exception");
         });
 
-        launch();
-        //launchSpriteEditor();
+        if (!loadSettings()) {
+
+            if(Settings.getLookAndFeel()==null){
+                Settings.setLookAndFeel(LookAndFeelHelper.getDefaultTheme());
+            }
+
+            
+            LookAndFeelHelper.updateTheme();
+            initialSetupDialog = new InitialSetupDialog(null);
+            if (initialSetupDialog.setupCompleted()) {
+                initialSetupDialog.dispose();
+                loadSettings();
+                selectApp();
+                //SwingUtilities.invokeLater(PekaEDSGUI::new);
+            }
+        } else {
+
+            LookAndFeelHelper.updateTheme();
+            selectApp();
+            //SwingUtilities.invokeLater(PekaEDSGUI::new);
+        }
     }
 
+    private static void selectApp(){
 
-    static void launchSpriteEditor(){
-        File settingsFile =  FHSHelper.getSettingsFile();
-        if(settingsFile.exists()){
-            try{
-                Settings.load(settingsFile);
-                LookAndFeelHelper.updateTheme();
+        if(selectedApp==AppEnum.NOT_SELECTED){
+            appSelectionDialog = new AppSelectionDialog(null);
+            selectedApp = appSelectionDialog.getSelectedApp();
+        }
 
-                File file = new File(Settings.getBasePath());
-                /**
-                 * TODO ??? Should an exception be thrown here?
-                 * If there's something wrong (e.g nota  PK2 directory), it throws an exception
-                 */
-                PK2FileSystem.setAssetsPath(file);
+        switch (selectedApp) {
+            case LEVEL_EDITOR:
+                SwingUtilities.invokeLater(PekaEDSGUI::new);
+                break;
 
+            case SPRITE_EDITOR:
                 SwingUtilities.invokeLater(() -> {
                     new PekaSE3GUI().setup();
                 });
-            }
-            catch(IOException e){
-                Logger.error(e);
-            }
+                break;
+            
+            default:
+                break;
         }
     }
 
@@ -104,27 +131,5 @@ public class PekaEDS {
         }
 
         return success;
-    }
-
-    public static void launch() {
-        if (!loadSettings()) {
-
-            if(Settings.getLookAndFeel()==null){
-                Settings.setLookAndFeel(LookAndFeelHelper.getDefaultTheme());
-            }
-
-            
-            LookAndFeelHelper.updateTheme();
-            initialSetupDialog = new InitialSetupDialog(null);
-            if (initialSetupDialog.setupCompleted()) {
-                loadSettings();
-                SwingUtilities.invokeLater(PekaEDSGUI::new);
-            }
-            initialSetupDialog.dispose();
-        } else {
-
-            LookAndFeelHelper.updateTheme();
-            SwingUtilities.invokeLater(PekaEDSGUI::new);
-        }
     }
 }
