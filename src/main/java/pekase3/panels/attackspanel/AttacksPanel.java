@@ -158,8 +158,7 @@ public class AttacksPanel extends PekaSE2Panel {
 
         PK2Sprite spr = null;
         try{
-            spr = SpriteIO.loadSpriteFile(PK2FileSystem.findSprite(ammoSprite));    
-            preview.setSprite(spr);
+            spr = SpriteIO.loadSpriteFile(PK2FileSystem.findSprite(ammoSprite));
         }
         catch(FileNotFoundException e){
             JOptionPane.showMessageDialog(this,"Ammo sprite \""+ ammoSprite + "\" not found!" , "Sprite not found!", ERROR);
@@ -174,6 +173,7 @@ public class AttacksPanel extends PekaSE2Panel {
         if(spr!=null){
             try{
                 GFXUtils.loadFirstFrame(spr);
+                preview.setSprite(spr);
             }
             catch(IOException e){
                 JOptionPane.showMessageDialog(this,"Unable to load \""+ spr.getImageFile() + "\"!" , "Unable to load sprite image!", ERROR);

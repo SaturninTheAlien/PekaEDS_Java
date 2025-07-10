@@ -1,6 +1,9 @@
 package pekase3.panels;
 
 import javax.swing.*;
+
+import pekaeds.ui.misc.LookAndFeelHelper;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -37,9 +40,6 @@ public final class FrameImagePanel extends JPanel {
     }
     
     private void setup() {
-        setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
-        setBackground(Color.GRAY);
-
         if (prefWidth > 0) {
             setPreviewSize(prefWidth, prefHeight);
         }
@@ -98,7 +98,10 @@ public final class FrameImagePanel extends JPanel {
     }
     
     public void paintComponent(Graphics g) {
+        setBorder(BorderFactory.createLineBorder(LookAndFeelHelper.getBorderColor()));
+        setBackground(LookAndFeelHelper.getBGColor());
         super.paintComponent(g);
+        
         
         var g2 = (Graphics2D) g;
         
