@@ -1,5 +1,8 @@
 package pekase3.panels;
 
+import java.util.Map;
+import java.util.Set;
+
 import javax.swing.*;
 
 import pekase3.listener.UnsavedChangesListener;
@@ -14,4 +17,12 @@ public abstract class PekaSE2Panel extends JPanel {
     public abstract void setProfileData(SpriteProfile profile);
     
     public abstract void setUnsavedChangesListener(UnsavedChangesListener listener);
+
+    protected void replaceComboBoxItems(JComboBox<String> comboBox, Set<Map.Entry<Integer, String>> entrySet) {
+        comboBox.removeAllItems();
+        
+        for (var s : entrySet) {
+            comboBox.addItem(s.getValue());
+        }
+    }
 }

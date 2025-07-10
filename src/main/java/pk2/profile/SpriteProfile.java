@@ -12,8 +12,10 @@ public final class SpriteProfile {
     private final Map<Integer, String> colorMap = new HashMap<>();
     
     private final Map<Integer, String> destructionType = new HashMap<>();
-    
     private final Map<Integer, String> immunityMap = new HashMap<>();
+
+    private final Map<Integer, String> blendModeMap = new HashMap<>();
+    private final Map<Integer, String> ambientEffects = new HashMap<>();
     
     private int animationsAmount = 10;
     
@@ -48,6 +50,14 @@ public final class SpriteProfile {
     
     public Map<Integer, String> getImmunityMap() {
         return immunityMap;
+    }
+
+    public Map<Integer, String> getBlendModeMap() {
+        return blendModeMap;
+    }
+
+    public Map<Integer, String> getAmbientEffects(){
+        return ambientEffects;
     }
     
     public int getAnimationsAmount() { return animationsAmount; }

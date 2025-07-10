@@ -31,10 +31,10 @@ aiPatternMap:
  29: Return to Start Position Y
  30: Teleport
 
- 31: AI_ATTACK_1_IF_PLAYER_ABOVE
- 32: AI_ATTACK_2_IF_PLAYER_ABOVE
- 33: AI_TRANSFORM_IF_PLAYER_BELOW
- 34: AI_TRANSFORM_IF_PLAYER_ABOVE
+ 31: Attack 1 If Player is Above
+ 32: Attack 2 If Player is Above	
+ 33: Transforms If Player is Below
+ 34: Transforms If Player is Above
 
  35: Throwable Weapon
  36: Falls When Shaken
@@ -72,8 +72,8 @@ aiPatternMap:
  66: Moves Right If Switch 3 Is Pressed
  67: Moves Left If Switch 3 Is Pressed
 
- 68: AI_MOVE_X_COS_FREE
- 69: AI_MOVE_Y_COS_FREE
+ 68: Moves X COS - Free
+ 69: Moves Y COS - Free
 
  70: Turns Vertically From Obstacle
  71: Random Vertical Starting Direction
@@ -88,35 +88,35 @@ aiPatternMap:
  80: Arrow Down
  81: Move to Arrows Direction
 
- 82: AI_TRANSFORM_IF_SKULL_BLOCKS_CHANGED
- 83: AI_DIE_IF_SKULL_BLOCKS_CHANGED
- 84: AI_RETURN_TO_ORIG_X_CONSTANT
- 85: AI_RETURN_TO_ORIG_Y_CONSTANT
- 86: AI_EMIT_EVENT1_IF_DEAD
- 87: AI_EMIT_EVENT1_IF_DAMAGED
- 88: AI_TRANSFORM_IF_EVENT1
- 89: AI_DIE_IF_EVENT1
- 90: AI_EMIT_EVENT2_IF_DEAD
- 91: AI_EMIT_EVENT2_IF_DAMAGED
- 92: AI_TRANSFORM_IF_EVENT2
- 93: AI_DIE_IF_EVENT2
+ 82: Transform if Skull Blocks changed
+ 83: Die if Skull Blocks changed
+ 84: Returns to Origin X  - Constant
+ 85: Returns to Origin Y  - Constant	
+ 86: Trigger "Event 1" if KO'ed
+ 87: Trigger "Event 1" if Damaged
+ 88: Transform if "Event 1" is triggered
+ 89: Die if "Event 1" is triggered
+ 90: Trigger "Event 2" if KO'ed
+ 91: Trigger "Event 2" if Damaged
+ 92: Transform if "Event 2" is triggered
+ 93: Die if "Event 2" is triggered
 
  101: Background Sprite Moon
  102: Background Sprite Moves to Left
  103: Background Sprite Moves to Right
 
- 104: AI_BACKGROUND_HORIZONTAL_PARALLAX
- 105: AI_BACKGROUND_BRING_TO_FRONT
- 106: AI_BACKGROUND_SEND_TO_BACK
+ 104: Background Horizontal Parallax
+ 105: Background Bring to Front
+ 106: Background Send to Back
 
  120: Add Time to Clock (Sprite's Load Time)
- 121: Make Player Invisible
+ 121: Bonus - Make Player Invisible
 
- 125: AI_BONUS_SUPERMODE
- 126: AI_BONUS_CANNOT_BE_PUSHED
+ 125: Bonus - SUPER mode
+ 126: Bonus - Can't be pushed
 
 
- 129: Transform if hit
+ 129: Transform if Damaged
  130: Follow the Player Vertic. and Horiz.
  131: Follow the Player Vertic. and Horiz., if Player is in Front
  132: Random Move Vertic. and Horiz.
@@ -129,69 +129,67 @@ aiPatternMap:
  139: Turn if Damaged
  140: Evil One
 
- 141: AI_INFINITE_ENERGY
- 142: AI_THROWABLE_WEAPON2
- 143: AI_STATIC_PROJECTILE
+ 141: Infinite Energy
+ 142: Throwable Weapon 2
+ 143: Static Projectile
 
- 144: AI_DIE_IF_TOUCHES_WALL
- 145: AI_NPC_COLLECT_BONUSES
- 146: AI_DESPAWN_IF_OFFSCREEN
- 147: AI_HEAL_IF_OFFSCREEN
- 148: AI_SELF_TRANSFORMATION_RANDOM_PROTOTYPE
+ 144: Dies if it hits a wall	
+ 145: NPC collects bonuses
+ 146: Despawn if off-screen
+ 147: Heal if off-screen
+ 148: Self-transform Random Prototype
+
+ 149: Jump if Player is in Front
 
  150: Max speed player
  151: Max speed player on super
  152: Swimming
  153: Max speed swimming
+
+ 154: Limited Player Control
+ 155: Very Limited Player Control
+ 156: No contact Attack Animation
+ 157: Projectile - Aim Random
+ 158: Projectile - Aim at Player	
+ 159: Follows the Player - diagonally
+ 160: Attack 1 - if Player is nearby
+ 161: Attack 2 - if Player is nearby
+ 162: Transform if it touches the Floor
+ 163: Transform if it touches a Wall
+ 
  170: Egg 2
 
- 171: AI_NONSTOP_VERTICAL
+ 171: Non-Stop Vertical
 
  172: AI_START_DOWN
  173: AI_START_UP
  174: AI_START_LEFT
  175: AI_START_RIGHT
 
- 201: Info 1
- 202: Info 2
- 203: Info 3
- 204: Info 4
- 205: Info 5
- 206: Info 6
- 207: Info 7
- 208: Info 8
- 209: Info 9
- 210: Info 10
- 211: Info 11
- 212: Info 12
- 213: Info 13
- 214: Info 14
- 215: Info 15
- 216: Info 16
- 217: Info 17
- 218: Info 18
- 219: Info 19
+ 302: Info if Touches Player
+ 303: Info if Damaged
+ 304: Info if Dead
+ 305: Info if Bonus is Collected
 
- 302: AI_INFO_IF_TOUCHES_PLAYER
- 303: AI_INFO_IF_DAMAGED
- 304: AI_INFO_IF_DEAD
- 305: AI_INFO_IF_BONUS_COLLECTED
+ 402: Destructed Next to Player
+ 403: Transform if Dead
 
 damageMap:
- 0: No damage
+ 0: None
  1: Punch
  2: Fall (stomp)
  3: Noise
  4: Fire
  5: Water
- 6: Snow
+ 6: Ice
  7: Bonus
  8: Electricity
- 9: Self destruction
+ 9: Magic
  10: Squeeze
  11: Smell
- 12: All
+ 12: Supermode
  13: Sting
+ 14: Instant
 
 typeMap:
  0: None
@@ -258,7 +256,7 @@ immunityMap:
  3: Noise
  4: Fire
  5: Water
- 6: Snow
+ 6: Ice
  7: Bonus
  8: Electricity
  9: Magic
@@ -266,13 +264,26 @@ immunityMap:
  11: Smell
  12: Supermode
  13: Sting
+ 14: Instant
 
 colorMap:
  255: Original
- 0: Grey
+ 0: Gray
  32: Blue
  64: Red
  96: Green
  128: Orange
  160: Violet
  192: Turquoise
+
+blendModeMap:
+ 0: Normal
+ 1: Transparent
+ 13: Mirror
+
+ambientEffects:
+ 0: No effect
+ 1: Stars
+ 2: Smoke
+ 3: Thunder (obsolete!)
+

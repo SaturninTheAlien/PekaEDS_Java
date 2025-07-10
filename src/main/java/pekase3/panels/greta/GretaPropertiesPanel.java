@@ -16,6 +16,14 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
 
     private JLabel lInfoId;
     private JSpinner spInfoID;
+
+    private JComboBox<String> cbBlendMode;
+    private JSpinner spBlendAlpha;
+
+
+    private JComboBox<String> cbAmbientEffect;
+
+    private SpriteProfile profile;
     
     public GretaPropertiesPanel() {
         setup();
@@ -34,6 +42,12 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         lInfoId = new JLabel("Info:");
         spInfoID = new JSpinner();
 
+        cbBlendMode = new JComboBox<>();
+        spBlendAlpha = new JSpinner();
+
+
+        cbAmbientEffect = new JComboBox<>();
+
         
         generateLayout();
     }
@@ -46,6 +60,12 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         add(spDeadWeight);
         add(lInfoId);
         add(spInfoID);
+        add(new JLabel("Blend mode:"));
+        add(cbBlendMode);
+        add(new JLabel("Blend alpha:"));
+        add(spBlendAlpha);
+        add(new JLabel("Ambient effect:"));
+        add(cbAmbientEffect);
     }
     
     @Override
@@ -60,6 +80,9 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         }
 
         spInfoID.setValue(sprite.getInfoID());
+        cbBlendMode.setSelectedItem( profile.getBlendModeMap().get(sprite.getBlendMode()));
+        spBlendAlpha.setValue(sprite.getBlendAlpha());
+        cbAmbientEffect.setSelectedItem(profile.getAmbientEffects().get(sprite.getAmbientEffect()));
     }
     
     @Override
@@ -70,6 +93,9 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         spDeadWeight.setValue(0.0);
 
         spInfoID.setValue(0);
+        cbBlendMode.setSelectedIndex(0);
+        spBlendAlpha.setValue(50);
+        cbAmbientEffect.setSelectedIndex(0);
     }
     
     @Override
@@ -84,11 +110,35 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         }
 
         sprite.setInfoID((int) spInfoID.getValue());
+
+        int blendMode = 0;
+        for (var d : profile.getBlendModeMap().entrySet()) {
+            if (d.getValue().equals(this.cbBlendMode.getSelectedItem())) {
+                blendMode = d.getKey();
+                break;
+            }
+        }
+
+        sprite.setBlendMode(blendMode);
+
+        sprite.setBlendAlpha((int) spBlendAlpha.getValue());
+
+        int ambientEffect = 0;
+        for (var d : profile.getAmbientEffects().entrySet()) {
+            if (d.getValue().equals(this.cbAmbientEffect.getSelectedItem())) {
+                ambientEffect = d.getKey();
+                break;
+            }
+        }
+
+        sprite.setAmbientEffect(ambientEffect);
     }
     
     @Override
     public void setProfileData(SpriteProfile profile) {
-        // Not used in this panel
+        this.profile = profile;
+        replaceComboBoxItems(this.cbBlendMode, profile.getBlendModeMap().entrySet());
+        replaceComboBoxItems(this.cbAmbientEffect, profile.getAmbientEffects().entrySet());
     }
     
     @Override
@@ -96,5 +146,8 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         chkAlwaysActive.addActionListener(listener);
         spDeadWeight.addChangeListener(listener);
         spInfoID.addChangeListener(listener);
+        cbBlendMode.addActionListener(listener);
+        spBlendAlpha.addChangeListener(listener);
+        cbAmbientEffect.addActionListener(listener);
     }
 }

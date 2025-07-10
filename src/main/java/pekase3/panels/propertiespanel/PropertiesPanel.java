@@ -17,7 +17,6 @@ import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
 public final class PropertiesPanel extends PekaSE2Panel {
     
@@ -512,13 +511,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         replaceComboBoxItems(cbType, profile.getTypeMap().entrySet());
     }
     
-    private void replaceComboBoxItems(JComboBox<String> comboBox, Set<Map.Entry<Integer, String>> entrySet) {
-        comboBox.removeAllItems();
-        
-        for (var s : entrySet) {
-            comboBox.addItem(s.getValue());
-        }
-    }
+    
     
     @Override
     public void setUnsavedChangesListener(UnsavedChangesListener listener) {

@@ -119,7 +119,7 @@ public class PK2Sprite implements SpritePrototype {
     //New GE features
     private int ambientEffect = 0;
     private int blendMode = 0;
-    private int blendAlpha = 0;
+    private int blendAlpha = 50;
 
     private Point2D attack1Offest = null;
     private Point2D attack2Offset = null;
