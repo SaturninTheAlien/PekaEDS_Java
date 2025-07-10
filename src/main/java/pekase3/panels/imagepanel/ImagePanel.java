@@ -7,8 +7,9 @@ import pekase3.panels.PekaSE2Panel;
 import pekase3.panels.imagepanel.spritesheetpanel.SpriteSheetPanel;
 import pekase3.panels.imagepanel.spritesheetpanel.FrameEditMode.*;
 import pekase3.panels.spriteeditpane.SpriteEditPaneModel;
-import pekase3.settings.Settings;
+import pk2.filesystem.PK2FileSystem;
 import pk2.profile.SpriteProfile;
+import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 import pk2.util.GFXUtils;
 
@@ -25,7 +26,6 @@ import java.io.IOException;
 
 public class ImagePanel extends PekaSE2Panel implements ChangeListener {
     private static final ImageFilter BMP_IMG_FILTER = new ImageFilter();
-    private Settings settings;
     
     private JTextField tfImage;
     private JButton btnBrowse;
@@ -55,10 +55,8 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
     
     private JToggleButton lastSelectedButton;
     
-    public ImagePanel(SpriteEditPaneModel spriteModel, Settings settings) {
-        this.spriteEditModel = spriteModel;
-        this.settings = settings;
-        
+    public ImagePanel(SpriteEditPaneModel spriteModel) {
+        this.spriteEditModel = spriteModel;        
         setup();
     }
     
@@ -183,7 +181,7 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
     
     private void addListeners() {
         btnBrowse.addActionListener(e -> {
-            var fc = new JFileChooser(settings.getSpritesPath());
+            var fc = new JFileChooser(PK2FileSystem.getAssetsPath(PK2FileSystem.SPRITES_DIR));
             fc.setFileFilter(BMP_IMG_FILTER);
             
             if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -247,7 +245,7 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         cbColors.addActionListener(e -> {
             if (loadedSprite != null) {
                 int color = 255;
-                for (var s : settings.getSpriteProfile().getColorMap().entrySet()) {
+                for (var s : Settings.getSpriteProfile().getColorMap().entrySet()) {
                     if (cbColors.getSelectedItem() != null) {
                         if (cbColors.getSelectedItem().equals(s.getValue())) {
                             color = s.getKey();
@@ -266,7 +264,7 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
                         
                         if (!tfImage.getText().isEmpty()) {
                             try {
-                                img = ImageIO.read(new File(settings.getSpritesPath() + File.separatorChar + tfImage.getText()));
+                                img = ImageIO.read(PK2FileSystem.findAsset(tfImage.getText(), PK2FileSystem.SPRITES_DIR));
                                 
                                 loadedSprite.setImage(GFXUtils.makeTransparent(img));
                                 loadedSprite.setFramesList(GFXUtils.cutFrames(img, loadedSprite.getFramesAmount(), loadedSprite.getFrameX(), loadedSprite.getFrameY(), loadedSprite.getFrameWidth(), loadedSprite.getFrameHeight()));
@@ -310,7 +308,7 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         spFrameHeight.getModel().setValue(sprite.getFrameHeight());
         spFrameAmount.getModel().setValue(sprite.getFramesAmount());
 
-        cbColors.setSelectedItem(settings.getSpriteProfile().getColorMap().get(sprite.getColor()));
+        cbColors.setSelectedItem(Settings.getSpriteProfile().getColorMap().get(sprite.getColor()));
         
         spriteSheetPanel.setFrameData(sprite.getFrameX(), sprite.getFrameY(), sprite.getFrameWidth(), sprite.getFrameHeight());
         
@@ -352,7 +350,7 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         sprite.setFramesAmount((int) spFrameAmount.getValue());
         
         int color = 0;
-        for (var c : settings.getSpriteProfile().getColorMap().entrySet()) {
+        for (var c : Settings.getSpriteProfile().getColorMap().entrySet()) {
             if (c.getValue().equals(cbColors.getSelectedItem())) {
                 color = c.getKey();
                 

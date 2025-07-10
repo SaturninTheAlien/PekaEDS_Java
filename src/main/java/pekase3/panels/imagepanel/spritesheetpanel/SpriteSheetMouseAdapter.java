@@ -1,20 +1,14 @@
 package pekase3.panels.imagepanel.spritesheetpanel;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SpriteSheetMouseAdapter extends MouseAdapter {
-    private SpriteSheetModel model;
     private SpriteSheetPanel spriteSheetPanel;
     
-    private int offsetX;
-    private int offsetY;
     
     // Constructor is package private because this class should only be used with SpriteSheetPanel.
     SpriteSheetMouseAdapter(SpriteSheetModel spm, SpriteSheetPanel sp) {
-        this.model = spm;
         
         this.spriteSheetPanel = sp;
     }

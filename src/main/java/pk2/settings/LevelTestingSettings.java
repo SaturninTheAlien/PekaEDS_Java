@@ -5,9 +5,9 @@ import java.io.*;
 public class LevelTestingSettings {
     public boolean devMode = false;
         
-    public boolean customWorkingDirectory = false;
+    public boolean customDataDirectory = false;
     
-    public String workingDirectory = "";
+    public String dataDirectory = "";
 
     public boolean customExecutable = false;
     public String executable = "";
@@ -15,8 +15,8 @@ public class LevelTestingSettings {
     public void load(DataInputStream in) throws IOException{
         this.devMode = in.readBoolean();
 
-        this.customWorkingDirectory = in.readBoolean();
-        this.workingDirectory = in.readUTF();
+        this.customDataDirectory = in.readBoolean();
+        this.dataDirectory = in.readUTF();
         
         this.customExecutable = in.readBoolean();
         this.executable = in.readUTF();
@@ -25,9 +25,9 @@ public class LevelTestingSettings {
     public void save(DataOutputStream out) throws IOException{
         out.writeBoolean(this.devMode);
 
-        out.writeBoolean(this.customWorkingDirectory);
+        out.writeBoolean(this.customDataDirectory);
 
-        out.writeUTF(this.workingDirectory);
+        out.writeUTF(this.dataDirectory);
 
         out.writeBoolean(this.customExecutable);
 

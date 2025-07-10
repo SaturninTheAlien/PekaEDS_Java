@@ -166,7 +166,7 @@ public class SpriteFileChooser extends JFileChooser implements PropertyChangeLis
                     imagePanel.setImage(spr.getImage(), true, 256, 200);
     
                     lblNameVal.setText(spr.getName());
-                    lblTypeVal.setText(Settings.getSpriteProfile().getTypes().get(spr.getType() - 1));
+                    lblTypeVal.setText(Settings.getSpriteProfile().getTypeMap().get(spr.getType()));
                 }
                 catch(Exception spriteException){
                     imagePanel.setImage(SpriteMissing.getMissingImage(), true, 256, 200);

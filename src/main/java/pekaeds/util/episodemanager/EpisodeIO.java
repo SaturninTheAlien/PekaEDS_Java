@@ -2,7 +2,7 @@ package pekaeds.util.episodemanager;
 
 import org.tinylog.Logger;
 
-import pekaeds.data.EditorConstants;
+import pk2.filesystem.PK2FileSystem;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ final class EpisodeIO {
      * @param episode Instance of the episode class, containing the necessary data.
      */
     void save(Episode episode) {
-        var episodeFile = new File(EditorConstants.EPISODES_FOLDER + episode.getEpisodeName() + ".episode");
+        var episodeFile = new File(PK2FileSystem.EPISODES_DIR  + episode.getEpisodeName() + ".episode");
         
         try (var out = new DataOutputStream(new FileOutputStream(episodeFile))) {
             out.writeUTF(episode.getEpisodeName());

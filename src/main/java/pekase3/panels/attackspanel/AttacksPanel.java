@@ -3,9 +3,9 @@ package pekase3.panels.attackspanel;
 import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
-import pekase3.settings.Settings;
 import pk2.filesystem.PK2FileSystem;
 import pk2.profile.SpriteProfile;
+import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
@@ -27,7 +27,6 @@ public class AttacksPanel extends PekaSE2Panel {
     private JButton btnBrowseAmmo1;
     private JButton btnBrowseAmmo2;
     
-    private Settings settings;
     
     private JSpinner spAtkDuration1;
     private JSpinner spAtkDuration2;
@@ -40,14 +39,13 @@ public class AttacksPanel extends PekaSE2Panel {
     
     private SpriteFileChooser fileChooser;
     
-    public AttacksPanel(Settings settings) {
-        this.settings = settings;        
+    public AttacksPanel() {
         setup();
     }
     
     private void setup() {
-        ammoSpritePreview1 = new AmmoSpritePreview(settings);
-        ammoSpritePreview2 = new AmmoSpritePreview(settings);
+        ammoSpritePreview1 = new AmmoSpritePreview();
+        ammoSpritePreview2 = new AmmoSpritePreview();
         
         tfAmmoSprite1 = new JTextField();
         tfAmmoSprite2 = new JTextField();
@@ -151,7 +149,7 @@ public class AttacksPanel extends PekaSE2Panel {
         
         spLoadTime.setValue(sprite.getLoadTime());
         
-        cbDamageType.setSelectedItem(settings.getSpriteProfile().getDamageMap().get(sprite.getDamageType()));
+        cbDamageType.setSelectedItem(Settings.getSpriteProfile().getDamageMap().get(sprite.getDamageType()));
     }
     
     private void setupAmmoSprite(JTextField tfPath, String ammoSprite, AmmoSpritePreview preview) {
@@ -219,7 +217,7 @@ public class AttacksPanel extends PekaSE2Panel {
         sprite.setAttackPause((int) spAttackPause.getValue());
         
         int damageType = 0;
-        for (var d : settings.getSpriteProfile().getDamageMap().entrySet()) {
+        for (var d : Settings.getSpriteProfile().getDamageMap().entrySet()) {
             if (d.getValue().equals(cbDamageType.getSelectedItem())) {
                 damageType = d.getKey();
                 

@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.IndexColorModel;
-import java.util.List;
 import java.util.Map;
 
 public class SpriteSheetPanel extends JPanel implements ChangeListener {

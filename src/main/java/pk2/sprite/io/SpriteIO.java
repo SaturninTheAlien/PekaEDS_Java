@@ -1,14 +1,9 @@
 package pk2.sprite.io;
 
-import pk2.filesystem.PK2FileSystem;
 import pk2.sprite.PK2Sprite;
 
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.Arrays;
-
-import javax.imageio.ImageIO;
-
 
 public class SpriteIO {
     private static final int[] ID_1_1 = {0x31, 0x2E, 0x31, 0x00};

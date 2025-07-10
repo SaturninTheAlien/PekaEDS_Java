@@ -4,10 +4,8 @@ import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.FrameImagePanel;
 import pekase3.panels.animation.AnimationsEditModel;
-import pekase3.panels.animation.dragndrop.AnimationFrameDropTarget;
-import pekase3.settings.Settings;
+import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
-import pk2.sprite.PK2SpriteAnimation;
 import pekase3.util.AnimationManager;
 
 import javax.swing.*;
@@ -22,7 +20,6 @@ public final class AnimationPanel extends JPanel {
     
     private List<AnimationContainer> containers;
     
-    private Settings settings;
     private AnimationsEditModel editModel;
     
     private FrameImagePanel animationPreview;
@@ -39,9 +36,8 @@ public final class AnimationPanel extends JPanel {
     
     private int animationIndex;
 
-    public AnimationPanel(AnimationsEditModel editModel, Settings settings) {
+    public AnimationPanel(AnimationsEditModel editModel) {
         this.editModel = editModel;
-        this.settings = settings;
         
         animationPreview = new FrameImagePanel();
         animationManager = new AnimationManager();
@@ -80,8 +76,6 @@ public final class AnimationPanel extends JPanel {
         
         for (var c : containers) {
             containerPanel.add(c);
-            
-            var dropTargetListener = new AnimationFrameDropTarget(c);
         }
         
         var pnlFrameActions = new JPanel();
@@ -219,7 +213,7 @@ public final class AnimationPanel extends JPanel {
     }
     
     public byte[] getAnimationFrames() {
-        var frames = new byte[settings.getSpriteProfile().getAnimationsAmount()];
+        var frames = new byte[Settings.getSpriteProfile().getAnimationsAmount()];
         for (int i = 0; i < frames.length; i++) {
             frames[i] = containers.get(i).getFrameNumber();
         }

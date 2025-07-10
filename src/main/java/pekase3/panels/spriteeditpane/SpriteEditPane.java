@@ -13,7 +13,6 @@ import pekase3.panels.greta.GretaPropertiesPanel;
 import pekase3.panels.imagepanel.ImagePanel;
 import pekase3.panels.propertiespanel.PropertiesPanel;
 import pekase3.panels.soundspanel.SoundsPanel;
-import pekase3.settings.Settings;
 import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 import pk2.util.GFXUtils;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpriteEditPane extends JTabbedPane {   
-    private Settings settings;
     
     private ImagePanel imagePanel;
     private AnimationsEditPanel animationsPanel;
@@ -40,21 +38,19 @@ public class SpriteEditPane extends JTabbedPane {
     private final UnsavedChangesListener unsavedChangesListener = new UnsavedChangesListener(this);
     
    
-    public SpriteEditPane(Settings settings) {
-        this.settings = settings;
-
+    public SpriteEditPane() {
         setup();
     }
     
     private void setup() {
         panels = new ArrayList<>();
         
-        imagePanel = new ImagePanel(model, settings);
-        animationsPanel = new AnimationsEditPanel(settings);
-        aiListPanel = new AIListPanel(settings);
-        soundsPanel = new SoundsPanel(settings);
-        attacksPanel = new AttacksPanel(settings);
-        propertiesPanel = new PropertiesPanel(settings);
+        imagePanel = new ImagePanel(model);
+        animationsPanel = new AnimationsEditPanel();
+        aiListPanel = new AIListPanel();
+        soundsPanel = new SoundsPanel();
+        attacksPanel = new AttacksPanel();
+        propertiesPanel = new PropertiesPanel();
         gretaPropertiesPanel = new GretaPropertiesPanel();
         commandsPanel = new CommandsPanel();
         

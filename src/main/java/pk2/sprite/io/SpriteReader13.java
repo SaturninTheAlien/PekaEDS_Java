@@ -2,7 +2,7 @@ package pk2.sprite.io;
 
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.PK2SpriteAnimation;
-import pekase3.util.PK2FileUtils;
+import pk2.util.PK2FileUtils;
 
 import java.io.*;
 import java.nio.ByteBuffer;

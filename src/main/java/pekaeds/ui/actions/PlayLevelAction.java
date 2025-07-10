@@ -1,70 +1,25 @@
 package pekaeds.ui.actions;
 
-import java.util.ArrayList;
-
 import java.io.File;
-import java.nio.file.Paths;
-
 import javax.swing.*;
-
-import org.tinylog.Logger;
 
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.misc.UnsavedChangesDialog;
-import pk2.filesystem.PK2FileSystem;
-import pk2.settings.LevelTestingSettings;
-import pk2.settings.Settings;
+import pk2.util.LevelTestingUtil;
 
 import java.awt.event.ActionEvent;
 
 
 
 public class PlayLevelAction extends AbstractAction {
-    private static final String WINDOWS_EXECUTABLE = "pk2.exe";
-    private static final String LINUX_AND_MAC_EXECUTABLE = "./pekka-kana-2";
-    private static boolean isWindows(){
-        String osname = System.getProperty("os.name").toLowerCase();
-        return osname.contains("win");
-    }
-
-    private PekaEDSGUI gui;
-
-    private final File executableDirectory;
-    private final String executable;
-
-    private Process process;
-    
+    private PekaEDSGUI gui;    
     public PlayLevelAction(PekaEDSGUI ui) {
         this.gui = ui;
-
-        File assetsPath = PK2FileSystem.getAssetsPath();
-        if(isWindows()){
-            this.executable = WINDOWS_EXECUTABLE;
-            this.executableDirectory = assetsPath;
-        }
-        else{
-            if(assetsPath.getAbsolutePath().startsWith("/usr/local")){
-                this.executable = "/usr/local/games/pekka-kana-2";
-                this.executableDirectory = assetsPath;
-            }
-            else if(assetsPath.getAbsolutePath().startsWith("/usr")){
-                this.executable = "/usr/games/pekka-kana-2";
-                this.executableDirectory = assetsPath;
-            }
-            else if(assetsPath.getName().equals("res")){
-                this.executable = "./bin/pekka-kana-2";
-                this.executableDirectory = assetsPath.getParentFile();
-            }
-            else{
-                this.executable = LINUX_AND_MAC_EXECUTABLE;
-                this.executableDirectory = assetsPath;
-            }
-        }
-
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (gui.unsavedChangesPresent()) {
             int result = UnsavedChangesDialog.show(gui);
             
@@ -78,56 +33,7 @@ public class PlayLevelAction extends AbstractAction {
 
 
     private void playLevel(){
-        if(process!=null && process.isAlive()){
-            return;
-        }
-        
-        try {
-            LevelTestingSettings lts = Settings.levelTestingSettings;
-
-            String exec;
-            File dir;
-
-            if(lts.customExecutable){
-                exec = lts.executable;
-            }
-            else{
-                exec = this.executable;
-            }
-
-
-            if(lts.customWorkingDirectory){
-                dir = new File(lts.workingDirectory);
-            }
-            else{
-                dir = this.executableDirectory;
-            }
-
-            /**
-             * Windows for some reason requires a full path to .exe
-             */
-            if(isWindows()){
-                exec = Paths.get(dir.getPath(), exec).toString();
-            }
-
-            ArrayList<String> commands = new ArrayList<>();
-            commands.add(exec);
-
-            if(lts.devMode){
-                commands.add("--dev");
-            }
-
-            commands.add("--test");
-            commands.add(gui.getCurrentFile().getPath());
-
-            ProcessBuilder builder = new ProcessBuilder();
-            builder.directory(dir);
-
-            builder.command(commands);
-            process = builder.start();
-
-        } catch (Exception e) {
-            Logger.error(e);
-        }
+        File levelFile = gui.getCurrentFile();
+        LevelTestingUtil.playLevel(levelFile);
     }
 }

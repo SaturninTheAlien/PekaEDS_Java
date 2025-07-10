@@ -131,7 +131,10 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
         try{
             PK2FileSystem.setAssetsPath(gamePath);
             Settings.setBasePath(gamePath);
-            this.pkeds.setupOpenRecentMenu();
+
+            if(this.pkeds!=null){
+                this.pkeds.setupOpenRecentMenu();
+            }
         }
         catch(FileNotFoundException e){
             JOptionPane.showMessageDialog(this, gamePath + "\nis not a PK2 directory!", "Incorrect game path!", JOptionPane.ERROR_MESSAGE);

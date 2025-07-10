@@ -1,8 +1,5 @@
 package pekase3.panels.imagepanel.spritesheetpanel;
 
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
-
-import pekase3.panels.imagepanel.spritesheetpanel.FrameEditMode.MoveOrResizeMode;
 
 import java.awt.*;
 

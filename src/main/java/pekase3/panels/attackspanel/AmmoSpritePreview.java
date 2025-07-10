@@ -2,7 +2,7 @@ package pekase3.panels.attackspanel;
 
 import net.miginfocom.swing.MigLayout;
 import pekase3.panels.FrameImagePanel;
-import pekase3.settings.Settings;
+import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 
 import javax.swing.*;
@@ -16,11 +16,8 @@ public class AmmoSpritePreview extends JPanel {
     
     private FrameImagePanel imagePanel;
     
-    private Settings settings;
     
-    public AmmoSpritePreview(Settings settings) {
-        this.settings = settings;
-        
+    public AmmoSpritePreview() {       
         setup();
     }
     
@@ -55,7 +52,7 @@ public class AmmoSpritePreview extends JPanel {
     
     public void setSprite(PK2Sprite sprite) {
         if (sprite != null) {
-            lblDamageType.setText(settings.getSpriteProfile().getDamageMap().get(sprite.getDamageType()));
+            lblDamageType.setText(Settings.getSpriteProfile().getDamageMap().get(sprite.getDamageType()));
             lblDamageAmount.setText(Integer.toString(sprite.getDamage()));
             lblAttackPause.setText(Integer.toString(sprite.getAttackPause()));
             

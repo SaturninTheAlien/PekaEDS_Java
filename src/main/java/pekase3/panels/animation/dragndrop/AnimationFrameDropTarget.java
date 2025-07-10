@@ -5,20 +5,17 @@ import org.tinylog.Logger;
 import pekase3.panels.animation.preview.AnimationContainer;
 
 import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class AnimationFrameDropTarget extends DropTargetAdapter {
-    private final DropTarget dropTarget;
+    //private final DropTarget dropTarget;
     private final AnimationContainer panel;
     
     public AnimationFrameDropTarget(AnimationContainer panel) {
         this.panel = panel;
         
-        dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
+        //dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
     }
     
     @Override

@@ -3,6 +3,7 @@ package pk2.profile;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class SpriteProfileOld {
     protected static class AiTablePair {
         private int id;

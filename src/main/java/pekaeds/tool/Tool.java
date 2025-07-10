@@ -248,6 +248,7 @@ public abstract class Tool {
     public abstract void onSelect();
     public abstract void onDeselect(boolean ignorePrompts);
     
+    @SuppressWarnings("incomplete-switch")
     public void onUndo(UndoAction action) {
         switch (action.getType()) {
             case PLACE_TILE,
@@ -264,6 +265,7 @@ public abstract class Tool {
         action.changeIntoRedo();
     }
     
+    @SuppressWarnings("incomplete-switch")
     public void onRedo(UndoAction action) {
         switch (action.getType()) {
             case PLACE_TILE,

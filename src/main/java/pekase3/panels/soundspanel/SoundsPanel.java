@@ -1,10 +1,9 @@
 package pekase3.panels.soundspanel;
 
 import net.miginfocom.swing.MigLayout;
-import pekase3.FileFormat;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
-import pekase3.settings.Settings;
+import pk2.filesystem.PK2FileSystem;
 import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 
@@ -13,31 +12,19 @@ import org.tinylog.Logger;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SoundsPanel extends PekaSE2Panel {
-    public static final int SOUND_ENTRY_SPECIAL_1 = 5;
-    public static final int SOUND_ENTRY_SPECIAL_2 = 6;
-    
-    private Settings settings;
-    
+        
     private List<SoundEntry> soundEntryList;
     
     private JCheckBox cbRandomFrequency;
     private JSpinner spSoundFrequency;
     
-    public SoundsPanel(Settings settings) {
-        this.settings = settings;
-        
+    public SoundsPanel() {
         setup();
-    }
-    
-    public void setFileFormat(FileFormat fileFormat) {
-        soundEntryList.get(SOUND_ENTRY_SPECIAL_1).setVisible(fileFormat == FileFormat.GRETA);
-        soundEntryList.get(SOUND_ENTRY_SPECIAL_2).setVisible(fileFormat == FileFormat.GRETA);
     }
     
     private void setup() {
@@ -82,9 +69,7 @@ public class SoundsPanel extends PekaSE2Panel {
         
         soundEntryList.add(new SoundEntry("Special 1"));
         soundEntryList.add(new SoundEntry("Special 2"));
-        
-        soundEntryList.get(SOUND_ENTRY_SPECIAL_1).setVisible(false);
-        soundEntryList.get(SOUND_ENTRY_SPECIAL_2).setVisible(false);
+
     }
     
     @Override
@@ -157,11 +142,11 @@ public class SoundsPanel extends PekaSE2Panel {
             add(btnBrowse);
             add(btnPlay);
             
-            btnBrowse.addActionListener(new BrowseWavAction(tfSoundFile, settings.getSpritesPath()));
+            btnBrowse.addActionListener(new BrowseWavAction(tfSoundFile, PK2FileSystem.getAssetsPath(PK2FileSystem.SPRITES_DIR).getAbsolutePath()));
             
             btnPlay.addActionListener(e -> {
                 try {
-                    var stream = AudioSystem.getAudioInputStream(new File(settings.getSpritesPath() + File.separatorChar + tfSoundFile.getText()));
+                    var stream = AudioSystem.getAudioInputStream(PK2FileSystem.findAsset(tfSoundFile.getText(), PK2FileSystem.SPRITES_DIR));
                     var info = new DataLine.Info(Clip.class, stream.getFormat());
                     
                     var clip = (Clip) AudioSystem.getLine(info);

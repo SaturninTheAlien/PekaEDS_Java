@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import java.awt.*;
 
+@Deprecated
 public class SettingsDialog extends JDialog {
     private Settings settings;
     

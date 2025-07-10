@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 public class FHSHelper {
 
     private static File prefPath = null;
+    private static File prefPathGame = null;
     private static File lastSessionFile = null;
     private static File settingsFile = null;
 
@@ -13,16 +14,19 @@ public class FHSHelper {
 
         String os = System.getProperty("os.name").toLowerCase();
         String dotLocalPath = Paths.get("piste-gamez", "peka-eds-java").toString();
+        String dotLocalPathGame = Paths.get("piste-gamez", "pekka-kana-2").toString();
 
         //Windows
         if(os.contains("win")){
             String appdata = System.getenv("APPDATA");
             prefPath = Paths.get(appdata, dotLocalPath).toFile();
+            prefPathGame = Paths.get(appdata, dotLocalPathGame).toFile();
         }
         //Linux and MacOS
         else{
             String home = System.getProperty("user.home");
             prefPath = Paths.get(home, ".local/share/", dotLocalPath).toFile();
+            prefPathGame = Paths.get(home, ".local/share/", dotLocalPathGame).toFile();
         }
 
         if(!prefPath.exists()){
@@ -39,6 +43,10 @@ public class FHSHelper {
 
     public static File getPrefPath(){
         return prefPath;
+    }
+
+    public static File getPrefPathGame(){
+        return prefPathGame;
     }
 
     public static File getSettingsFile(){

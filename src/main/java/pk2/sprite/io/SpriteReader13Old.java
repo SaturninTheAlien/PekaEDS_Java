@@ -2,11 +2,17 @@ package pk2.sprite.io;
 
 import java.io.*;
 
-import pk2.settings.Settings;
 import pk2.sprite.SpritePrototype;
 import pk2.util.PK2FileUtils;
 
 class SpriteReader13Old implements SpriteReader {
+
+
+    private static final int STRING_LENGTH_NAME = 32;
+    private static final int STRING_LENGTH_FILES = 100;
+    private static final int NUMBER_OF_SOUNDS = 7;
+    private static final int NUMBER_OF_ANIMATION = 20;
+    private static final int NUMBER_OF_AIs = 10;
 
     @Override
     public SpritePrototype readSpriteFile(File file) throws IOException {
@@ -17,15 +23,15 @@ class SpriteReader13Old implements SpriteReader {
         
         spr.setType(Integer.reverseBytes(in.readInt()));
 
-        spr.setImageFile(PK2FileUtils.readString(in, Settings.getSpriteProfile().getStringLengthFiles()));
+        spr.setImageFile(PK2FileUtils.readString(in, STRING_LENGTH_FILES));
         
         // Skip sound files
-        for (int i = 0; i < Settings.getSpriteProfile().getAmountOfSounds(); i++) {
+        for (int i = 0; i < NUMBER_OF_SOUNDS; i++) {
             in.readNBytes(100);
         }
         
         // Skip unused data
-        for (int i = 0; i < Settings.getSpriteProfile().getAmountOfSounds(); i++) {
+        for (int i = 0; i < NUMBER_OF_SOUNDS; i++) {
             in.readInt();
         }
         
@@ -33,7 +39,7 @@ class SpriteReader13Old implements SpriteReader {
         spr.setFramesAmount((int) in.readByte() & 0xFF);
         
         // Skip animation data
-        for (int i = 0; i < Settings.getSpriteProfile().getAmountOfAnimations(); i++) {
+        for (int i = 0; i < NUMBER_OF_ANIMATION; i++) {
             for (int j = 0; j < 10; j++) {
                 in.readByte();
             }
@@ -55,7 +61,7 @@ class SpriteReader13Old implements SpriteReader {
         
         in.readInt(); // Frame distance, doesn't seem to be used.
         
-        spr.setName(PK2FileUtils.readString(in, Settings.getSpriteProfile().getStringLengthName()));
+        spr.setName(PK2FileUtils.readString(in, STRING_LENGTH_NAME));
 
         in.readInt(); // width
         in.readInt(); // height
@@ -79,7 +85,7 @@ class SpriteReader13Old implements SpriteReader {
         
         in.readInt(); // score
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NUMBER_OF_AIs; i++) {
             in.readInt(); // AI
         }
         

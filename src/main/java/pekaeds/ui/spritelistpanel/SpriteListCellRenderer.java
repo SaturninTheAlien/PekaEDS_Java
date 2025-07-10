@@ -89,7 +89,7 @@ public class SpriteListCellRenderer extends JPanel implements ListCellRenderer<S
         
         String typeText = "Missing";
         if (sprite.getType() > -1) {
-            typeText = Settings.getSpriteProfile().getTypes().get(sprite.getType() - 1);
+            typeText = Settings.getSpriteProfile().getTypeMap().get(sprite.getType());
         }
         
         spriteTypeLbl.setText(typeText);

@@ -3,7 +3,6 @@ package pekase3.panels.animation.preview;
 import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.FrameImagePanel;
-import pk2.sprite.PK2SpriteAnimation;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -15,13 +14,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationContainer extends JPanel implements MouseListener {
-    private final static int IMAGE_PADDING = 24;
     
     private FrameImagePanel imagePanel;
     private JTextField tfFrameNumber;

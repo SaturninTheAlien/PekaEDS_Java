@@ -2,19 +2,13 @@ package pekase3;
 
 import org.tinylog.Logger;
 
-import pekase3.dialogs.SettingsDialog;
 import pekase3.dialogs.UnsavedChangesDialog;
 import pekase3.panels.spriteeditpane.SpriteEditPane;
-import pekase3.profile.ProfileReader;
-import pekase3.settings.Settings;
-import pekase3.settings.SettingsIO;
 import pk2.filesystem.PK2FileSystem;
-import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
 import pk2.util.GFXUtils;
-import pekase3.util.MessageBox;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -23,15 +17,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class PekaSE3GUI extends JFrame implements ChangeListener {
-    private static final String PROFILES_FOLDER = "profiles";
-    private static final String GRETA_PROFILE = "greta.yml";
-    
-    private Settings settings = null;
-    
+public class PekaSE3GUI extends JFrame implements ChangeListener {       
     private JTabbedPane tpSprite = new JTabbedPane(JTabbedPane.BOTTOM);    
     private JMenuBar menuBar;
     private JMenu mFile;
@@ -40,43 +27,20 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
     private JMenuItem miFSave;
     private JMenuItem miFSaveAs;
     private JMenuItem miQuit;
-    
-    private JMenu mProfiles;
-    
+        
     private JMenu mOther;
     private JMenuItem mOSettings;
     private JMenuItem mOAbout;
     
     private File loadedFile;
     
-    private SpriteEditPane editPane;
-    
-    private SettingsDialog settingsDialog;
-    
-    private List<File> profileFiles = new ArrayList<>();
-    
+    private SpriteEditPane editPane;    
     private String title;
     
-    //private SpriteProfile legacyProfile = null;
-    private SpriteProfile gretaProfile = null;
-    
     public void setup() {        
-        settingsDialog = new SettingsDialog();
-        
         createMenuBar();
         setJMenuBar(menuBar);
-        
-        try {
-            settings = SettingsIO.load(Settings.FILE);
-            
-            setupEditPane();
-        } catch (IOException e) {
-
-            settings = new Settings();
-            settings.setGamePath(PK2FileSystem.getAssetsPath().getPath());
-
-            setupEditPane();
-        }
+        setupEditPane();
         
         addListeners();
         
@@ -104,14 +68,9 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
         }
     }
     
-    private void setupEditPane() {
-        settingsDialog.setSettings(settings);
-        
-        editPane = new SpriteEditPane(settings);
+    private void setupEditPane() {        
+        editPane = new SpriteEditPane();
         editPane.registerUnsavedChangesListener(this);
-        
-        gretaProfile = loadProfile(GRETA_PROFILE);
-        setProfile(gretaProfile);
         
         setContentPane(editPane);
         
@@ -124,16 +83,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
     public void pathSet() {
         setContentPane(tpSprite);
         
-        try {
-            settings = SettingsIO.load(Settings.FILE);
-
-            setupEditPane();
-        } catch (IOException e) {
-
-            settings = new Settings();
-            settings.setGamePath(PK2FileSystem.getAssetsPath().getPath());
-            setupEditPane();
-        }
+        setupEditPane();
     }
     
     
@@ -183,9 +133,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
         updateTitle(file.getAbsolutePath(), false);
     }
     
-    private void newFile() {
-        setProfile(gretaProfile);
-        
+    private void newFile() {        
         editPane.resetValues();
         editPane.setSprite(new PK2Sprite());
         
@@ -266,10 +214,6 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
             }
         });
         
-        mOSettings.addActionListener(e -> {
-            settingsDialog.setVisible(true);
-        });
-        
         mOAbout.addActionListener(e -> {
             JOptionPane.showMessageDialog(null, "PekaSE2 v" + PekaSE3.VERSION, "About", JOptionPane.INFORMATION_MESSAGE);
         });
@@ -277,44 +221,6 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
         miQuit.addActionListener(e -> {
             System.exit(0);
         });
-    }
-
-    private void addProfileMenuItems() {
-        var profiles = new File(PROFILES_FOLDER).listFiles();
-        if (profiles != null) {
-            for (var f : profiles) {
-                var menuItem = new JCheckBoxMenuItem(f.getName());
-                mProfiles.add(menuItem);
-                
-                menuItem.addActionListener(e -> {
-                    if (!menuItem.getText().equals(settings.getSpriteProfileFile())) {
-                        loadProfile(menuItem.getText());
-                        
-                        if (menuItem.getText().equals(f.getName())) {
-                            menuItem.setSelected(true);
-                        } else {
-                            menuItem.setSelected(false);
-                        }
-                        
-                        SettingsIO.save(Settings.FILE, settings);
-                    }
-                });
-                
-                profileFiles.add(f);
-            }
-        } else {
-            Logger.warn("Unable to find profile files!");
-        }
-    }
-
-    private SpriteProfile loadProfile(String file) {
-        return ProfileReader.loadSpriteProfile(PROFILES_FOLDER + File.separatorChar + file);
-    }
-    
-    private void setProfile(SpriteProfile profile) {
-        settings.setSpriteProfile(profile);
-        
-        editPane.setSpriteProfile(settings.getSpriteProfile());
     }
     
     private void updateTitle(String title, boolean unsavedChanges) {

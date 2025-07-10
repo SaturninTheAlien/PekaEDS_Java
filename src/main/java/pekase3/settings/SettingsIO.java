@@ -26,10 +26,13 @@ public final class SettingsIO {
         settings = new Settings();
         settings.setGamePath(dis.readUTF());
         settings.setSpriteProfileFile(dis.readUTF());
+        dis.close();
         
         if (!new File(settings.getGamePath()).exists()) {
             throw new FileNotFoundException("Game directory '" + settings.getGamePath() + "' doesn't exist!");
         }
+
+        
         
         return settings;
     }

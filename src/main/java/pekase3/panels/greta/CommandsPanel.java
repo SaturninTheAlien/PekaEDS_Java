@@ -10,8 +10,6 @@ import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CommandsPanel extends PekaSE2Panel {
     private JTextArea taCommands;

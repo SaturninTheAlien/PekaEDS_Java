@@ -3,7 +3,6 @@ package pekase3.panels.imagepanel.spritesheetpanel.FrameEditMode;
 import javax.swing.*;
 
 import pekase3.panels.imagepanel.spritesheetpanel.FrameGFXUtils;
-import pekase3.panels.imagepanel.spritesheetpanel.SpriteSheetPanel;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

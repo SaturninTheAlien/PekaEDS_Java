@@ -20,7 +20,7 @@ public class PanelTesting extends JPanel implements ISettingsPanel{
         this.cbDevMode = new JCheckBox("Dev mode");
 
         this.cbCustomExecutable = new JCheckBox("Use custom command");
-        this.cbCustomDirectory = new JCheckBox("Use custom game directory");
+        this.cbCustomDirectory = new JCheckBox("Use custom data directory");
 
         
 
@@ -53,13 +53,13 @@ public class PanelTesting extends JPanel implements ISettingsPanel{
         this.cbDevMode.setSelected(lts.devMode);
 
         this.cbCustomExecutable.setSelected(lts.customExecutable);
-        this.cbCustomDirectory.setSelected(lts.customWorkingDirectory);
+        this.cbCustomDirectory.setSelected(lts.customDataDirectory);
 
         this.tfExecutable.setText(lts.executable);
-        this.tfDirectory.setText(lts.workingDirectory);
+        this.tfDirectory.setText(lts.dataDirectory);
 
         this.tfExecutable.setEnabled(lts.customExecutable);
-        this.tfDirectory.setEnabled(lts.customWorkingDirectory);
+        this.tfDirectory.setEnabled(lts.customDataDirectory);
     }
 
     public void saveSettings(){
@@ -67,9 +67,9 @@ public class PanelTesting extends JPanel implements ISettingsPanel{
 
         lts.devMode = this.cbDevMode.isSelected();
         lts.customExecutable = this.cbCustomExecutable.isSelected();
-        lts.customWorkingDirectory = this.cbCustomDirectory.isSelected();
+        lts.customDataDirectory = this.cbCustomDirectory.isSelected();
 
         lts.executable = this.tfExecutable.getText();
-        lts.workingDirectory = this.tfDirectory.getText();
+        lts.dataDirectory = this.tfDirectory.getText();
     }
 }

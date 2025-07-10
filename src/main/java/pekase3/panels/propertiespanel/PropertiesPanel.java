@@ -3,20 +3,17 @@ package pekase3.panels.propertiespanel;
 import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
-import pekase3.settings.Settings;
 import pk2.filesystem.PK2FileSystem;
 import pk2.profile.SpriteProfile;
+import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
-import pk2.sprite.io.UnsupportedSpriteFormatException;
 import pk2.ui.SpriteFileChooser;
 import pk2.util.GFXUtils;
 
 import org.tinylog.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
@@ -66,16 +63,12 @@ public final class PropertiesPanel extends PekaSE2Panel {
     private JComboBox<String> cbDestructionEffect;
     
     private JComboBox<String> cbImmunity;
-    
-    private Settings settings;
-    
+        
     private SpriteFileChooser fileChooser;
     
     private final SpritePreview bonusSpritePreview;
     
-    public PropertiesPanel(Settings settings) {
-        this.settings = settings;
-        
+    public PropertiesPanel() {        
         fileChooser = new SpriteFileChooser();
         
         bonusSpritePreview = new SpritePreview(null, Map.of("Score", ""));
@@ -305,7 +298,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         hitboxWidth.setValue(sprite.getWidth());
         hitboxHeight.setValue(sprite.getHeight());
         
-        cbType.setSelectedItem(settings.getSpriteProfile().getTypeMap().get(sprite.getType()));
+        cbType.setSelectedItem(Settings.getSpriteProfile().getTypeMap().get(sprite.getType()));
         
         spWeight.setValue(sprite.getWeight());
         spEnergy.setValue(sprite.getEnergy());
@@ -344,12 +337,12 @@ public final class PropertiesPanel extends PekaSE2Panel {
         tfTransformSprite.setText(sprite.getTransformationSpriteFile());
         
         int destructionType = sprite.getDestruction() >= 100 ? 100 : 0;
-        cbDestruction.setSelectedItem(settings.getSpriteProfile().getDestructionType().get(destructionType));
+        cbDestruction.setSelectedItem(Settings.getSpriteProfile().getDestructionType().get(destructionType));
         
         int destructionEffect = sprite.getDestruction() >= 100 ? sprite.getDestruction() - 100 : sprite.getDestruction();
-        cbDestructionEffect.setSelectedItem(settings.getSpriteProfile().getDestructionEffects().get(destructionEffect));
+        cbDestructionEffect.setSelectedItem(Settings.getSpriteProfile().getDestructionEffects().get(destructionEffect));
         
-        cbImmunity.setSelectedItem(settings.getSpriteProfile().getImmunityMap().get(sprite.getImmunityToDamageType()));
+        cbImmunity.setSelectedItem(Settings.getSpriteProfile().getImmunityMap().get(sprite.getImmunityToDamageType()));
     }
     
     private void updateBonusSpritePreview(String file) {
@@ -439,7 +432,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         sprite.setHeight((int) hitboxHeight.getValue());
         
         int type = 0;
-        for (var t : settings.getSpriteProfile().getTypeMap().entrySet()) {
+        for (var t : Settings.getSpriteProfile().getTypeMap().entrySet()) {
             if (t.getValue().equals(cbType.getSelectedItem())) {
                 type = t.getKey();
                 
@@ -481,7 +474,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         sprite.setTransformationSpriteFile(tfTransformSprite.getText());
         
         int destruction = 0;
-        for (var d : settings.getSpriteProfile().getDestructionType().entrySet()) {
+        for (var d : Settings.getSpriteProfile().getDestructionType().entrySet()) {
             if (d.getValue().equals(cbDestruction.getSelectedItem())) {
                 destruction = d.getKey();
                 
@@ -489,7 +482,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
             }
         }
         
-        for (var d : settings.getSpriteProfile().getDestructionEffects().entrySet()) {
+        for (var d : Settings.getSpriteProfile().getDestructionEffects().entrySet()) {
             if (d.getValue().equals(cbDestructionEffect.getSelectedItem())) {
                 destruction += d.getKey();
                 
@@ -500,7 +493,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         sprite.setDestruction(destruction);
         
         int immunity = 0;
-        for (var d : settings.getSpriteProfile().getImmunityMap().entrySet()) {
+        for (var d : Settings.getSpriteProfile().getImmunityMap().entrySet()) {
             if (d.getValue().equals(cbImmunity.getSelectedItem())) {
                 immunity = d.getKey();
                 

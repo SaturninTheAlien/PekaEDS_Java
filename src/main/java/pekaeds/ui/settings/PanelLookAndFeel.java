@@ -51,7 +51,10 @@ public class PanelLookAndFeel extends JPanel implements ISettingsPanel {
         Settings.setLookAndFeel(selectedTheme);
         LookAndFeelHelper.updateTheme();
         SwingUtilities.updateComponentTreeUI(settingsDialog);
-        SwingUtilities.updateComponentTreeUI(eds.getFrame());
+
+        if(this.eds!=null){
+            SwingUtilities.updateComponentTreeUI(this.eds.getFrame());
+        }
     }
 
     @Override

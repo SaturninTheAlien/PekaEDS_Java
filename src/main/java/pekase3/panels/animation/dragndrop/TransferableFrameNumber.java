@@ -15,14 +15,13 @@ public class TransferableFrameNumber implements Transferable {
     };
     
     private int frameNumber;
-    private BufferedImage image;
     
     public TransferableFrameNumber(int frame) {
         this.frameNumber = frame;
     }
-    
+
+    @Deprecated    
     public TransferableFrameNumber(BufferedImage image) {
-        this.image = image;
     }
     
     @Override

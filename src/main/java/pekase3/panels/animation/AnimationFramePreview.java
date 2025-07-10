@@ -5,17 +5,14 @@ import pekase3.panels.FrameImagePanel;
 
 import javax.swing.*;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class AnimationFramePreview extends JPanel {
     private FrameImagePanel frameImage;
     private JLabel lblFrameNumber;
     
-    private int width;
-    private int height;
+    int width;
+    int height;
     
     public AnimationFramePreview(BufferedImage image, int frame) {
         this(image, frame, image.getWidth(), image.getHeight());

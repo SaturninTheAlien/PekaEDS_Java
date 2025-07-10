@@ -12,9 +12,12 @@ import java.util.List;
 import java.util.Map;
 import org.tinylog.Logger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import pekaeds.ui.misc.LookAndFeelHelper;
 import pk2.profile.LevelProfile;
-import pk2.profile.SpriteProfileOld;
+import pk2.profile.SpriteProfile;
 
 /**
  * TODO: This class shouldn't have anything static in it.
@@ -43,7 +46,7 @@ public class Settings {
     public static LevelTestingSettings levelTestingSettings = new LevelTestingSettings();
     
     private static LevelProfile mapProfile = LevelProfile.getDefaultProfile();
-    private static SpriteProfileOld spriteProfile = new SpriteProfileOld();
+    private static SpriteProfile spriteProfile;
         
     public static boolean highlightSprites = true;
     private static boolean showTileNumberInTileset = true;
@@ -123,12 +126,25 @@ public class Settings {
                 setKeyboardShortcutFor(dis.readUTF(), KeyStroke.getKeyStroke(dis.readInt(), dis.readInt()));
             }
             
-            setBasePath(basePath);
+            setBasePath(basePath);           
+
+
         } catch (IOException e) {
             Logger.warn(e, "Unable to load settings file.");
             
             // TODO Why did I throw this here?
             throw e;
+        }
+
+
+        //Load sprite profile
+        try{
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            spriteProfile = mapper.readValue(SpriteProfile.class.getResourceAsStream("/profiles/sprite.yml"), SpriteProfile.class);
+        }
+        catch(Exception e){
+            Logger.warn(e, "Unable to load the sprite profile file.");
+            spriteProfile = new SpriteProfile();
         }
     }
     
@@ -288,11 +304,11 @@ public class Settings {
         mapProfile = mProfile;
     }
     
-    public static SpriteProfileOld getSpriteProfile() {
+    public static SpriteProfile getSpriteProfile() {
         return spriteProfile;
     }
-    
-    public static void setSpriteProfile(SpriteProfileOld sprProfile) {
+
+    public static void setSpriteProfile(SpriteProfile sprProfile) {
         spriteProfile = sprProfile;
     }
     

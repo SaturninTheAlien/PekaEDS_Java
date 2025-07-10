@@ -2,11 +2,12 @@ package pk2.sprite.io;
 
 import java.io.*;
 
-import pk2.settings.Settings;
 import pk2.sprite.SpritePrototype;
 import pk2.util.PK2FileUtils;
 
 class SpriteReader12 implements SpriteReader {
+
+    private static final int NUMBER_OF_ANIMATION = 20;
 
     @Override
     public SpritePrototype readSpriteFile(File file) throws IOException {
@@ -33,7 +34,7 @@ class SpriteReader12 implements SpriteReader {
         spr.setFramesAmount((int) in.readByte() & 0xFF);
     
         // Skip animation data
-        for (int i = 0; i < Settings.getSpriteProfile().getAmountOfAnimations(); i++) {
+        for (int i = 0; i < NUMBER_OF_ANIMATION; i++) {
             for (int j = 0; j < 10; j++) {
                 in.readByte();
             }

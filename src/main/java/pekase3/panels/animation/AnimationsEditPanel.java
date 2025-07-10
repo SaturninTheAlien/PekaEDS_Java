@@ -2,13 +2,10 @@ package pekase3.panels.animation;
 
 import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
-import pekase3.panels.FrameImagePanel;
 import pekase3.panels.PekaSE2Panel;
 import pekase3.panels.animation.dragndrop.AnimationDragGestureListener;
-import pekase3.panels.animation.preview.AnimationContainer;
 import pekase3.panels.animation.preview.AnimationPanel;
 import pekase3.panels.spriteeditpane.SpriteFramesChangeListener;
-import pekase3.settings.Settings;
 import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.PK2SpriteAnimation;
@@ -16,12 +13,8 @@ import pekase3.util.WrapLayout;
 
 import javax.swing.*;
 
-import java.awt.*;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,22 +22,17 @@ import java.util.List;
 public class AnimationsEditPanel extends PekaSE2Panel implements SpriteFramesChangeListener {
     private JTabbedPane tpAnimations;
     
-    private List<FrameImagePanel> framePanels;
     private List<AnimationPanel> animationPanelList;
     
     private JPanel framePanelsPanel;
     
     private JSpinner spFrameRate;
-    
-    private Settings settings;
-    
+        
     private AnimationsEditModel model;
     
     private JSplitPane splitPane;
     
-    public AnimationsEditPanel(Settings settings) {
-        this.settings = settings;
-        
+    public AnimationsEditPanel() {      
         this.model = new AnimationsEditModel();
         
         setup();
@@ -54,9 +42,7 @@ public class AnimationsEditPanel extends PekaSE2Panel implements SpriteFramesCha
         animationPanelList = new ArrayList<>();
         
         tpAnimations = new JTabbedPane();
-        
-        framePanels = new ArrayList<>();
-        
+                
         framePanelsPanel = new JPanel();
         framePanelsPanel.setLayout(new WrapLayout());
         
@@ -109,7 +95,7 @@ public class AnimationsEditPanel extends PekaSE2Panel implements SpriteFramesCha
     }
     
     private void addAnimationPanel(String title) {
-        var ap = new AnimationPanel(model, settings);
+        var ap = new AnimationPanel(model);
         animationPanelList.add(ap);
         
         tpAnimations.add(ap, title);
