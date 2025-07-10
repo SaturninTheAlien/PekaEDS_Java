@@ -36,7 +36,6 @@ public class AIListPanel extends PekaSE2Panel {
         aiPanelList = new ArrayList<>();
         
         setup();
-        setProfileData(Settings.getSpriteProfile());
     }
     
     private void setup() {
@@ -111,7 +110,7 @@ public class AIListPanel extends PekaSE2Panel {
     @Override
     public void setValues(PK2Sprite sprite) {
         sprite.getAiList().clear();
-        for(int i = 0; i<sprite.getAiList().size(); ++i){
+        for(int i = 0; i<spAiList.size(); ++i){
             sprite.getAiList().add((int) spAiList.get(i).getValue());
         }
     }

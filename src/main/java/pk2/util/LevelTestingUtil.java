@@ -86,10 +86,6 @@ public class LevelTestingUtil {
             }
 
 
-            for(String s: commands){
-                System.out.println(s);
-            }
-
             ProcessBuilder builder = new ProcessBuilder();
             builder.directory(PK2FileSystem.getAssetsPath());
             builder.command(commands);

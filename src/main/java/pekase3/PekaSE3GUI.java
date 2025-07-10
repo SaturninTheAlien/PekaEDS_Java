@@ -7,7 +7,9 @@ import pekaeds.ui.main.IPekaEdsApp;
 import pekaeds.ui.settings.SettingsDialog;
 import pekase3.dialogs.UnsavedChangesDialog;
 import pekase3.panels.spriteeditpane.SpriteEditPane;
+import pekase3.util.QuickSpriteTest;
 import pk2.filesystem.PK2FileSystem;
+import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
@@ -19,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
@@ -32,6 +35,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
     private JMenuItem miFSave;
     private JMenuItem miFSaveAs;
     private JMenuItem miQuit;
+    private JMenuItem miQuickTest;
         
     private JMenu mOther;
     private JMenuItem mOSettings;
@@ -76,6 +80,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
     private void setupEditPane() {        
         editPane = new SpriteEditPane();
         editPane.registerUnsavedChangesListener(this);
+        editPane.setSpriteProfile(Settings.getSpriteProfile());
         
         setContentPane(editPane);
         
@@ -98,7 +103,17 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         try {
             var file = new File(filename);
             sprite =  SpriteIO.loadSpriteFile(file);
-            PK2FileSystem.setEpisodeDir(file.getParentFile());
+
+            File episodeDir = file.getParentFile();
+
+            if(episodeDir.getName().equals(PK2FileSystem.SPRITES_DIR)){
+                episodeDir = episodeDir.getParentFile();
+                if(episodeDir.equals(PK2FileSystem.getAssetsPath())){
+                    episodeDir = null;
+                }
+            }
+
+            PK2FileSystem.setEpisodeDir(episodeDir);
 
             loadedFile = file;
 
@@ -158,12 +173,16 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         miFSave = new JMenuItem("Save");
         miFSaveAs = new JMenuItem("Save As...");
         miQuit = new JMenuItem("Quit");
+        miQuickTest = new JMenuItem("Test sprite");
         
         mFile.add(miFNew);
         mFile.add(miFOpen);
         mFile.addSeparator();
         mFile.add(miFSave);
         mFile.add(miFSaveAs);
+        mFile.addSeparator();
+        mFile.add(miQuickTest);
+
         mFile.addSeparator();
         mFile.add(miQuit);
         
@@ -221,6 +240,19 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         
         mOAbout.addActionListener(e -> {
             JOptionPane.showMessageDialog(null, PekaEDSVersion.VERSION_STRING +", sprite editor", "About", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        miQuickTest.addActionListener(e -> {
+            QuickSpriteTest tester = new QuickSpriteTest();
+            try {
+                tester.testSprite(editPane.setValues());
+            }
+            catch(FileNotFoundException e1){
+                JOptionPane.showMessageDialog(null, "Missing dependency sprite\n"+e1.getMessage(), "Missing sprite", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (IOException e1) {
+                JOptionPane.showMessageDialog(null, e1.getMessage(), "Testing error", JOptionPane.ERROR_MESSAGE);
+            }
         });
         
         miQuit.addActionListener(e -> {

@@ -101,12 +101,12 @@ class SpriteReaderJson implements SpriteReader {
              */
 
             int destruction = json.getInt("how_destroyed");
-            sprite.setDestruction(destruction);
+            sprite.getDestructionEffect(destruction);
             sprite.setIndestructible(destruction==0);
 
         }
         else{
-            sprite.setDestruction(json.getInt("destruction_effect"));
+            sprite.getDestructionEffect(json.getInt("destruction_effect"));
             sprite.setIndestructible(json.getBoolean("indestructible"));
         }
                     

@@ -28,7 +28,6 @@ public class PK2Sprite implements SpritePrototype {
     protected String imageFileIdentifier = "";
     
     protected String[] soundFiles = new String[7];
-    protected List<String> soundFilesList = new ArrayList<>();
     
     protected List<PK2SpriteAnimation> animationsList = new ArrayList<>();
     
@@ -86,7 +85,7 @@ public class PK2Sprite implements SpritePrototype {
     private boolean wallLeft;
     private boolean wallRight;
     
-    private int destruction; // effect?
+    private int destructionEffect;
     private boolean indestructible = false;
     
     private boolean key;
@@ -171,11 +170,7 @@ public class PK2Sprite implements SpritePrototype {
         this.bonusAmount = bonusAmount;
     }
     
-    public PK2Sprite() {
-        for (int i = 0; i < 7; i++) {
-            soundFilesList.add("");
-        }
-        
+    public PK2Sprite() {        
         for (int i = 0; i < 20; i++) {
             animationsList.add(new PK2SpriteAnimation(new byte[10], 0, false));
         }
@@ -593,12 +588,12 @@ public class PK2Sprite implements SpritePrototype {
         fireChanges();
     }
     
-    public int getDestruction() {
-        return destruction;
+    public int getDestructionEffect() {
+        return destructionEffect;
     }
     
-    public void setDestruction(int destruction) {
-        this.destruction = destruction;
+    public void getDestructionEffect(int destruction) {
+        this.destructionEffect = destruction;
         
         fireChanges();
     }
@@ -711,10 +706,6 @@ public class PK2Sprite implements SpritePrototype {
     
     public String getSoundFile(int index) {
         return soundFiles[index];
-    }
-    
-    public List<String> getSoundFilesList() {
-        return soundFilesList;
     }
     
     public void setAnimationsList(List<PK2SpriteAnimation> animations) {

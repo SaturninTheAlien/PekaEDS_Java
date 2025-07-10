@@ -143,7 +143,7 @@ class SpriteReader13 {
 
         int destruction = Integer.reverseBytes(in.readInt());
         
-        spr.setDestruction(destruction);
+        spr.getDestructionEffect(destruction);
         spr.setIndestructible(destruction==0);
         
         spr.setKey(in.readBoolean());

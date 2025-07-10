@@ -336,10 +336,10 @@ public final class PropertiesPanel extends PekaSE2Panel {
         
         tfTransformSprite.setText(sprite.getTransformationSpriteFile());
         
-        int destructionType = sprite.getDestruction() >= 100 ? 100 : 0;
+        int destructionType = sprite.getDestructionEffect() >= 100 ? 100 : 0;
         cbDestruction.setSelectedItem(Settings.getSpriteProfile().getDestructionType().get(destructionType));
         
-        int destructionEffect = sprite.getDestruction() >= 100 ? sprite.getDestruction() - 100 : sprite.getDestruction();
+        int destructionEffect = sprite.getDestructionEffect() >= 100 ? sprite.getDestructionEffect() - 100 : sprite.getDestructionEffect();
         cbDestructionEffect.setSelectedItem(Settings.getSpriteProfile().getDestructionEffects().get(destructionEffect));
         
         cbImmunity.setSelectedItem(Settings.getSpriteProfile().getImmunityMap().get(sprite.getImmunityToDamageType()));
@@ -490,7 +490,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
             }
         }
         
-        sprite.setDestruction(destruction);
+        sprite.getDestructionEffect(destruction);
         
         int immunity = 0;
         for (var d : Settings.getSpriteProfile().getImmunityMap().entrySet()) {

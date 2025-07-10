@@ -64,7 +64,7 @@ public class PK2FileSystem {
     }
 
     public static void setEpisodeDir(File dir){
-        if(dir.exists()){
+        if(dir!=null && dir.exists()){
             mEpisodePath = dir;
         }
         else{

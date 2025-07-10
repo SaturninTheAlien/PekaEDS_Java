@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 class SpriteWriterJson {
     public void save(PK2Sprite sprite, File file) throws IOException {
@@ -92,7 +94,7 @@ class SpriteWriterJson {
         json.put("frame_rate", sprite.getFrameRate());
         json.put("frames_number", sprite.getFramesAmount());
 
-        json.put("destruction_effect", sprite.getDestruction());
+        json.put("destruction_effect", sprite.getDestructionEffect());
         json.put("indestructible", sprite.isIndestructible());
         
         json.put("immunity_type", sprite.getImmunityToDamageType());
@@ -149,9 +151,18 @@ class SpriteWriterJson {
         if (sprite.hasDeadWeight()) {
             json.put("dead_weight", sprite.getDeadWeight());
         }
+
+
+        Map<String, Object> sortedMap = new TreeMap<>();
+        for (String key : json.keySet()) {
+            sortedMap.put(key, json.get(key));
+        }
+
+        JSONObject sortedJson = new JSONObject(sortedMap);
+
         
         try (PrintWriter out = new PrintWriter(file)) {
-            out.println(json.toString());
+            out.println(sortedJson.toString(4));
         } catch (Exception e) {
             e.printStackTrace();
         }
