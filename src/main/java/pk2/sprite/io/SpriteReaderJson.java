@@ -166,6 +166,14 @@ class SpriteReaderJson implements SpriteReader {
             sprite.setInfoID(json.getInt("info_id"));
         }
 
+        if(json.has("effect")){
+            sprite.setAmbientEffect(json.getInt("effect"));
+        }
+
+        if(json.has("blend_mode")){
+            sprite.setBlendMode(json.getInt("blend_mode"));
+        }
+
         return sprite;
     }
     

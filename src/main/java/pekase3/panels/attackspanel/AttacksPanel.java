@@ -61,6 +61,8 @@ public class AttacksPanel extends PekaSE2Panel {
         spAttackPause = new JSpinner(new SpinnerNumberModel());
         
         cbDamageType = new JComboBox<>();
+
+        fileChooser = new SpriteFileChooser();
         
         generateLayout();
         addListeners();

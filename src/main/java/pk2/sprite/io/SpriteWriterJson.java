@@ -153,6 +153,14 @@ class SpriteWriterJson {
         }
 
 
+        json.put("effect", sprite.getAmbientEffect());
+        json.put("blend_mode", sprite.getBlendMode());
+        
+        if(sprite.getBlendMode()!=0){
+            json.put("blend_alpha", sprite.getBlendAlpha());
+        }
+
+
         Map<String, Object> sortedMap = new TreeMap<>();
         for (String key : json.keySet()) {
             sortedMap.put(key, json.get(key));

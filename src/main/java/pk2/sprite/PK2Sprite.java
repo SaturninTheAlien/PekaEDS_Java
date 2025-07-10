@@ -5,6 +5,7 @@ import javax.swing.event.ChangeListener;
 
 import org.json.JSONArray;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +85,7 @@ public class PK2Sprite implements SpritePrototype {
     private boolean wallDown;
     private boolean wallLeft;
     private boolean wallRight;
-    
+
     private int destructionEffect;
     private boolean indestructible = false;
     
@@ -112,6 +113,17 @@ public class PK2Sprite implements SpritePrototype {
     private boolean hasDeadWeight = false;
     
     private JSONArray commands = new JSONArray();
+
+
+    //New GE features
+    private int ambientEffect = 0;
+    private int blendMode = 0;
+    private int blendAlpha = 0;
+
+    private Point2D attack1Offest;
+    private Point2D attack2Offset;
+    private Point2D playerDetection;
+
     
     public boolean isAlwaysActive() {
         return alwaysActive;
@@ -733,6 +745,60 @@ public class PK2Sprite implements SpritePrototype {
 
         fireChanges();
     }
+
+
+
+    public int getAmbientEffect(){
+        return ambientEffect;
+    }
+
+    public void setAmbientEffect(int effect){
+        this.ambientEffect = effect;        
+    }
+
+    public int getBlendMode(){
+        return blendMode;
+    }
+
+    public void setBlendMode(int mode){
+        this.blendMode = mode;
+    }
+
+    public int getBlendAlpha(){
+        return blendAlpha;
+    }
+
+    public void setBlendAlpha(int alpha){
+        this.blendAlpha = alpha;
+    }
+
+
+    public Point2D getAttack1Offset(){
+        return this.attack1Offest;
+    }
+
+    public Point2D getAttack2Offset(){
+        return this.attack2Offset;
+    }
+
+    public Point2D getPlayerDetection(){
+        return this.playerDetection;
+    }
+
+
+    public void setAttack1Offset(Point2D offset){
+        this.attack1Offest = offset;
+    }
+
+    public void setAttack2Offset(Point2D offset){
+        this.attack2Offset = offset;
+    }
+
+    public void setPlayerDetection(Point2D offset){
+        this.playerDetection = offset;
+    }
+
+
 
     /**
      * For level editor
