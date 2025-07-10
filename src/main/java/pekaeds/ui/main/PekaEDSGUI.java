@@ -43,7 +43,7 @@ import pk2.settings.Settings;
 import pk2.settings.Shortcuts;
 import pk2.settings.StartupBehavior;
 
-public class PekaEDSGUI implements ChangeListener {
+public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     //private ChangeEvent changeEvent = new ChangeEvent(this);
 
     private PekaEDSGUIView view;
@@ -78,10 +78,6 @@ public class PekaEDSGUI implements ChangeListener {
         showEditor();
     }
 
-
-    public JFrame getFrame(){
-        return this.view.getFrame();
-    }
 
     void showEditor() {
         // This has to be done before PekaEDSGUIView gets initialized, because it relies on the toolsList in the Tools class.
@@ -645,5 +641,11 @@ public class PekaEDSGUI implements ChangeListener {
         unsavedChanges = value;
 
         updateFrameTitle();
+    }
+
+
+    @Override
+    public void updateLookAndFeel() {
+        SwingUtilities.updateComponentTreeUI(this.view.getFrame());
     }
 }

@@ -36,6 +36,7 @@ public class AIListPanel extends PekaSE2Panel {
         aiPanelList = new ArrayList<>();
         
         setup();
+        setProfileData(Settings.getSpriteProfile());
     }
     
     private void setup() {
@@ -50,7 +51,7 @@ public class AIListPanel extends PekaSE2Panel {
         
         JButton btnRemove = new JButton("Remove Last");
         btnRemove.addActionListener(e -> {
-            if (aiPanelList.size() > 1) {
+            if (aiPanelList.size() > 0) {
                 cbAiList.remove((cbAiList.size() - 1));
                 spAiList.remove((spAiList.size() - 1));
                 

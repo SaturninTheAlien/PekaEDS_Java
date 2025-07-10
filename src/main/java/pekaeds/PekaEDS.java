@@ -23,9 +23,6 @@ import pk2.settings.Settings;
 public class PekaEDS {
     private static AppEnum selectedApp = AppEnum.NOT_SELECTED;
 
-    private static InitialSetupDialog initialSetupDialog;
-    private static AppSelectionDialog appSelectionDialog;
-
     public static void main(String[] args) {
         //parse args
         int state=0;
@@ -36,13 +33,17 @@ public class PekaEDS {
                 if(arg=="--theme"){
                     state = 1;
                 }
-                else if(arg=="--levels-editor"){
+                else if(arg=="--level-editor"){
                     selectedApp = AppEnum.LEVEL_EDITOR;
+                }
+                else if(arg=="--sprite-editor"){
+                    selectedApp = AppEnum.SPRITE_EDITOR;
                 }
             }
             break;    
             case 1:{
                 Settings.setLookAndFeel(arg);
+                state = 0;
             }    
             break;
             default:
@@ -70,7 +71,7 @@ public class PekaEDS {
 
             
             LookAndFeelHelper.updateTheme();
-            initialSetupDialog = new InitialSetupDialog(null);
+            InitialSetupDialog initialSetupDialog = new InitialSetupDialog(null);
             if (initialSetupDialog.setupCompleted()) {
                 initialSetupDialog.dispose();
                 loadSettings();
@@ -88,10 +89,10 @@ public class PekaEDS {
     private static void selectApp(){
 
         if(selectedApp==AppEnum.NOT_SELECTED){
-            appSelectionDialog = new AppSelectionDialog(null);
+            AppSelectionDialog appSelectionDialog = new AppSelectionDialog(null);
             selectedApp = appSelectionDialog.getSelectedApp();
+            appSelectionDialog.dispose();
         }
-
         switch (selectedApp) {
             case LEVEL_EDITOR:
                 SwingUtilities.invokeLater(PekaEDSGUI::new);
@@ -117,10 +118,6 @@ public class PekaEDS {
                 Settings.load(settingsFile);
 
                 File file = new File(Settings.getBasePath());
-                /**
-                 * TODO ??? Should an exception be thrown here?
-                 * If there's something wrong (e.g nota  PK2 directory), it throws an exception
-                 */
                 PK2FileSystem.setAssetsPath(file);
 
                 success = true;

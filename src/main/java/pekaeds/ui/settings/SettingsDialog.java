@@ -3,6 +3,7 @@ package pekaeds.ui.settings;
 import java.util.List;
 import java.util.ArrayList;
 import net.miginfocom.swing.MigLayout;
+import pekaeds.ui.main.IPekaEdsApp;
 import pekaeds.ui.main.PekaEDSGUI;
 import pk2.filesystem.FHSHelper;
 import pk2.settings.Settings;
@@ -15,7 +16,7 @@ public class SettingsDialog extends JDialog {
 
     private List<ISettingsPanel> settingPanels = new ArrayList<>();
         
-    public SettingsDialog(PekaEDSGUI pkeds) {
+    public SettingsDialog(IPekaEdsApp pkeds) {
         tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 
         PanelGeneral panelGeneral = new PanelGeneral(pkeds);
@@ -33,8 +34,8 @@ public class SettingsDialog extends JDialog {
         tabbedPane.add("Defaults", panelDefaults);
         settingPanels.add(panelDefaults);
 
-        if(pkeds!=null){
-            PanelShortcuts panelShortcuts = new PanelShortcuts(pkeds);
+        if(pkeds instanceof PekaEDSGUI){
+            PanelShortcuts panelShortcuts = new PanelShortcuts((PekaEDSGUI)pkeds);
             tabbedPane.add("Shortcuts", new JScrollPane(panelShortcuts));
             settingPanels.add(panelShortcuts);
         }

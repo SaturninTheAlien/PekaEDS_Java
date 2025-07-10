@@ -2,6 +2,9 @@ package pekase3;
 
 import org.tinylog.Logger;
 
+import pekaeds.data.PekaEDSVersion;
+import pekaeds.ui.main.IPekaEdsApp;
+import pekaeds.ui.settings.SettingsDialog;
 import pekase3.dialogs.UnsavedChangesDialog;
 import pekase3.panels.spriteeditpane.SpriteEditPane;
 import pk2.filesystem.PK2FileSystem;
@@ -18,7 +21,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class PekaSE3GUI extends JFrame implements ChangeListener {       
+public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
+
+    private SettingsDialog settingsDialog = null;
     private JTabbedPane tpSprite = new JTabbedPane(JTabbedPane.BOTTOM);    
     private JMenuBar menuBar;
     private JMenu mFile;
@@ -215,11 +220,19 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
         });
         
         mOAbout.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, "PekaSE2 v" + PekaSE3.VERSION, "About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, PekaEDSVersion.VERSION_STRING +", sprite editor", "About", JOptionPane.INFORMATION_MESSAGE);
         });
         
         miQuit.addActionListener(e -> {
             System.exit(0);
+        });
+
+        mOSettings.addActionListener(e->{
+            if (settingsDialog == null) {
+                settingsDialog = new SettingsDialog(this);
+            }
+
+            settingsDialog.setVisible(true);
         });
     }
     
@@ -264,5 +277,16 @@ public class PekaSE3GUI extends JFrame implements ChangeListener {
         } else {
             System.exit(0);
         }
+    }
+
+    @Override
+    public void setupOpenRecentMenu() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void updateLookAndFeel() {
+        // TODO Auto-generated method stub
+        SwingUtilities.updateComponentTreeUI(this);
     }
 }

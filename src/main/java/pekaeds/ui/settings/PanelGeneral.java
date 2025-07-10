@@ -1,7 +1,7 @@
 package pekaeds.ui.settings;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.ui.main.PekaEDSGUI;
+import pekaeds.ui.main.IPekaEdsApp;
 import pk2.filesystem.PK2FileSystem;
 import pk2.settings.Settings;
 import pk2.settings.StartupBehavior;
@@ -30,9 +30,9 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
     private JSpinner spAutosaveInterval;
     private JSpinner spAutosaveFileCount;
 
-    private PekaEDSGUI pkeds;
+    private IPekaEdsApp pkeds;
     
-    public PanelGeneral(PekaEDSGUI pkeds) {
+    public PanelGeneral(IPekaEdsApp pkeds) {
 
         this.pkeds = pkeds;
 

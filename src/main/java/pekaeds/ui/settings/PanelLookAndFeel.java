@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
-import pekaeds.ui.main.PekaEDSGUI;
+import pekaeds.ui.main.IPekaEdsApp;
 import pekaeds.ui.misc.LookAndFeelHelper;
 import pk2.settings.Settings;
 
 public class PanelLookAndFeel extends JPanel implements ISettingsPanel {
 
-    private PekaEDSGUI eds;
+    private IPekaEdsApp eds;
     private JComboBox<String> cbTheme = new JComboBox<>();
     
 
 
     private SettingsDialog settingsDialog;
 
-    public PanelLookAndFeel(PekaEDSGUI eds, SettingsDialog settingsDialog){
+    public PanelLookAndFeel(IPekaEdsApp eds, SettingsDialog settingsDialog){
         this.eds = eds;
         this.settingsDialog = settingsDialog;
 
@@ -51,10 +51,7 @@ public class PanelLookAndFeel extends JPanel implements ISettingsPanel {
         Settings.setLookAndFeel(selectedTheme);
         LookAndFeelHelper.updateTheme();
         SwingUtilities.updateComponentTreeUI(settingsDialog);
-
-        if(this.eds!=null){
-            SwingUtilities.updateComponentTreeUI(this.eds.getFrame());
-        }
+        eds.updateLookAndFeel();
     }
 
     @Override
