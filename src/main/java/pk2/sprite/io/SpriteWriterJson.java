@@ -3,15 +3,16 @@ package pk2.sprite.io;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.PK2SpriteAnimation;
+import pk2.util.Point2D;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+
 
 class SpriteWriterJson {
     public void save(PK2Sprite sprite, File file) throws IOException {
@@ -160,20 +161,29 @@ class SpriteWriterJson {
             json.put("blend_alpha", sprite.getBlendAlpha());
         }
 
-
-        Map<String, Object> sortedMap = new TreeMap<>();
-        for (String key : json.keySet()) {
-            sortedMap.put(key, json.get(key));
+        if(sprite.getAttack1Offset()!=null){
+            this.putPoint2D(json, sprite.getAttack1Offset(), "attack1_offset");
         }
 
-        JSONObject sortedJson = new JSONObject(sortedMap);
+        if(sprite.getAttack2Offset()!=null){
+            this.putPoint2D(json, sprite.getAttack2Offset(), "attack2_offset");
+        }
 
+        this.putPoint2D(json, sprite.getPlayerDetection(), "player_detection");
         
         try (PrintWriter out = new PrintWriter(file)) {
-            out.println(sortedJson.toString(4));
+            out.println(json.toString(4));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void putPoint2D(JSONObject json, Point2D p, String name){
+
+        JSONObject o = new JSONObject();
+        o.put("x", p.getX());
+        o.put("y", p.getY());
+        json.put(name, o);
     }
     
     private void addAnimation(JSONObject json, String name, PK2SpriteAnimation animation) {

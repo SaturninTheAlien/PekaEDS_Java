@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.PK2SpriteAnimation;
+import pk2.util.Point2D;
 
 class SpriteReaderJson implements SpriteReader {
 
@@ -174,7 +175,24 @@ class SpriteReaderJson implements SpriteReader {
             sprite.setBlendMode(json.getInt("blend_mode"));
         }
 
+        if(json.has("player_detection")){
+            sprite.setPlayerDetection( this.readPoint2D(json, "player_detection"));
+        }
+
+        if(json.has("attack1_offset")){
+            sprite.setAttack1Offset(this.readPoint2D(json, "attack1_offset"));
+        }
+
+        if(json.has("attack2_offset")){
+            sprite.setAttack2Offset(this.readPoint2D(json, "attack2_offset"));
+        }
+
         return sprite;
+    }
+
+    public Point2D readPoint2D(JSONObject json, String name){
+        JSONObject point = json.getJSONObject(name);
+        return new Point2D(point.getDouble("x"), point.getDouble("y"));
     }
     
     private PK2SpriteAnimation JSONToAnimation(JSONObject json) {

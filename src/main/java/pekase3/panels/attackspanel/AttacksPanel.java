@@ -10,10 +10,12 @@ import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
 import pk2.util.GFXUtils;
+import pk2.util.Point2D;
 
 import org.tinylog.Logger;
 
 import javax.swing.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -34,6 +36,10 @@ public class AttacksPanel extends PekaSE2Panel {
     private JSpinner spDamage;
     private JSpinner spLoadTime;
     private JSpinner spAttackPause;
+
+
+    private JSpinner spDetectionX;
+    private JSpinner spDetectionY;
     
     private JComboBox<String> cbDamageType;
     
@@ -55,6 +61,9 @@ public class AttacksPanel extends PekaSE2Panel {
         
         spAtkDuration1 = new JSpinner();
         spAtkDuration2 = new JSpinner();
+
+        spDetectionX = new JSpinner();
+        spDetectionY = new JSpinner();
         
         spDamage = new JSpinner(new SpinnerNumberModel());
         spLoadTime = new JSpinner(new SpinnerNumberModel());
@@ -121,10 +130,21 @@ public class AttacksPanel extends PekaSE2Panel {
         pnlAmmo2.add(ammoSpritePreview2, "span 1 3");
         pnlAmmo2.add(tfAmmoSprite2, "width 80%");
         pnlAmmo2.add(btnBrowseAmmo2, "wrap");
+
+
+        var pnlDetection = new JPanel();
+        pnlDetection.setBorder(BorderFactory.createTitledBorder("Player detection:"));
+        //pnlDetection.setLayout(new MigLayout());
+        pnlDetection.add(new JLabel("X:"));
+        pnlDetection.add(this.spDetectionX);
+        pnlDetection.add(new JLabel("Y:"));
+        pnlDetection.add(this.spDetectionY);
+        
         
         add(pnlSide, "dock west");
         add(pnlAmmo1, "growx");
         add(pnlAmmo2);
+        add(pnlDetection, "south");
     }
     
     @Override
@@ -152,6 +172,10 @@ public class AttacksPanel extends PekaSE2Panel {
         spLoadTime.setValue(sprite.getLoadTime());
         
         cbDamageType.setSelectedItem(Settings.getSpriteProfile().getDamageMap().get(sprite.getDamageType()));
+
+        Point2D pd = sprite.getPlayerDetection();
+        spDetectionX.setValue(pd.getX());
+        spDetectionY.setValue(pd.getY());
     }
     
     private void setupAmmoSprite(JTextField tfPath, String ammoSprite, AmmoSpritePreview preview) {
@@ -202,6 +226,9 @@ public class AttacksPanel extends PekaSE2Panel {
         
         ammoSpritePreview1.setSprite(null);
         ammoSpritePreview2.setSprite(null);
+
+        spDetectionX.setValue(200);
+        spDetectionY.setValue(350);
     }
     
     @Override
@@ -228,6 +255,10 @@ public class AttacksPanel extends PekaSE2Panel {
         }
         
         sprite.setDamageType(damageType);
+
+        sprite.setPlayerDetection(
+            new Point2D((double) spDetectionX.getValue(), (double)spDetectionY.getValue())
+        );
     }
     
     @Override
@@ -252,5 +283,8 @@ public class AttacksPanel extends PekaSE2Panel {
         spAttackPause.addChangeListener(listener);
         
         cbDamageType.addActionListener(listener);
+
+        spDetectionX.addChangeListener(listener);
+        spDetectionY.addChangeListener(listener);
     }
 }

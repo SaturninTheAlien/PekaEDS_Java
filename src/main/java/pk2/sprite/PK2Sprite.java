@@ -5,7 +5,8 @@ import javax.swing.event.ChangeListener;
 
 import org.json.JSONArray;
 
-import java.awt.geom.Point2D;
+import pk2.util.Point2D;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,9 +121,9 @@ public class PK2Sprite implements SpritePrototype {
     private int blendMode = 0;
     private int blendAlpha = 0;
 
-    private Point2D attack1Offest;
-    private Point2D attack2Offset;
-    private Point2D playerDetection;
+    private Point2D attack1Offest = null;
+    private Point2D attack2Offset = null;
+    private Point2D playerDetection = new Point2D(200, 350);
 
     
     public boolean isAlwaysActive() {
