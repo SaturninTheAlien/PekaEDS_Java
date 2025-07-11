@@ -137,6 +137,7 @@ public class PekaEDSGUIView {
         mClearRecentlyOpened = new JMenuItem("Clear Recently Opened...");
 
         mClearRecentlyOpened.addActionListener(l -> {
+            edsUI.session.clearRecentFiles();
             mOpenRecent.removeAll();
             mOpenRecent.add(mClearRecentlyOpened);
             mClearRecentlyOpened.setEnabled(false);

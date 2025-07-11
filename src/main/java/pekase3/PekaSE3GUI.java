@@ -5,9 +5,11 @@ import org.tinylog.Logger;
 import pekaeds.data.PekaEDSVersion;
 import pekaeds.ui.main.IPekaEdsApp;
 import pekaeds.ui.settings.SettingsDialog;
+import pekaeds.util.file.Session;
 import pekase3.dialogs.UnsavedChangesDialog;
 import pekase3.panels.spriteeditpane.SpriteEditPane;
 import pekase3.util.QuickSpriteTest;
+import pk2.filesystem.FHSHelper;
 import pk2.filesystem.PK2FileSystem;
 import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
@@ -35,6 +37,10 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
     private JMenuItem miFSave;
     private JMenuItem miFSaveAs;
     private JMenuItem miQuit;
+
+    private JMenu     miFOpenRecent;
+    private JMenuItem miFClearRecentlyOpened;
+
     private JMenuItem miQuickTest;
         
     private JMenu mOther;
@@ -45,6 +51,10 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
     
     private SpriteEditPane editPane;    
     private String title;
+
+    private static final String LAST_SESSION_FILE = "pekase-last.session";
+
+    private final Session session = new Session();
     
     public void setup() {        
         createMenuBar();
@@ -64,6 +74,16 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         
         setVisible(true);
+
+        File lastSessionFile = FHSHelper.getPrefPath(LAST_SESSION_FILE);
+        if(lastSessionFile.exists()){
+            try {
+                session.load(lastSessionFile);
+                this.setupOpenRecentMenu();
+            } catch (IOException e) {
+                Logger.error(e);
+            }            
+        }
     }
     
     private void setupIcon() {
@@ -97,11 +117,10 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
     }
     
     
-    private void loadSprite(String filename) {
+    private void loadSprite(File file) {
         PK2Sprite sprite = null;
         
         try {
-            var file = new File(filename);
             sprite =  SpriteIO.loadSpriteFile(file);
 
             File episodeDir = file.getParentFile();
@@ -114,6 +133,9 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
             }
 
             PK2FileSystem.setEpisodeDir(episodeDir);
+
+            this.session.putFile(file);
+            this.setupOpenRecentMenu();
 
             loadedFile = file;
 
@@ -129,7 +151,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
             
 
         } catch (IOException e) {
-            Logger.warn(e, "Unable to load sprite '" + filename + "'!\n");
+            Logger.warn(e, "Unable to load sprite '" + file.getAbsolutePath() + "'!\n");
             
             JOptionPane.showMessageDialog(null, "Unable to load the sprite file.\n" + e.getMessage(), "Unable to load sprite!", JOptionPane.ERROR_MESSAGE);
         }
@@ -140,6 +162,8 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         
         try {
             SpriteIO.saveSprite(sprite, file);
+            this.session.putFile(file);
+            this.setupOpenRecentMenu();
 
         } catch (IOException e) {
             Logger.warn(e, "Unable to save sprite '" + file.getAbsolutePath() + "'!\n");
@@ -173,10 +197,25 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         miFSave = new JMenuItem("Save");
         miFSaveAs = new JMenuItem("Save As...");
         miQuit = new JMenuItem("Quit");
-        miQuickTest = new JMenuItem("Test sprite");
+        miQuickTest = new JMenuItem("Quick Test");
+
+        miFOpenRecent = new JMenu("Open Recent");
+        miFClearRecentlyOpened = new JMenuItem("Clear Recently Opened...");
+
+        miFClearRecentlyOpened.addActionListener(l -> {
+            miFOpenRecent.removeAll();
+            miFOpenRecent.add(miFClearRecentlyOpened);
+            miFClearRecentlyOpened.setEnabled(false);
+            session.clearRecentFiles();
+        });
+
+        miFOpenRecent.add(miFClearRecentlyOpened);
+        miFClearRecentlyOpened.setEnabled(false);
         
         mFile.add(miFNew);
         mFile.add(miFOpen);
+        mFile.add(miFOpenRecent);
+
         mFile.addSeparator();
         mFile.add(miFSave);
         mFile.add(miFSaveAs);
@@ -213,7 +252,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
             if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 
                 File selected = fc.getSelectedFile();
-                this.loadSprite(selected.getAbsolutePath());
+                this.loadSprite(selected);
             }
         });
         
@@ -300,6 +339,9 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
     }
     
     void onClose() {
+
+        session.save(FHSHelper.getPrefPath(LAST_SESSION_FILE));
+
         if (editPane != null) {
             if (editPane.unsavedChangesPresent()) {
                 UnsavedChangesDialog.show(this, true);
@@ -313,12 +355,41 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
 
     @Override
     public void setupOpenRecentMenu() {
-        // TODO Auto-generated method stub
+        this.miFOpenRecent.removeAll();
+
+        boolean flag = false;
+        for (File f : this.session.getRecentFiles()) {
+            if (f != null && f.exists() && !f.isDirectory()) {
+
+                flag = true;
+                String name = f.getPath();
+
+                String assetsPath = PK2FileSystem.getAssetsPath(PK2FileSystem.EPISODES_DIR).getPath();
+
+                if (name.startsWith(assetsPath)) {
+
+                    String episodeName = f.getParentFile().getName();
+                    name = episodeName + "/" + f.getName();
+                }
+
+                JMenuItem item = new JMenuItem(name);
+                item.addActionListener(e -> {
+                    this.loadSprite(f);
+                });
+
+                this.miFOpenRecent.add(item);
+            }
+        }
+
+        if(flag){
+            this.miFOpenRecent.addSeparator();
+        }
+        this.miFOpenRecent.add(this.miFClearRecentlyOpened);
+        this.miFClearRecentlyOpened.setEnabled(flag);
     }
 
     @Override
     public void updateLookAndFeel() {
-        // TODO Auto-generated method stub
         SwingUtilities.updateComponentTreeUI(this);
     }
 }

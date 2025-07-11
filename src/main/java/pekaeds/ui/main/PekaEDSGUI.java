@@ -12,6 +12,7 @@ import java.time.LocalTime;
 
 import org.tinylog.Logger;
 
+import pekaeds.data.EditorConstants;
 import pekaeds.data.Layer;
 import pekaeds.data.PekaEDSVersion;
 import pekaeds.tool.*;
@@ -72,7 +73,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
 
     private SectorResizeDialog resizeDialog;
 
-    private final Session session = new Session();
+    protected final Session session = new Session();
 
     public PekaEDSGUI() {
         showEditor();
@@ -115,7 +116,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     }
 
     private void handleStartup() {
-        var fLastSession = FHSHelper.getLastSessionFile();
+        var fLastSession = FHSHelper.getPrefPath(EditorConstants.LAST_SESSION_FILE);
         if (fLastSession.exists()) {
             try {
                 Logger.info("Trying to load last.session...");
@@ -145,17 +146,17 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
                     }*/
 
                     case StartupBehavior.LOAD_LAST_MAP -> {
-                        if (this.session.getLastLevelFile().exists()) {
-                            loadMap(session.getLastLevelFile());
+                        if (this.session.getLastFile().exists()) {
+                            loadMap(session.getLastFile());
 
                             // TODO Store and load last position?
                             //mapPanelView.getViewport().setViewPosition(new Point(lastSession.getLastViewportX(), lastSession.getLastViewportY()));
 
-                            Logger.info("Loaded last level: {}", session.getLastLevelFile().getAbsolutePath());
+                            Logger.info("Loaded last level: {}", session.getLastFile().getAbsolutePath());
                         } else {
                             newMap();
 
-                            Logger.info("Unable to load last level: {}. Creating new map instead.", session.getLastLevelFile().getAbsolutePath());
+                            Logger.info("Unable to load last level: {}. Creating new map instead.", session.getLastFile().getAbsolutePath());
                         }
                     }
                 }
@@ -270,7 +271,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         model.setCurrentMapFile(mapFile);
 
         if (mapFile != null) {
-            session.putLevelFile(mapFile);
+            session.putFile(mapFile);;
             setupOpenRecentMenu();
         }
 
@@ -339,7 +340,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
             model.setCurrentMapFile(file);
             
             {
-                session.putLevelFile(file);
+                session.putFile(file);
                 setupOpenRecentMenu();
             }
             mapMetadataPanel.commitValues();
@@ -508,7 +509,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
      * This method gets called when the whole application shuts down.
      */
     public void close() {
-        session.save(FHSHelper.getLastSessionFile());
+        session.save(FHSHelper.getPrefPath(EditorConstants.LAST_SESSION_FILE));
 
         System.exit(0);
     }
@@ -634,7 +635,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     }
 
     public void setupOpenRecentMenu() {
-        this.view.setupOpenRecentMenu(session.getRecentLevelFiles());
+        this.view.setupOpenRecentMenu(session.getRecentFiles());
     }
 
     public void setUnsavedChangesPresent(boolean value) {

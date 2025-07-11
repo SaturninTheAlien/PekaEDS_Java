@@ -40,11 +40,11 @@ public class Session {
         }
     }
 
-    public File getLastLevelFile(){
+    public File getLastFile(){
         return this.recentLevels.get(this.recentLevels.size()-1);
     }
 
-    public void putLevelFile(File newFile){
+    public void putFile(File newFile){
         if(newFile==null)return;
 
         int size = this.recentLevels.size();
@@ -63,14 +63,14 @@ public class Session {
         }   
     }
 
-    public List<File> getRecentLevelFiles(){
+    public List<File> getRecentFiles(){
         @SuppressWarnings("unchecked")
         ArrayList<File> l = (ArrayList<File>)this.recentLevels.clone();
         Collections.reverse(l);
         return l;
     }
 
-    public void clearRecentLevelFiles(){
+    public void clearRecentFiles(){
         recentLevels.clear();
     }
 }

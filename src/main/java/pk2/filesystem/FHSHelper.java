@@ -7,7 +7,7 @@ public class FHSHelper {
 
     private static File prefPath = null;
     private static File prefPathGame = null;
-    private static File lastSessionFile = null;
+
     private static File settingsFile = null;
 
     public static void preparePaths(){
@@ -33,7 +33,9 @@ public class FHSHelper {
             prefPath.mkdirs();
         }
 
-        lastSessionFile = Paths.get(prefPath.getPath(), "last.session").toFile();
+        /*lastSessionFile = Paths.get(prefPath.getPath(), "last.session").toFile();
+        lastSessionFilePekaSe = Paths.get(prefPath.getPath(), "peka-se3.session").toFile();*/
+
         settingsFile = Paths.get(prefPath.getPath(), "settings.dat").toFile();
     }
     /**
@@ -45,16 +47,17 @@ public class FHSHelper {
         return prefPath;
     }
 
+
+    public static File getPrefPath(String filename){
+        return Paths.get(prefPath.getAbsolutePath(), filename).toFile();
+    }
+
     public static File getPrefPathGame(){
         return prefPathGame;
     }
 
     public static File getSettingsFile(){
         return settingsFile;
-    }
-
-    public static File getLastSessionFile(){
-        return lastSessionFile;
     }
 
     /**
