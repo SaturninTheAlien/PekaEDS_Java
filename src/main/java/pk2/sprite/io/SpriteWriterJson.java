@@ -3,6 +3,8 @@ package pk2.sprite.io;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.PK2SpriteAnimation;
@@ -12,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 
 class SpriteWriterJson {
@@ -161,6 +164,8 @@ class SpriteWriterJson {
             json.put("blend_alpha", sprite.getBlendAlpha());
         }
 
+        this.putPoint2D(json, sprite.getPlayerDetection(), "player_detection");
+
         if(sprite.getAttack1Offset()!=null){
             this.putPoint2D(json, sprite.getAttack1Offset(), "attack1_offset");
         }
@@ -169,10 +174,15 @@ class SpriteWriterJson {
             this.putPoint2D(json, sprite.getAttack2Offset(), "attack2_offset");
         }
 
-        this.putPoint2D(json, sprite.getPlayerDetection(), "player_detection");
-        
+
+        Map<String, Object> map = json.toMap();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+
         try (PrintWriter out = new PrintWriter(file)) {
-            out.println(json.toString(4));
+            out.println(mapper.writeValueAsString(map));
         } catch (Exception e) {
             e.printStackTrace();
         }
