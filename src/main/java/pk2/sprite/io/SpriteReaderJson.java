@@ -19,12 +19,16 @@ class SpriteReaderJson implements SpriteReader {
     @Override
     public PK2Sprite readSpriteFile(File file) throws IOException, JSONException {
         String fileContents = Files.readString(file.toPath());
-        
-        PK2Sprite sprite = new PK2Sprite();
-
-        sprite.setFilename(file.getName());
-        
         JSONObject json = new JSONObject(fileContents);
+        PK2Sprite sprite = parseSprite(json);
+        sprite.setFilename(file.getName());
+        return sprite;
+    }
+
+
+    protected PK2Sprite parseSprite(JSONObject json) throws JSONException{
+        PK2Sprite sprite = new PK2Sprite();
+        
             
         ArrayList<Integer> aiList = new ArrayList<>();
         JSONArray aiArray = json.getJSONArray("ai");
@@ -176,21 +180,21 @@ class SpriteReaderJson implements SpriteReader {
         }
 
         if(json.has("player_detection")){
-            sprite.setPlayerDetection( this.readPoint2D(json, "player_detection"));
+            sprite.setPlayerDetection( this.parsePoint2D(json, "player_detection"));
         }
 
         if(json.has("attack1_offset")){
-            sprite.setAttack1Offset(this.readPoint2D(json, "attack1_offset"));
+            sprite.setAttack1Offset(this.parsePoint2D(json, "attack1_offset"));
         }
 
         if(json.has("attack2_offset")){
-            sprite.setAttack2Offset(this.readPoint2D(json, "attack2_offset"));
+            sprite.setAttack2Offset(this.parsePoint2D(json, "attack2_offset"));
         }
 
         return sprite;
     }
 
-    public Point2D readPoint2D(JSONObject json, String name){
+    protected Point2D parsePoint2D(JSONObject json, String name){
         JSONObject point = json.getJSONObject(name);
         return new Point2D(point.getDouble("x"), point.getDouble("y"));
     }

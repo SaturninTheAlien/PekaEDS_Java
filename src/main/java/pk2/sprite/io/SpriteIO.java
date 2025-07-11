@@ -15,7 +15,7 @@ public class SpriteIO {
     private static final SpriteReader reader1_3 = new SpriteReader13Old();
     
     private static final SpriteReader13 reader1_3_fixed = new SpriteReader13();
-    private static final SpriteReaderJson reader_json = new SpriteReaderJson();
+    private static final SpriteReaderJson reader_json = new SpriteReaderJsonCompat();
     private static final SpriteWriterJson writer_json = new SpriteWriterJson();
 
 
