@@ -62,7 +62,7 @@ public class SpriteEditPane extends JTabbedPane {
         addPanel(attacksPanel, "Attack");
         addPanel(soundsPanel, "Sounds");
         addPanel(propertiesPanel, "Properties", true);
-        addPanel(gretaPropertiesPanel, "Greta Properties");
+        addPanel(gretaPropertiesPanel, "Greta properties");
         addPanel(commandsPanel, "Commands");
 
 

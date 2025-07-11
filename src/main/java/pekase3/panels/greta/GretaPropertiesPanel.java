@@ -3,6 +3,7 @@ package pekase3.panels.greta;
 import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
+import pekase3.util.Point2dInputOptional;
 import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 
@@ -24,6 +25,10 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
     private JComboBox<String> cbAmbientEffect;
 
     private SpriteProfile profile;
+
+
+    private Point2dInputOptional pAttack1Offset;
+    private Point2dInputOptional pAttack2Offset;
     
     public GretaPropertiesPanel() {
         setup();
@@ -44,28 +49,48 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
 
         cbBlendMode = new JComboBox<>();
         spBlendAlpha = new JSpinner();
-
-
         cbAmbientEffect = new JComboBox<>();
 
+        pAttack1Offset = new Point2dInputOptional("Attack 1");
+        pAttack2Offset = new Point2dInputOptional("Attack 2");
         
         generateLayout();
     }
     
     private void generateLayout() {
-        setLayout(new MigLayout("flowy"));
-        
-        add(chkAlwaysActive);
-        add(chkUseDeadWeight);
-        add(spDeadWeight);
-        add(lInfoId);
-        add(spInfoID);
-        add(new JLabel("Blend mode:"));
-        add(cbBlendMode);
-        add(new JLabel("Blend alpha:"));
-        add(spBlendAlpha);
-        add(new JLabel("Ambient effect:"));
-        add(cbAmbientEffect);
+
+        JPanel panel1 = new JPanel();
+
+        panel1.setLayout(new MigLayout("flowy"));
+        panel1.setBorder(BorderFactory.createTitledBorder("Greta Properties"));
+        panel1.add(chkAlwaysActive);
+        panel1.add(chkUseDeadWeight);
+        panel1.add(spDeadWeight);
+        panel1.add(lInfoId);
+        panel1.add(spInfoID);
+
+        JPanel panel2 = new JPanel();
+        panel2.setLayout(new MigLayout("flowy"));
+        panel2.setBorder(BorderFactory.createTitledBorder("Advanced Graphics"));
+
+        panel2.add(new JLabel("Blend mode:"));
+        panel2.add(cbBlendMode);
+        panel2.add(new JLabel("Blend alpha:"));
+        panel2.add(spBlendAlpha);
+        panel2.add(new JLabel("Ambient effect:"));
+        panel2.add(cbAmbientEffect);
+
+        JPanel panel3 = new JPanel();
+        panel3.setBorder(BorderFactory.createTitledBorder("Attack Offsets"));
+        panel3.setLayout(new MigLayout("flowy"));
+        panel3.add(pAttack1Offset);
+        panel3.add(pAttack2Offset);
+
+        this.setLayout(new MigLayout());
+
+        this.add(panel1);
+        this.add(panel2);
+        this.add(panel3);
     }
     
     @Override
@@ -83,6 +108,9 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         cbBlendMode.setSelectedItem( profile.getBlendModeMap().get(sprite.getBlendMode()));
         spBlendAlpha.setValue(sprite.getBlendAlpha());
         cbAmbientEffect.setSelectedItem(profile.getAmbientEffects().get(sprite.getAmbientEffect()));
+
+        pAttack1Offset.setValue(sprite.getAttack1Offset());
+        pAttack2Offset.setValue(sprite.getAttack2Offset());
     }
     
     @Override
@@ -96,6 +124,9 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         cbBlendMode.setSelectedIndex(0);
         spBlendAlpha.setValue(50);
         cbAmbientEffect.setSelectedIndex(0);
+
+        pAttack1Offset.setValue(null);
+        pAttack2Offset.setValue(null);
     }
     
     @Override
@@ -132,6 +163,9 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         }
 
         sprite.setAmbientEffect(ambientEffect);
+
+        sprite.setAttack1Offset(pAttack1Offset.getValue());
+        sprite.setAttack2Offset(pAttack2Offset.getValue());
     }
     
     @Override
@@ -149,5 +183,7 @@ public class GretaPropertiesPanel extends PekaSE2Panel {
         cbBlendMode.addActionListener(listener);
         spBlendAlpha.addChangeListener(listener);
         cbAmbientEffect.addActionListener(listener);
+        pAttack1Offset.addChangeListener(listener);
+        pAttack2Offset.addChangeListener(listener);
     }
 }

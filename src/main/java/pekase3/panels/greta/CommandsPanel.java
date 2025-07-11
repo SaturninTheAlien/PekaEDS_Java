@@ -31,7 +31,7 @@ public class CommandsPanel extends PekaSE2Panel {
     
     @Override
     public void setSprite(PK2Sprite sprite) {
-        taCommands.setText(sprite.getCommands().toString());
+        taCommands.setText(sprite.getCommands().toString(4));
     }
     
     @Override
