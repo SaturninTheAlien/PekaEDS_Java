@@ -152,7 +152,13 @@ public class SpriteFileChooser extends JFileChooser implements PropertyChangeLis
 
                     BufferedImage img;
                     try{
-                        img = ImageIO.read(PK2FileSystem.findAsset(spr.getImageFile(), PK2FileSystem.SPRITES_DIR));
+
+                        File imageFile = Paths.get(selectedFile.getParent(), spr.getImageFile()).toFile();
+                        if(!imageFile.exists()){
+                            imageFile = PK2FileSystem.findAsset(spr.getImageFile(), PK2FileSystem.SPRITES_DIR);
+                        }
+
+                        img = ImageIO.read(imageFile);
                         GFXUtils.adjustSpriteColor(img, spr.getColor());
                         img = GFXUtils.makeTransparent(img);
                         img = GFXUtils.getFirstSpriteFrame(spr, img);
