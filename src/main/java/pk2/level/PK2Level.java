@@ -202,4 +202,8 @@ public class PK2Level {
     public int getLastSpriteIndex() {
         return sprites.size() - 1;
     }
+
+    public List<String> getSpriteNameList(){
+        return this.spriteFiles;
+    }
 }

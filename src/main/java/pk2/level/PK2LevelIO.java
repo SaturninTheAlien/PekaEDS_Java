@@ -92,7 +92,7 @@ public final class PK2LevelIO {
         }
     }
 
-    private static PK2Level load15Level(DataInputStream in, boolean iconOnly) throws Exception {
+    private static PK2Level load15Level(DataInputStream in, boolean headerOnly) throws Exception {
         PK2Level level = new PK2Level();
 
         int compression = TILES_OFFSET_NEW;
@@ -110,10 +110,6 @@ public final class PK2LevelIO {
 
             compression = header.getInt("compression");
 
-            if (iconOnly) {
-                return level;
-            }
-
             sectors_number = header.getInt("sectors");
             JSONArray spritesArray = header.getJSONArray("sprite_prototypes");
             for (int i = 0; i < spritesArray.length(); ++i) {
@@ -125,6 +121,10 @@ public final class PK2LevelIO {
             level.lua_script = header.getString("lua_script");
 
             level.game_mode = header.getInt("game_mode");
+        }
+
+        if(headerOnly){
+            return level;
         }
 
         for (int i = 0; i < sectors_number; ++i) {
@@ -200,7 +200,7 @@ public final class PK2LevelIO {
         return level;
     }
 
-    private static PK2Level load13Level(DataInputStream in, boolean iconOnly) throws Exception {
+    private static PK2Level load13Level(DataInputStream in, boolean headerOnly) throws Exception {
         PK2Level map = new PK2Level();
         PK2LevelSector sector = new PK2LevelSector(PK2LevelSector.CLASSIC_WIDTH, PK2LevelSector.CLASSIC_HEIGHT);
 
@@ -233,14 +233,15 @@ public final class PK2LevelIO {
 
         map.icon_id = PK2FileUtils.readInt(in);
 
-        if (iconOnly) {
-            return map;
-        }
 
         int spritesAmount = PK2FileUtils.readInt(in);
 
         for (int i = 0; i < spritesAmount; i++) {
             map.spriteFiles.add(PK2FileUtils.readString(in, 13));
+        }
+
+        if(headerOnly){
+            return map;
         }
 
         int sectorWidth = sector.getWidth();

@@ -34,11 +34,14 @@ public class PekaEDS {
                 if(arg=="--theme"){
                     state = 1;
                 }
-                else if(arg=="--level-editor"){
+                else if(arg=="level-editor"){
                     selectedApp = AppEnum.LEVEL_EDITOR;
                 }
-                else if(arg=="--sprite-editor"){
+                else if(arg=="sprite-editor"){
                     selectedApp = AppEnum.SPRITE_EDITOR;
+                }
+                else if(arg=="episode-packer"){
+                    selectedApp = AppEnum.EPISODE_PACKER; 
                 }
             }
             break;    

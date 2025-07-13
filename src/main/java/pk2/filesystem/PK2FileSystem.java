@@ -17,6 +17,7 @@ public class PK2FileSystem {
 
     public static final String MUSIC_DIR = "music";
     public static final String LUA_DIR = "lua";
+    public static final String LIFE_DIR = "rle";
 
     private static File mAssetsPath;
     private static File mEpisodePath;
