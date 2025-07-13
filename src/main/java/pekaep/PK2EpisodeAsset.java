@@ -58,6 +58,7 @@ public class PK2EpisodeAsset {
     private final String name;
     private final Type type;
 
+    public boolean obsoleteFormat = false;
     public File file = null;
     public Exception loadingException = null;
 

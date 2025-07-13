@@ -29,7 +29,7 @@ public class PekaEPGUI extends JFrame {
         EPISODE("episode", true, false),
         LEVELS("levels", true, true),
         MISSING("missing", false, true),
-        ZIP("zip", false, true);
+        FINAL("zip", true, true);
 
         private final String name;
         private final boolean nextBtn;
@@ -55,8 +55,10 @@ public class PekaEPGUI extends JFrame {
 
     }
 
+    private JLabel lSelectEpisode;
     private JTextField tfEpisodePath;
-    
+
+    private JLabel lFoundLevels;    
     private JList<String> jLevelList;
     private DefaultListModel<String> levelListModel;
 
@@ -64,6 +66,8 @@ public class PekaEPGUI extends JFrame {
     private JList<String> jMissingList;
     private DefaultListModel<String> missingListModel;
     private List<PK2EpisodeAsset> missingAssets;
+
+    private JLabel lFinal;
 
     private JPanel cardPanel;
     private CardLayout cardLayout;
@@ -106,9 +110,10 @@ public class PekaEPGUI extends JFrame {
             }            
         });
 
-
-        episodeSelection.add(this.tfEpisodePath, "cell 0 0, width 500px");
-        episodeSelection.add(btnEpisode, "cell 0 1");
+        this.lSelectEpisode = new JLabel("<html> <span style=\"font-weight:bold; font-size: 25px\"> Select episode to pack! </span> </html>");
+        episodeSelection.add(this.lSelectEpisode, "cell 0 0");
+        episodeSelection.add(this.tfEpisodePath, "cell 0 1, width 500px");
+        episodeSelection.add(btnEpisode, "cell 0 2");
 
         /*/JLabel testLabel = new JLabel("<html><span style=\"color:red; font-weight:bold\"> Test </span></html>");
         episodeSelection.add(testLabel, "cell 0 2");*/
@@ -118,8 +123,11 @@ public class PekaEPGUI extends JFrame {
 
 
         JPanel panelLevels = new JPanel();
+        this.lFoundLevels = new JLabel("<html> <span style=\"font-weight:bold; font-size: 25px\"> Found Levels </span> </html>");
+
         panelLevels.setLayout(new MigLayout());
-        panelLevels.add(new JLabel("Found levels:"), "cell 0 0");
+        
+        panelLevels.add(this.lFoundLevels, "cell 0 0");
 
         this.levelListModel = new DefaultListModel<>();
         
@@ -135,7 +143,7 @@ public class PekaEPGUI extends JFrame {
         JPanel assetsPanel = new JPanel();
         assetsPanel.setLayout(new MigLayout());
 
-        this.lMissing = new JLabel("<html> <span style=\"font-weight:bold; color:red; font-size: 30px\"> Missing assets! </span> </html>");
+        this.lMissing = new JLabel("<html> <span style=\"font-weight:bold; color:red; font-size: 25px\"> Missing assets! </span> </html>");
 
         assetsPanel.add(this.lMissing, "cell 0 0");
 
@@ -144,7 +152,19 @@ public class PekaEPGUI extends JFrame {
         assetsPanel.add(this.jMissingList, "cell 0 1");
         cardPanel.add( new JScrollPane(assetsPanel), Page.MISSING.getName());
 
+        JPanel finalPanel = new JPanel();
+        finalPanel.setLayout(new MigLayout());
 
+        this.lFinal = new JLabel("<html> <span style=\"font-weight:bold; color:green; font-size: 25px\"> Everything is alright! </span> </html>");
+        finalPanel.add(this.lFinal, "cell 0 0");
+        
+        JLabel info = new JLabel("All dependencies satisfied!");
+        JLabel info2 = new JLabel("Press finish to export the ZIP file!");
+
+        finalPanel.add(info, "cell 0 1");
+        finalPanel.add(info2, "cell 0 2");
+
+        cardPanel.add(new JScrollPane(finalPanel), Page.FINAL.getName());
 
 
         this.btnNext = new JButton("Next");
@@ -249,9 +269,19 @@ public class PekaEPGUI extends JFrame {
                 break;
             case LEVELS:
                 this.loadAssets();
-                this.currentPage = Page.MISSING;
+                if(this.missingAssets.isEmpty()){
+                    this.currentPage = Page.FINAL;
+                }
+                else{
+                    this.currentPage = Page.MISSING;
+                }               
                 break;
-        
+            
+            case FINAL:
+                //TO DO
+                this.dispose();
+                break;
+
             default:
                 break;
         }
@@ -270,7 +300,7 @@ public class PekaEPGUI extends JFrame {
             case MISSING:
                 this.currentPage = Page.LEVELS;
                 break;
-            case ZIP:
+            case FINAL:
                 this.currentPage = Page.LEVELS;
                 break;                
             default:
@@ -285,6 +315,7 @@ public class PekaEPGUI extends JFrame {
 
         this.btnBack.setEnabled(this.currentPage.hasBackBtn());
         this.btnNext.setEnabled(this.currentPage.hasNextBtn());
+        this.btnNext.setText( this.currentPage == Page.FINAL ? "Finish" : "Next");
         this.cardLayout.show(this.cardPanel, this.currentPage.getName());
 
     }
