@@ -3,7 +3,8 @@ package pekaeds.ui.misc;
 public enum AppEnum {
     NOT_SELECTED("App not selected", false),
     LEVEL_EDITOR("Level Editor", true),
-    SPRITE_EDITOR("Sprite Editor", true);
+    SPRITE_EDITOR("Sprite Editor", true),
+    EPISODE_PACKER("Episode packing tool", false);
 
     private final String label;
     private final boolean visible;

@@ -15,6 +15,7 @@ import pekaeds.ui.misc.AppEnum;
 import pekaeds.ui.misc.AppSelectionDialog;
 import pekaeds.ui.misc.InitialSetupDialog;
 import pekaeds.ui.misc.LookAndFeelHelper;
+import pekaep.PekaEPGUI;
 import pekase3.PekaSE3GUI;
 import pk2.filesystem.FHSHelper;
 import pk2.filesystem.PK2FileSystem;
@@ -102,6 +103,10 @@ public class PekaEDS {
                 SwingUtilities.invokeLater(() -> {
                     new PekaSE3GUI().setup();
                 });
+                break;
+
+            case EPISODE_PACKER:
+                SwingUtilities.invokeLater(PekaEPGUI::new);
                 break;
             
             default:
