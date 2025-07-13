@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -25,28 +26,44 @@ import pk2.filesystem.PK2FileSystem;
 public class PekaEPGUI extends JFrame {
 
     static enum Page{
-        EPISODE("episode"),
-        LEVELS("levels"),
-        ASSETS("assets");
+        EPISODE("episode", true, false),
+        LEVELS("levels", true, true),
+        MISSING("missing", false, true),
+        ZIP("zip", false, true);
 
         private final String name;
+        private final boolean nextBtn;
+        private final boolean backBtn;
 
-        private Page(String name){
+        private Page(String name, boolean nextBtn, boolean backBtn){
             this.name = name;
+            this.nextBtn = nextBtn;
+            this.backBtn = backBtn;
         }
 
         public String getName(){
             return this.name;
         }
+
+        public boolean hasNextBtn(){
+            return this.nextBtn;
+        }
+
+        public boolean hasBackBtn(){
+            return this.backBtn;
+        }
+
     }
 
     private JTextField tfEpisodePath;
     
     private JList<String> jLevelList;
-    private JList<String> jAssetsList;
-
     private DefaultListModel<String> levelListModel;
-    private DefaultListModel<String> assetsListModel;
+
+    private JLabel lMissing;
+    private JList<String> jMissingList;
+    private DefaultListModel<String> missingListModel;
+    private List<PK2EpisodeAsset> missingAssets;
 
     private JPanel cardPanel;
     private CardLayout cardLayout;
@@ -58,6 +75,10 @@ public class PekaEPGUI extends JFrame {
 
     public PekaEPGUI(){
         super();
+
+        //EpisodeProfile.prepareProfile();
+        
+        PK2EpisodeAsset.loadEpisodeProfile();
 
 
         this.cardPanel = new JPanel();
@@ -86,8 +107,12 @@ public class PekaEPGUI extends JFrame {
         });
 
 
-        episodeSelection.add(this.tfEpisodePath, "cell 0 0, width 400px");
-        episodeSelection.add(btnEpisode, "cell 1 0");
+        episodeSelection.add(this.tfEpisodePath, "cell 0 0, width 500px");
+        episodeSelection.add(btnEpisode, "cell 0 1");
+
+        /*/JLabel testLabel = new JLabel("<html><span style=\"color:red; font-weight:bold\"> Test </span></html>");
+        episodeSelection.add(testLabel, "cell 0 2");*/
+
         cardPanel.add(episodeSelection, Page.EPISODE.getName());
 
 
@@ -97,8 +122,11 @@ public class PekaEPGUI extends JFrame {
         panelLevels.add(new JLabel("Found levels:"), "cell 0 0");
 
         this.levelListModel = new DefaultListModel<>();
+        
         this.jLevelList = new JList<>(this.levelListModel);
         this.jLevelList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //this.jLevelList.setBorder(BorderFactory.createLineBorder(Loo));
+
         panelLevels.add(this.jLevelList, "cell 0 1");        
         cardPanel.add( new JScrollPane(panelLevels), Page.LEVELS.getName());
 
@@ -106,12 +134,15 @@ public class PekaEPGUI extends JFrame {
 
         JPanel assetsPanel = new JPanel();
         assetsPanel.setLayout(new MigLayout());
-        assetsPanel.add(new JLabel("Required assets:"), "cell 0 0");
 
-        this.assetsListModel = new DefaultListModel<>();
-        this.jAssetsList = new JList<>(this.assetsListModel);
-        assetsPanel.add(this.jAssetsList, "cell 0 1");
-        cardPanel.add( new JScrollPane(assetsPanel), Page.ASSETS.getName());
+        this.lMissing = new JLabel("<html> <span style=\"font-weight:bold; color:red; font-size: 30px\"> Missing assets! </span> </html>");
+
+        assetsPanel.add(this.lMissing, "cell 0 0");
+
+        this.missingListModel = new DefaultListModel<>();
+        this.jMissingList = new JList<>(this.missingListModel);
+        assetsPanel.add(this.jMissingList, "cell 0 1");
+        cardPanel.add( new JScrollPane(assetsPanel), Page.MISSING.getName());
 
 
 
@@ -191,18 +222,23 @@ public class PekaEPGUI extends JFrame {
         }
     }
 
-    private void updateAssetsList(){        
-        this.assetsListModel.clear();
-        
-        this.assetsListModel.addElement("Placeholder!");
+    private void loadAssets(){
+        this.episode.findAssets();
+        this.episode.sortAssets();
 
-        System.out.println("Done!");
-        for(PK2EpisodeAsset asset: this.episode.getAssetList()){
-            this.assetsListModel.addElement(asset.getName());
+        this.missingListModel.clear();
+        this.missingAssets = this.episode.getMissingAssetsList();
+        
+        
+        for(PK2EpisodeAsset asset: this.missingAssets){
+            this.missingListModel.addElement(asset.getName());
         }
     }
 
     private void nextStep(){
+
+        this.btnBack.setEnabled(false);
+        this.btnNext.setEnabled(false);
 
         switch (this.currentPage) {
             case EPISODE:
@@ -212,12 +248,8 @@ public class PekaEPGUI extends JFrame {
                 }
                 break;
             case LEVELS:
-                this.episode.findAssets();
-                this.episode.sortAssets();
-                
-                this.updateAssetsList();
-
-                this.currentPage = Page.ASSETS;
+                this.loadAssets();
+                this.currentPage = Page.MISSING;
                 break;
         
             default:
@@ -228,14 +260,19 @@ public class PekaEPGUI extends JFrame {
     }
 
     private void previousStep(){
+        this.btnBack.setEnabled(false);
+        this.btnNext.setEnabled(false);
         
         switch (this.currentPage) {
             case LEVELS:
                 this.currentPage = Page.EPISODE;                
                 break;
-            case ASSETS:
+            case MISSING:
                 this.currentPage = Page.LEVELS;
-                break;        
+                break;
+            case ZIP:
+                this.currentPage = Page.LEVELS;
+                break;                
             default:
                 this.currentPage = Page.EPISODE;
                 break;
@@ -245,7 +282,9 @@ public class PekaEPGUI extends JFrame {
     }
 
     private void updatePage(){
-        this.btnBack.setEnabled(this.currentPage!=Page.EPISODE);
+
+        this.btnBack.setEnabled(this.currentPage.hasBackBtn());
+        this.btnNext.setEnabled(this.currentPage.hasNextBtn());
         this.cardLayout.show(this.cardPanel, this.currentPage.getName());
 
     }

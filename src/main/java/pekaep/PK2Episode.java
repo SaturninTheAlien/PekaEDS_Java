@@ -57,6 +57,8 @@ public class PK2Episode {
     }
 
     public void findAssets(){
+        this.assetList.clear();
+
         PK2FileSystem.setEpisodeDir(dir);
 
         for(File levelFile: this.levelFiles){
@@ -78,8 +80,6 @@ public class PK2Episode {
     }
 
     private void findLevel(File file){
-        System.out.println("findLevel: "+file.toString());
-
         PK2EpisodeAsset levelAsset = new PK2EpisodeAsset(file.getName(),PK2EpisodeAsset.Type.LEVEL);       
         try{
             PK2Level level = PK2LevelIO.loadLevel(file, false);
@@ -111,9 +111,6 @@ public class PK2Episode {
     }
 
     private void findSprite(String name, PK2EpisodeAsset parent){
-
-        System.out.println("FindSprite: "+name);
-
         if(name==null || name.isBlank())return;
 
         PK2EpisodeAsset asset = new PK2EpisodeAsset(name, PK2EpisodeAsset.Type.SPRITE, parent);

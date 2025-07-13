@@ -2,9 +2,28 @@ package pekaep;
 
 import java.io.File;
 
+import org.tinylog.Logger;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import pk2.filesystem.PK2FileSystem;
 
 public class PK2EpisodeAsset {
+
+    private static EpisodeProfile profile;
+    public static void loadEpisodeProfile(){
+        try{
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            profile = mapper.readValue(PK2EpisodeAsset.class.getResourceAsStream("/profiles/episode.yml"), EpisodeProfile.class);
+        }
+        catch(Exception e){
+            Logger.warn(e, "Unable to load the sprite profile file.");
+            profile = new EpisodeProfile();
+        }
+    }
+
+
     public enum Type{
         LEVEL("Level", null),
         SPRITE("Sprite", PK2FileSystem.SPRITES_DIR),
@@ -80,5 +99,28 @@ public class PK2EpisodeAsset {
         }
         
         return this.type == asset.type && this.name.equals(asset.name);
+    }
+
+    public boolean isVanillaAsset(){
+        if(this.file==null)return false;
+
+        switch (this.type) {
+            case MUSIC:
+                return profile.getVanillaMusicList().contains(this.getName());
+
+            case TILESET:
+                return profile.getVanillaTilesetList().contains(this.getName());
+            
+            case BACKGROUND:
+                return profile.getVanillaBackgroundList().contains(this.getName());
+
+            case SPRITE:
+            case SPRITE_TEXTURE:
+            case SPRITE_SOUND:
+                return profile.getVanillaSpriteList().contains(this.getName());
+
+            default:
+                return false;
+        }
     }
 }
