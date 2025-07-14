@@ -68,7 +68,7 @@ public class PK2EpisodeAsset {
 
     public PK2EpisodeAsset(String name, Type type,  PK2EpisodeAsset parent){
         this.type = type;
-        this.parent = null;
+        this.parent = parent;
         this.name = name;
     }
 

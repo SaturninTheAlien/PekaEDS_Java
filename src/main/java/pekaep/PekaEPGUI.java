@@ -68,6 +68,8 @@ public class PekaEPGUI extends JFrame {
     private DefaultListModel<String> missingListModel;
     private List<PK2EpisodeAsset> missingAssets;
 
+    private AssetInfoPanel missingAssetInfoPanel;
+
     private JLabel lFinal;
 
     private JPanel cardPanel;
@@ -76,7 +78,10 @@ public class PekaEPGUI extends JFrame {
     private JButton btnBack;
     private PK2Episode episode = null;
 
-    Page currentPage = Page.EPISODE;
+    private static final Dimension preferredListSize = new Dimension(150, 400);
+
+    private Page currentPage = Page.EPISODE;
+    
 
     public PekaEPGUI(){
         super();
@@ -126,32 +131,64 @@ public class PekaEPGUI extends JFrame {
         JPanel panelLevels = new JPanel();
         this.lFoundLevels = new JLabel("<html> <span style=\"font-weight:bold; font-size: 25px\"> Found Levels </span> </html>");
 
-        panelLevels.setLayout(new MigLayout());
+        panelLevels.setLayout(new MigLayout("fill", "[grow]", "[pref!][grow]"));
         
         panelLevels.add(this.lFoundLevels, "cell 0 0");
 
-        this.levelListModel = new DefaultListModel<>();
-        
+        this.levelListModel = new DefaultListModel<>();        
         this.jLevelList = new JList<>(this.levelListModel);
-        this.jLevelList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //this.jLevelList.setBorder(BorderFactory.createLineBorder(Loo));
 
-        panelLevels.add(this.jLevelList, "cell 0 1");        
-        cardPanel.add( new JScrollPane(panelLevels), Page.LEVELS.getName());
+        JScrollPane levelListScrollPane = new JScrollPane(this.jLevelList);
+        levelListScrollPane.setPreferredSize(preferredListSize);
+
+
+        panelLevels.add(levelListScrollPane, "cell 0 1, grow, push");        
+        cardPanel.add( panelLevels, Page.LEVELS.getName());
 
 
 
         JPanel assetsPanel = new JPanel();
-        assetsPanel.setLayout(new MigLayout());
+        assetsPanel.setLayout(new MigLayout("fill", "[grow]", "[pref!][pref!][grow]"));
 
         this.lMissing = new JLabel("<html> <span style=\"font-weight:bold; color:red; font-size: 25px\"> Missing assets! </span> </html>");
 
+        JLabel missinginfo = new JLabel("These files are missing or they are corrupted!");
+        
         assetsPanel.add(this.lMissing, "cell 0 0");
+        assetsPanel.add(missinginfo, "cell 0 1");
 
         this.missingListModel = new DefaultListModel<>();
+
         this.jMissingList = new JList<>(this.missingListModel);
-        assetsPanel.add(this.jMissingList, "cell 0 1");
-        cardPanel.add( new JScrollPane(assetsPanel), Page.MISSING.getName());
+        this.jMissingList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                
+        this.missingAssetInfoPanel = new AssetInfoPanel();
+        this.missingAssetInfoPanel.setVisible(false);
+
+        this.jMissingList.getSelectionModel().addListSelectionListener(e -> {
+
+            int index = this.jMissingList.getSelectedIndex();
+            if(index>=0 && index < this.missingAssets.size()){
+                this.missingAssetInfoPanel.setAsset( this.missingAssets.get(index));
+                this.missingAssetInfoPanel.setVisible(true);
+            }
+            else{
+                this.missingAssetInfoPanel.setVisible(false);
+            }
+        });
+
+        JPanel assetsPanelG1 = new JPanel();
+        assetsPanelG1.setLayout(new MigLayout("fill", "[150lp:n:200lp][grow]", "[grow]"));
+
+        JScrollPane assetListScrollPane = new JScrollPane(this.jMissingList);
+        assetListScrollPane.setPreferredSize(preferredListSize);
+
+        assetsPanelG1.add(assetListScrollPane, "grow, push, cell 0 0");
+        assetsPanelG1.add(this.missingAssetInfoPanel, "grow, push, cell 1 0");
+        
+
+        assetsPanel.add(assetsPanelG1, "cell 0 2, grow, push");
+        cardPanel.add( assetsPanel, Page.MISSING.getName());
 
         JPanel finalPanel = new JPanel();
         finalPanel.setLayout(new MigLayout());
