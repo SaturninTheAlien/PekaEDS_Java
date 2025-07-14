@@ -5,7 +5,6 @@ import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
 import pk2.filesystem.PK2FileSystem;
 import pk2.profile.SpriteProfile;
-import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
@@ -64,6 +63,8 @@ public final class PropertiesPanel extends PekaSE2Panel {
     private JComboBox<String> cbImmunity;
         
     private SpriteFileChooser fileChooser;
+
+    private SpriteProfile profile;
     
     private final SpritePreview bonusSpritePreview;
     
@@ -297,7 +298,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         hitboxWidth.setValue(sprite.getWidth());
         hitboxHeight.setValue(sprite.getHeight());
         
-        cbType.setSelectedItem(Settings.getSpriteProfile().getTypeMap().get(sprite.getType()));
+        cbType.setSelectedItem(this.profile.getTypeMap().get(sprite.getType()));
         
         spWeight.setValue(sprite.getWeight());
         spEnergy.setValue(sprite.getEnergy());
@@ -336,12 +337,12 @@ public final class PropertiesPanel extends PekaSE2Panel {
         tfTransformSprite.setText(sprite.getTransformationSpriteFile());
         
         int destructionType = sprite.getDestructionEffect() >= 100 ? 100 : 0;
-        cbDestruction.setSelectedItem(Settings.getSpriteProfile().getDestructionType().get(destructionType));
+        cbDestruction.setSelectedItem(this.profile.getDestructionType().get(destructionType));
         
         int destructionEffect = sprite.getDestructionEffect() >= 100 ? sprite.getDestructionEffect() - 100 : sprite.getDestructionEffect();
-        cbDestructionEffect.setSelectedItem(Settings.getSpriteProfile().getDestructionEffects().get(destructionEffect));
+        cbDestructionEffect.setSelectedItem(this.profile.getDestructionEffects().get(destructionEffect));
         
-        cbImmunity.setSelectedItem(Settings.getSpriteProfile().getImmunityMap().get(sprite.getImmunityToDamageType()));
+        cbImmunity.setSelectedItem(this.profile.getImmunityMap().get(sprite.getImmunityToDamageType()));
     }
     
     private void updateBonusSpritePreview(String file) {
@@ -431,7 +432,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         sprite.setHeight((int) hitboxHeight.getValue());
         
         int type = 0;
-        for (var t : Settings.getSpriteProfile().getTypeMap().entrySet()) {
+        for (var t : this.profile.getTypeMap().entrySet()) {
             if (t.getValue().equals(cbType.getSelectedItem())) {
                 type = t.getKey();
                 
@@ -473,7 +474,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         sprite.setTransformationSpriteFile(tfTransformSprite.getText());
         
         int destruction = 0;
-        for (var d : Settings.getSpriteProfile().getDestructionType().entrySet()) {
+        for (var d : this.profile.getDestructionType().entrySet()) {
             if (d.getValue().equals(cbDestruction.getSelectedItem())) {
                 destruction = d.getKey();
                 
@@ -481,7 +482,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
             }
         }
         
-        for (var d : Settings.getSpriteProfile().getDestructionEffects().entrySet()) {
+        for (var d : this.profile.getDestructionEffects().entrySet()) {
             if (d.getValue().equals(cbDestructionEffect.getSelectedItem())) {
                 destruction += d.getKey();
                 
@@ -492,7 +493,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         sprite.getDestructionEffect(destruction);
         
         int immunity = 0;
-        for (var d : Settings.getSpriteProfile().getImmunityMap().entrySet()) {
+        for (var d : this.profile.getImmunityMap().entrySet()) {
             if (d.getValue().equals(cbImmunity.getSelectedItem())) {
                 immunity = d.getKey();
                 
@@ -505,6 +506,8 @@ public final class PropertiesPanel extends PekaSE2Panel {
     
     @Override
     public void setProfileData(SpriteProfile profile) {
+        this.profile = profile;
+
         replaceComboBoxItems(cbDestruction, profile.getDestructionType().entrySet());
         replaceComboBoxItems(cbDestructionEffect, profile.getDestructionEffects().entrySet());
         replaceComboBoxItems(cbImmunity, profile.getImmunityMap().entrySet());

@@ -4,7 +4,6 @@ import net.miginfocom.swing.MigLayout;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
 import pk2.profile.SpriteProfile;
-import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 
 import javax.swing.*;
@@ -28,6 +27,7 @@ public class AIListPanel extends PekaSE2Panel {
     private JPanel pnlAddAI;
     
     private UnsavedChangesListener unsavedChangesListener;
+    private SpriteProfile profile;
     
     public AIListPanel() {
        
@@ -88,7 +88,7 @@ public class AIListPanel extends PekaSE2Panel {
 
         for (int i = 0; i < sprite.getAiList().size(); i++) {
             addComboBox(i);
-            cbAiList.get(i).setSelectedItem(Settings.getSpriteProfile().getAiPatternMap().get(sprite.getAiList().get(i)));
+            cbAiList.get(i).setSelectedItem(this.profile.getAiPatternMap().get(sprite.getAiList().get(i)));
             spAiList.get(i).setValue(sprite.getAiList().get(i));
 
             cbAiList.get(i).addActionListener(this.unsavedChangesListener);
@@ -117,6 +117,8 @@ public class AIListPanel extends PekaSE2Panel {
     
     @Override
     public void setProfileData(SpriteProfile profile) {
+        this.profile = profile;
+
         aiIdList = profile.getAiPatternMap().keySet().stream().toList();
         aiTextList = profile.getAiPatternMap().values().stream().toList();
         
@@ -197,7 +199,7 @@ public class AIListPanel extends PekaSE2Panel {
         
         @Override
         public void stateChanged(ChangeEvent e) {
-            comboBox.setSelectedItem(Settings.getSpriteProfile().getAiPatternMap().get((int) spinner.getValue()));
+            comboBox.setSelectedItem(profile.getAiPatternMap().get((int) spinner.getValue()));
         }
     }
     

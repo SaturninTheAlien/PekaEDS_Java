@@ -6,7 +6,6 @@ import pekase3.panels.PekaSE2Panel;
 import pekase3.util.Point2dInput;
 import pk2.filesystem.PK2FileSystem;
 import pk2.profile.SpriteProfile;
-import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
@@ -43,6 +42,7 @@ public class AttacksPanel extends PekaSE2Panel {
     private JComboBox<String> cbDamageType;
     
     private SpriteFileChooser fileChooser;
+    private SpriteProfile profile;
     
     public AttacksPanel() {
         setup();
@@ -161,7 +161,7 @@ public class AttacksPanel extends PekaSE2Panel {
         
         spLoadTime.setValue(sprite.getLoadTime());
         
-        cbDamageType.setSelectedItem(Settings.getSpriteProfile().getDamageMap().get(sprite.getDamageType()));
+        cbDamageType.setSelectedItem(this.profile.getDamageMap().get(sprite.getDamageType()));
 
         pDetection.setValue(sprite.getPlayerDetection());
     }
@@ -233,7 +233,7 @@ public class AttacksPanel extends PekaSE2Panel {
         sprite.setAttackPause((int) spAttackPause.getValue());
         
         int damageType = 0;
-        for (var d : Settings.getSpriteProfile().getDamageMap().entrySet()) {
+        for (var d : this.profile.getDamageMap().entrySet()) {
             if (d.getValue().equals(cbDamageType.getSelectedItem())) {
                 damageType = d.getKey();
                 
@@ -248,6 +248,7 @@ public class AttacksPanel extends PekaSE2Panel {
     
     @Override
     public void setProfileData(SpriteProfile profile) {
+        this.profile = profile;
         cbDamageType.removeAllItems();
         
         for (var damageType : profile.getDamageMap().entrySet()) {
