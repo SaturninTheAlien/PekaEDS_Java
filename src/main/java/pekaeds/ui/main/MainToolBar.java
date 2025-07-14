@@ -30,6 +30,7 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
     private JToggleButton tbHighlightSprites;
     private JToggleButton tbShowSprites;
     private JToggleButton tbShowBgSprites;
+    private JToggleButton tbShowTransparentLayers;
     
     private final Settings settings;
     
@@ -60,7 +61,9 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
 
         tbShowBgSprites = new JToggleButton("Show BG/FG sprites");
         tbShowBgSprites.setSelected(Settings.showBgSprites);
-        
+
+        tbShowTransparentLayers = new JToggleButton("Show another layer as transparent");
+        tbShowTransparentLayers.setSelected(Settings.showTransparentLayers);
         
         btnNew.addActionListener(new NewLevelAction(gui));
         btnOpen.addActionListener(new OpenLevelAction(gui));
@@ -80,6 +83,12 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
         tbShowBgSprites.addActionListener(e->{
             Settings.showBgSprites = tbShowBgSprites.isSelected();
             gui.getMapPanel().repaint();
+        });
+
+        tbShowTransparentLayers.addActionListener(e->{
+            Settings.showTransparentLayers = tbShowTransparentLayers.isSelected();
+            gui.getMapPanel().repaint();
+
         });
         
         lblLayer = new JLabel("Layer:");
@@ -121,6 +130,7 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
         add(tbHighlightSprites);
         add(tbShowSprites);
         add(tbShowBgSprites);
+        add(tbShowTransparentLayers);
     }
     
     private void addListeners() {

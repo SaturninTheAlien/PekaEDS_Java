@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import pekaeds.data.Layer;
 import pk2.level.PK2Level;
 import pk2.level.PK2LevelSector;
+import pk2.settings.Settings;
 import pk2.sprite.SpritePrototype;
 
 // TODO Optimize drawing
@@ -43,17 +44,21 @@ public class MapPanelPainter {
 
             switch (currentLayer) {
                 case Layer.FOREGROUND -> {
-                    g.setComposite(compAlphaHalf);
-                    drawBackgroundLayer(g);
+
+                    if(Settings.showTransparentLayers){
+                        g.setComposite(compAlphaHalf);
+                        drawBackgroundLayer(g);
+                    }
 
                     g.setComposite(compAlphaFull);
                     drawLayer(g, foregroundLayer, foregroundTilesetImage);
                 }
 
                 case Layer.BACKGROUND -> {
-                    g.setComposite(compAlphaHalf);
-                    drawLayer(g, foregroundLayer, foregroundTilesetImage);
-
+                    if(Settings.showTransparentLayers){
+                        g.setComposite(compAlphaHalf);
+                        drawLayer(g, foregroundLayer, foregroundTilesetImage);
+                    }
                     g.setComposite(compAlphaFull);
                     drawBackgroundLayer(g);
                 }

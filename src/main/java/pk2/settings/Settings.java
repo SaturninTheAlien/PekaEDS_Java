@@ -60,7 +60,8 @@ public class Settings {
     
     public static boolean showSprites = true;
     public static boolean showBgSprites = true;
-    
+    public static boolean showTransparentLayers = true;
+
     private static boolean highlightSelection = true;
     
     
