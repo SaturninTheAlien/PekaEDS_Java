@@ -74,13 +74,17 @@ public class SpriteSheetPanel extends JPanel implements ChangeListener {
             frameEditMode.drawInFrontSpriteSheet(g2);
         }
     }
+    public void setImage(BufferedImage img){
+        this.setImage(img, true);
+
+    }
     
-    public void setImage(BufferedImage img) {
+    public void setImage(BufferedImage img, boolean resetFrameData) {
         model.setImage(img);
         
         guessBorderColor(img);
-        
-        resetFrameData();
+
+        if(resetFrameData)resetFrameData();
     }
     
     public void resetFrameData() {

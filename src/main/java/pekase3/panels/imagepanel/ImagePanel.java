@@ -50,7 +50,8 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
     
     private JComboBox<String> cbColors;
     
-    private PK2Sprite loadedSprite;
+    private BufferedImage image;
+    private int color;
     
     private JToggleButton lastSelectedButton;
 
@@ -189,7 +190,7 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
                 tfImage.setText(fc.getSelectedFile().getName());
                 spriteEditModel.getSprite().setImageFile(tfImage.getText());
                 
-                loadImage(fc.getSelectedFile());
+                loadImage(fc.getSelectedFile(), false);
             }
         });
         
@@ -244,52 +245,43 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         });
         
         cbColors.addActionListener(e -> {
-            if (loadedSprite != null) {
-                int color = 255;
+
+            if (this.image != null) {
+                int newColor = 255;
                 for (var s : this.profile.getColorMap().entrySet()) {
                     if (cbColors.getSelectedItem() != null) {
                         if (cbColors.getSelectedItem().equals(s.getValue())) {
-                            color = s.getKey();
+                            newColor = s.getKey();
                             
                             break;
                         }
                     }
                 }
-                
-                if (loadedSprite.getColor() != color) {
 
-                    loadedSprite.setColor(color);
+                if(color!=newColor){
+                    color = newColor;
 
-                    if (color != 255) {
-                        GFXUtils.adjustSpriteColor(loadedSprite.getImage(), color);
-
-                    } else {
+                    if(color != 255){
+                        GFXUtils.adjustSpriteColor(image, color);
+                    }
+                    else{
                         // If the color is 255 (Original) the image needs to be reloaded, because it's not possible to reverse the color adjustment.
-                        String imageFilename = loadedSprite.getImageFile();
                         if(!tfImage.getText().isBlank()){
-                            imageFilename = tfImage.getText();
-                        }
 
-                        try{
-                            File file = PK2FileSystem.findAsset(imageFilename, PK2FileSystem.SPRITES_DIR);
-
-                            spriteEditModel.getSprite().setImageFile(imageFilename);
-                            this.loadImage(file);
-
-                        } catch(IOException ex){
-                            Logger.warn(ex);
+                            try{
+                                File file = PK2FileSystem.findAsset(tfImage.getText(), PK2FileSystem.SPRITES_DIR);
+                                spriteEditModel.getSprite().setImageFile(tfImage.getText());
+                                this.loadImage(file, false);
+                            }
+                            catch(IOException ex){
+                                Logger.warn(ex);
+                            }       
                         }
                     }
-                    
                     spriteSheetPanel.repaint();
                 }
             }
         });
-        
-        //spFrameX.addChangeListener(l -> spriteSheetPanel.getModel().setFramePosition((int) spFrameX.getValue(), (int) spFrameY.getValue()));
-        //spFrameY.addChangeListener(l -> spriteSheetPanel.getModel().setFramePosition((int) spFrameX.getValue(), (int) spFrameY.getValue()));
-        //spFrameWidth.addChangeListener(l -> spriteSheetPanel.getModel().setFrameDimension((int) spFrameWidth.getValue(), (int) spFrameHeight.getValue()));
-        //spFrameHeight.addChangeListener(l -> spriteSheetPanel.getModel().setFrameDimension((int) spFrameWidth.getValue(), (int) spFrameHeight.getValue()));
         
         spFrameAmount.addChangeListener(l -> {
             spriteSheetPanel.getModel().setFramesAmount((int) spFrameAmount.getValue());
@@ -297,11 +289,10 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
     }
     
     @Override
-    public void setSprite(PK2Sprite sprite) {
-        loadedSprite = sprite;
-        
+    public void setSprite(PK2Sprite sprite) {       
         tfImage.setText(sprite.getImageFile());
         
+        this.image = sprite.getImage();
         spriteSheetPanel.setImage(sprite.getImage());
         
         spFrameX.getModel().setValue(sprite.getFrameX());
@@ -310,7 +301,8 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         spFrameHeight.getModel().setValue(sprite.getFrameHeight());
         spFrameAmount.getModel().setValue(sprite.getFramesAmount());
 
-        cbColors.setSelectedItem(this.profile.getColorMap().get(sprite.getColor()));
+        this.color = sprite.getColor();
+        cbColors.setSelectedItem(this.profile.getColorMap().get(this.color));
         
         spriteSheetPanel.setFrameData(sprite.getFrameX(), sprite.getFrameY(), sprite.getFrameWidth(), sprite.getFrameHeight());
         
@@ -332,11 +324,12 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         
         spFrameAmount.setValue(0);
 
-        if (cbColors.getItemCount() > 0) cbColors.setSelectedIndex(0);
-        
         tfImage.setText("");
-        
         spriteSheetPanel.setImage(null);
+
+        //if (cbColors.getItemCount() > 0) cbColors.setSelectedIndex(0);
+        this.color = 255;
+        cbColors.setSelectedItem(this.profile.getColorMap().get(this.color));
     }
     
     @Override
@@ -351,7 +344,7 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         
         sprite.setFramesAmount((int) spFrameAmount.getValue());
         
-        int color = 0;
+        int color = 255;
         for (var c : this.profile.getColorMap().entrySet()) {
             if (c.getValue().equals(cbColors.getSelectedItem())) {
                 color = c.getKey();
@@ -399,21 +392,16 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         spriteEditModel.setSpriteFrames(GFXUtils.cutFrames(spr.getImage(), (int) spFrameAmount.getValue(), (int) spFrameX.getValue(), (int) spFrameY.getValue(), (int) spFrameWidth.getValue(), (int) spFrameHeight.getValue()));
     }
     
-    private void loadImage(File file) {
-        BufferedImage img = null;
+    private void loadImage(File file, boolean resetFrameData) {
+        this.image = null;
         
         try {
-            img = ImageIO.read(file);
+            this.image = ImageIO.read(file);
+            this.image = GFXUtils.makeTransparent(this.image);
             
-            //colorPalettePanelPopup.setColorPalette((IndexColorModel) img.getColorModel());
-            
-            img = GFXUtils.makeTransparent(img);
-            
-            spriteEditModel.setSpriteImage(img);
-            
-            spriteSheetPanel.setImage(img);
-            
-            pnlBorderColor.setBackground(spriteSheetPanel.getBorderColor());
+            //spriteEditModel.setSpriteImage(this.image);
+            spriteSheetPanel.setImage(this.image, resetFrameData);
+            //pnlBorderColor.setBackground(spriteSheetPanel.getBorderColor());
         } catch (IOException ex) {
             Logger.warn(ex);
         }
