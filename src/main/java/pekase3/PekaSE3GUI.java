@@ -67,7 +67,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         
         setupIcon();
         
-        setTitle("PekaSE2");
+        setTitle("Pekka Kana 2 Sprite Editor");
         setMinimumSize(new Dimension(900, 700));
         setSize(900, 700);
         setLocationRelativeTo(null);
