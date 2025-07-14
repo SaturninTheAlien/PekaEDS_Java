@@ -1,4 +1,4 @@
-package pekaep;
+package pekaep.episode;
 
 import java.io.File;
 import java.io.FileNotFoundException;

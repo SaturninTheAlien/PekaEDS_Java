@@ -1,4 +1,4 @@
-package pekaep;
+package pekaep.ui;
 
 import java.io.FileNotFoundException;
 
@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+import pekaep.episode.PK2EpisodeAsset;
 
 public class AssetInfoPanel extends JPanel {
 

@@ -1,4 +1,4 @@
-package pekaep;
+package pekaep.profile;
 
 import java.io.File;
 import java.io.FileOutputStream;

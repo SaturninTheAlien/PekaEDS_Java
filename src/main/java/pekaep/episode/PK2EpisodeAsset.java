@@ -1,4 +1,4 @@
-package pekaep;
+package pekaep.episode;
 
 import java.io.File;
 
@@ -7,6 +7,7 @@ import org.tinylog.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import pekaep.profile.EpisodeProfile;
 import pk2.filesystem.PK2FileSystem;
 
 public class PK2EpisodeAsset {
