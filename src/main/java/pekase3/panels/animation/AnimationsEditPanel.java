@@ -103,6 +103,8 @@ public class AnimationsEditPanel extends PekaSE2Panel implements SpriteFramesCha
     
     @Override
     public void setSprite(PK2Sprite sprite) {
+        this.resetValues();
+
         for (int i = 0; i < animationPanelList.size(); i++) {
             animationPanelList.get(i).setSprite(sprite, i);
         }
