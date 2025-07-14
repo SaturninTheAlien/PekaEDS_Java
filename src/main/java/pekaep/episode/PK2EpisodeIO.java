@@ -19,7 +19,7 @@ public class PK2EpisodeIO {
         }
 
         String entry;
-        if(asset.getType()==PK2EpisodeAsset.Type.LEVEL){
+        if(asset.getType().getDir()==null){
             entry = PK2FileSystem.EPISODES_DIR + "/"+ episode.getName() + "/" + asset.getName();
         }
         else{

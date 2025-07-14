@@ -83,7 +83,52 @@ public class PK2Episode {
                 mapAsset.file = f;
                 this.assetList.add(mapAsset);
             }
-        } 
+        }
+
+        if(this.shouldListLua()){
+
+            File lua1 = Paths.get(this.dir.getAbsolutePath(), PK2FileSystem.LUA_DIR).toFile();
+            if(lua1.exists()){
+                this.listLuaDir(lua1);
+            }
+
+            File lua2 = Paths.get(PK2FileSystem.getAssetsPath().getAbsolutePath(), PK2FileSystem.LUA_DIR).toFile();
+            if(lua2.exists()){
+                this.listLuaDir(lua2);
+            }
+        }
+    }
+    
+    private boolean shouldListLua(){
+        for(PK2EpisodeAsset asset: this.assetList){
+            if(asset.getType()==PK2EpisodeAsset.Type.LUA){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void listLuaDir(File dir){
+        File[] luaFiles = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".lua");
+            }
+        });
+
+        for(File luaFile: luaFiles){
+            this.addLuaAsset(luaFile);   
+        }
+    }
+
+    private void addLuaAsset(File luaFile){
+        PK2EpisodeAsset asset = new PK2EpisodeAsset(luaFile.getName(),PK2EpisodeAsset.Type.LUA);
+        asset.file = luaFile;
+        for(PK2EpisodeAsset asset2: this.assetList){
+            if(asset2.equals(asset))return;
+        }
+        this.assetList.add(asset);
     }
 
     public void sortAssets(){

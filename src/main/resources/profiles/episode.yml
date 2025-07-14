@@ -333,3 +333,7 @@ optionalMapAssests:
 - "map.xm"
 - "map.ogg"
 - "map.mp3"
+- "readme.txt"
+- "readme.md"
+- "README.txt"
+- "README.md"

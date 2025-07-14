@@ -196,6 +196,10 @@ public class PekaEPGUI extends JFrame {
         if(res == JFileChooser.APPROVE_OPTION){
 
             File file = fc.getSelectedFile();
+            if(!file.getName().endsWith(".zip")){
+                file = new File(file.getAbsolutePath()+".zip");
+            }
+
             try{
                 PK2EpisodeIO.saveZip(this.episode, file);
                 JOptionPane.showMessageDialog(this,
