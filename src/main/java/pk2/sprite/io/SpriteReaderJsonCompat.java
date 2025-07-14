@@ -17,6 +17,8 @@ class SpriteReaderJsonCompat extends SpriteReaderJson{
         String fileContents = Files.readString(file.toPath());
         JSONObject json = new JSONObject(fileContents);
 
+        boolean obsolete = false;
+
         if(json.has("parent")){
             File parentSprite = PK2FileSystem.findSprite(json.getString("parent"));
             JSONObject parentJson = new JSONObject(Files.readString(parentSprite.toPath()));
@@ -26,10 +28,18 @@ class SpriteReaderJsonCompat extends SpriteReaderJson{
                     json.put(key, parentJson.get(key));
                 }
             }
+
+            /**
+             * Obsolete sprites, "parent" field is going to be removed
+             * Convert them immiediately!
+             */
+
+            obsolete = true;
         }
         
         PK2Sprite sprite = parseSprite(json);
         sprite.setFilename(file.getName());
+        sprite.deprecatedFormat = obsolete;
         return sprite;
     }
 

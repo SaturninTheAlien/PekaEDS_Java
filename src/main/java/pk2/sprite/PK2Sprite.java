@@ -15,6 +15,8 @@ public class PK2Sprite implements SpritePrototype {
     public static final byte[] VERSION_13 = {0x31, 0x2E, 0x33, 0x00};
     
     private final ChangeEvent changeEvent = new ChangeEvent(this);
+
+    public boolean deprecatedFormat = false;
     
     private List<ChangeListener> changeListeners = new ArrayList<>();
     

@@ -3,7 +3,8 @@ package pekaep.episode;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -21,6 +22,7 @@ public class PK2Episode {
     private File dir;
     private String name;
 
+    private File tmpDir;
     private List<File> levelFiles;
     private List<PK2EpisodeAsset> assetList = new ArrayList<>();
 
@@ -73,6 +75,15 @@ public class PK2Episode {
         for(File levelFile: this.levelFiles){
             this.findLevel(levelFile);
         }
+
+        for(String s: PK2EpisodeAsset.profile.getOptionalMapAssests()){
+            File f = Paths.get(this.dir.getAbsolutePath(), s).toFile();
+            if(f.exists()){
+                PK2EpisodeAsset mapAsset = new PK2EpisodeAsset(name, PK2EpisodeAsset.Type.MAP_ASSET);
+                mapAsset.file = f;
+                this.assetList.add(mapAsset);
+            }
+        } 
     }
 
     public void sortAssets(){
@@ -106,6 +117,10 @@ public class PK2Episode {
                 if(sector.tilesetBgName!=null && !sector.tilesetBgName.isBlank()){
                     findAsset(sector.tilesetBgName, PK2EpisodeAsset.Type.TILESET, levelAsset);
                 }
+
+                if(sector.pk2stuffName!=null && !sector.pk2stuffName.isBlank()){
+                    findAsset(sector.pk2stuffName, PK2EpisodeAsset.Type.GFX, levelAsset);
+                }
             }
 
             for(String spriteName: level.getSpriteNameList()){
@@ -137,6 +152,26 @@ public class PK2Episode {
 
             PK2Sprite sprite = SpriteIO.loadSpriteFile(file);
 
+            
+            if(sprite.deprecatedFormat){
+                /**
+                 * Convert obsolete sprites
+                 */
+                try{
+                    if(tmpDir==null){
+                        this.tmpDir = Files.createTempDirectory("pk2-packer").toFile();
+                    }
+
+                    File newFile = Paths.get(this.tmpDir.getAbsolutePath(), file.getName()).toFile();
+                    SpriteIO.saveSprite(sprite, newFile);
+                    asset.file = newFile;
+                }
+                catch(Exception e){
+                    System.out.println(e);
+                }
+
+            }
+
             findSprite(sprite.getAttack1SpriteFile(), asset);
             findSprite(sprite.getAttack2SpriteFile(), asset);
             findSprite(sprite.getTransformationSpriteFile(), asset);
@@ -151,7 +186,7 @@ public class PK2Episode {
                 }
             }
         }
-        catch(IOException e){
+        catch(Exception e){
             asset.loadingException = e;
         }
         

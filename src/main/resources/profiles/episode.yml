@@ -325,3 +325,11 @@ vanillaMusicList:
 - "song13.xm"
 - "super.xm"
 
+optionalMapAssests:
+- "config.txt"
+- "infosign.txt"
+- "map.bmp"
+- "map.png"
+- "map.xm"
+- "map.ogg"
+- "map.mp3"

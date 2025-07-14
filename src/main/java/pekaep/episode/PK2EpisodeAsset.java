@@ -12,7 +12,7 @@ import pk2.filesystem.PK2FileSystem;
 
 public class PK2EpisodeAsset {
 
-    private static EpisodeProfile profile;
+    public static EpisodeProfile profile;
     public static void loadEpisodeProfile(){
         try{
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -27,6 +27,11 @@ public class PK2EpisodeAsset {
 
     public enum Type{
         LEVEL("Level", null),
+        MAP_ASSET("Map asset", null),
+
+        
+        GFX("GFX file", PK2FileSystem.GFX_DIR),
+
         SPRITE("Sprite", PK2FileSystem.SPRITES_DIR),
         SPRITE_TEXTURE("Sprite texture", PK2FileSystem.SPRITES_DIR),
         SPRITE_SOUND("Sprite sound", PK2FileSystem.SPRITES_DIR),
@@ -59,7 +64,6 @@ public class PK2EpisodeAsset {
     private final String name;
     private final Type type;
 
-    public boolean obsoleteFormat = false;
     public File file = null;
     public Exception loadingException = null;
 
@@ -99,8 +103,25 @@ public class PK2EpisodeAsset {
         if(this.file!=null && this.file.equals(asset.file)){
             return true;
         }
-        
-        return this.type == asset.type && this.name.equals(asset.name);
+
+        if(this.type != asset.type)return false;
+
+        if(this.type == Type.SPRITE){
+
+            String s1 = this.name;
+            if(s1.endsWith(".spr")){
+                s1+="2";
+            }
+
+            String s2 = asset.name;
+            if(s2.endsWith(".spr")){
+                s2+="2";
+            }
+            return s1.equals(s2);
+        }
+        else{
+            return this.name.equals(asset.name);
+        }
     }
 
     public boolean isVanillaAsset(){
