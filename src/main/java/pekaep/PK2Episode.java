@@ -19,10 +19,13 @@ import pk2.util.StringNaturalComparator;
 
 public class PK2Episode {
     private File dir;
+    private String name;
+
     private List<File> levelFiles;
     private List<PK2EpisodeAsset> assetList = new ArrayList<>();
 
     public PK2Episode(){
+        this.name = "Untitled episode";
     }
 
     public PK2Episode(File dir){
@@ -46,6 +49,12 @@ public class PK2Episode {
                 return snc.compare(a.toString(), b.toString());
             } 
         });
+
+        this.name = dir.getName();
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public File getDir(){

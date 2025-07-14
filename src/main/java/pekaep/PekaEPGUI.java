@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
+import pekaeds.ui.filefilters.ZipFilter;
 import pk2.filesystem.PK2FileSystem;
 
 public class PekaEPGUI extends JFrame {
@@ -255,6 +256,32 @@ public class PekaEPGUI extends JFrame {
         }
     }
 
+    private void createZip(){
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new ZipFilter());
+
+        var res = fc.showSaveDialog(this);
+        if(res == JFileChooser.APPROVE_OPTION){
+
+            File file = fc.getSelectedFile();
+            try{
+                PK2EpisodeIO.saveZip(this.episode, file);
+                JOptionPane.showMessageDialog(this,
+                "Successlully packed episode into a zip file:\n"+file.getAbsolutePath(),
+                "Successfully zipped episode",                
+                JOptionPane.INFORMATION_MESSAGE);
+
+                this.dispose();
+            }
+            catch(Exception e){
+                JOptionPane.showMessageDialog(this,
+                "Cannot zip episode!\nException happened:\n"+e.getMessage(),
+                "Cannot zip episode!",
+                JOptionPane.ERROR_MESSAGE);
+            }            
+        }        
+    }
+
     private void nextStep(){
 
         this.btnBack.setEnabled(false);
@@ -278,8 +305,7 @@ public class PekaEPGUI extends JFrame {
                 break;
             
             case FINAL:
-                //TO DO
-                this.dispose();
+                this.createZip();
                 break;
 
             default:
