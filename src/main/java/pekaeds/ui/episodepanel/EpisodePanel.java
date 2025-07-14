@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+@Deprecated
 public final class EpisodePanel extends JPanel implements EpisodeChangeListener {
     private final EpisodeManager manager;
     

@@ -43,6 +43,7 @@ import pk2.level.PK2LevelUtils;
 import pk2.settings.Settings;
 import pk2.settings.Shortcuts;
 import pk2.settings.StartupBehavior;
+import pk2.util.LevelTestingUtil;
 
 public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     //private ChangeEvent changeEvent = new ChangeEvent(this);
@@ -579,6 +580,21 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
 
     public void setSelectedTool(Tool selectedTool) {
         setSelectedTool(selectedTool, true);
+    }
+
+
+    public void testLevel(){
+
+        if (this.getCurrentFile()==null || this.unsavedChangesPresent()) {
+            int result = UnsavedChangesDialog.show(this);
+            if (result != JOptionPane.CANCEL_OPTION && result != JOptionPane.CLOSED_OPTION) {
+                this.saveLevel();
+                LevelTestingUtil.playLevel(this.getCurrentFile());
+            }
+        }
+        else {
+            LevelTestingUtil.playLevel(this.getCurrentFile());
+        }
     }
     
     /*

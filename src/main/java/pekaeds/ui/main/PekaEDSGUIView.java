@@ -8,7 +8,6 @@ import pekaeds.ui.actions.NewLevelAction;
 import pekaeds.ui.actions.OpenFolderAction;
 import pekaeds.ui.actions.OpenLevelAction;
 import pekaeds.ui.actions.SaveLevelAction;
-import pekaeds.ui.episodepanel.EpisodePanel;
 import pekaeds.ui.listeners.MainUIWindowListener;
 import pekaeds.ui.mappanel.MapPanelView;
 import pekaeds.ui.settings.SettingsDialog;
@@ -35,10 +34,12 @@ public class PekaEDSGUIView {
     private JMenuItem mFileSaveAs;
     private JMenuItem mFileExit;
 
-    private JMenu mEpisode;
+    private JMenuItem mFileTest;
+
+   /*private JMenu mEpisode;
     private JMenuItem mEpisodeNew;
     private JMenuItem mEpisodeOpen;
-    private JMenuItem mEpisodeExport;
+    private JMenuItem mEpisodeExport;*/
 
     //private JMenu mFolders;
     private JMenuItem mfBase;
@@ -99,14 +100,14 @@ public class PekaEDSGUIView {
         JScrollPane spLevelMetaDataPanel = new JScrollPane(mapMetadataPanel);
         JScrollPane spSectorMetaDataPanel = new JScrollPane(edsUI.getSectorMetadataPanel());
 
-        EpisodePanel episodesPanel = new EpisodePanel(edsUI, edsUI.getEpisodeManager());
+        //EpisodePanel episodesPanel = new EpisodePanel(edsUI, edsUI.getEpisodeManager());
 
         tabbedPane = new JTabbedPane();
         tabbedPane.add("Map", spLevelMetaDataPanel);
         tabbedPane.add("Sprites", spritesPanel);
         tabbedPane.add("Sector", spSectorMetaDataPanel);
         tabbedPane.add("Sector list", edsUI.getSectorListPanel());
-        tabbedPane.add("Episode", episodesPanel);
+        //tabbedPane.add("Episode", episodesPanel);
 
         frame.add(mainToolBar, BorderLayout.PAGE_START);
 
@@ -150,6 +151,7 @@ public class PekaEDSGUIView {
         mFileSave = new JMenuItem("Save");
         mFileSaveAs = new JMenuItem("Save as...");
         mFileExit = new JMenuItem("Exit");
+        mFileTest = new JMenuItem("Test level");
 
         mFile.add(mFileNew);
         mFile.add(mFileOpen);
@@ -158,9 +160,11 @@ public class PekaEDSGUIView {
         mFile.add(mFileSave);
         mFile.add(mFileSaveAs);
         mFile.addSeparator();
+        mFile.add(mFileTest);
+        mFile.addSeparator();
         mFile.add(mFileExit);
 
-        mEpisode = new JMenu("Episode");
+        /*mEpisode = new JMenu("Episode");
         mEpisodeNew = new JMenuItem("New");
         mEpisodeOpen = new JMenuItem("Open");
         mEpisodeExport = new JMenuItem("Export");
@@ -168,7 +172,7 @@ public class PekaEDSGUIView {
         mEpisode.add(mEpisodeNew);
         mEpisode.add(mEpisodeOpen);
         mEpisode.addSeparator();
-        mEpisode.add(mEpisodeExport);
+        mEpisode.add(mEpisodeExport);*/
 
         mView = new JMenu("View");
         mViewTilesPanel = new JCheckBoxMenuItem("Tiles menu");
@@ -215,7 +219,7 @@ public class PekaEDSGUIView {
         mFolders.add(mfMusic);
 
         menuBar.add(mFile);
-        menuBar.add(mEpisode);
+        //menuBar.add(mEpisode);
         menuBar.add(mFolders);
         menuBar.add(mView);
         menuBar.add(mOther);
@@ -330,7 +334,7 @@ public class PekaEDSGUIView {
 
         mFileExit.addActionListener(e -> System.exit(0));
 
-        mEpisodeNew.addActionListener(e -> {
+        /*mEpisodeNew.addActionListener(e -> {
             var fc = new JFileChooser(PK2FileSystem.getAssetsPath(PK2FileSystem.EPISODES_DIR));
             fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             fc.setDialogTitle("Select an episode folder to add...");
@@ -363,6 +367,10 @@ public class PekaEDSGUIView {
 
                 tabbedPane.setSelectedIndex(2);
             }
+        });*/
+
+        mFileTest.addActionListener(e->{
+            this.edsUI.testLevel();
         });
 
         mfBase.addActionListener(new OpenFolderAction(PK2FileSystem.getAssetsPath()));
