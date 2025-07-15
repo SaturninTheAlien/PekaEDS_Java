@@ -148,6 +148,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
                 JOptionPane.showMessageDialog(null, "Unable to load the sprite image.\n" + e.getMessage(), "Unable to load sprite!", JOptionPane.ERROR_MESSAGE);
             }
 
+            this.updateTitle(file.getAbsolutePath(), false);
             
 
         } catch (IOException e) {
@@ -158,6 +159,11 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
     }
     
     private void saveSprite(File file) {
+
+        if(file.getName().endsWith(".spr")){
+            file = new File(file.getAbsolutePath()+"2");
+        }
+
         var sprite = editPane.setValues();
         
         try {
@@ -312,7 +318,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         
         if (unsavedChanges) title += "*";
         
-        setTitle(title + " - PekaSE2");
+        setTitle(title);
     }
     
     private void updateTitle(String title) {
