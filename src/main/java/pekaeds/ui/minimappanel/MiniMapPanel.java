@@ -102,7 +102,7 @@ public class MiniMapPanel extends JPanel implements
         }
 
         if (pos.y + (viewport.height / 2) >= currentSector.getHeight()) {
-            viewport.y = currentSector.getHeight() - viewport.height - 1; // -1 to prevent it from going out of bounds
+            viewport.y = currentSector.getHeight() - viewport.height; // -1 to prevent it from going out of bounds
         } else if (pos.y - (viewport.height / 2) <= 0) {
             viewport.y = 0;
         } else {

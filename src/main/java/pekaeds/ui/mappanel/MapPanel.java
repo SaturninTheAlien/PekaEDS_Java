@@ -142,27 +142,31 @@ public class MapPanel extends JComponent implements
         }
     }
 
+    private void updateBGrepeat(){
+
+        if(currentSector!=null && currentSector.getBackgroundImage() != null){
+            bgRepeatX = getPreferredSize().width / currentSector.getBackgroundImage().getWidth();
+            bgRepeatY = getPreferredSize().height / currentSector.getBackgroundImage().getHeight();
+
+            bgRepeatX++;
+            bgRepeatY++;   
+        }
+    }
+
     void updateViewportSize(Rectangle newView) {
         viewport = newView;
 
         miniMapComponent.setViewportSize(newView.width, newView.height);
         painter.setMapViewportSize(newView.width, newView.height);
 
-        if (currentSector != null && currentSector.getBackgroundImage() != null) {
-            bgRepeatX = getPreferredSize().width / currentSector.getBackgroundImage().getWidth();
-            bgRepeatY = getPreferredSize().height / currentSector.getBackgroundImage().getHeight();
-
-            bgRepeatX++;
-            bgRepeatY++;
-
-            repaint();
-        }
+        this.updateBGrepeat();
+        repaint();
     }
 
     public void resizeCurrentSector(int startX, int startY, int newWidth, int newHeight) {
         // Note: It would be cleaner to do this where it belongs but I can't be bothered to figure that out right now
         currentSector.setSize(startX, startY, newWidth, newHeight);
-
+        this.updateBGrepeat();
         repaint();
     }
 
@@ -177,7 +181,7 @@ public class MapPanel extends JComponent implements
         Tool.setSector(sector);
 
         sectorResizeRect.setBounds(0, 0, sector.getWidth() * 32, sector.getHeight() * 32);
-
+        this.updateBGrepeat();
         repaint();
     }
 
