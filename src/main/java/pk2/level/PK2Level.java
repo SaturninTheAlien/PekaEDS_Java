@@ -15,6 +15,8 @@ import pk2.util.GFXUtils;
 
 import javax.imageio.ImageIO;
 
+import pekaeds.util.SpriteUtils;
+
 public class PK2Level {
     public List<PK2LevelSector> sectors = new ArrayList<>();
 
@@ -44,6 +46,16 @@ public class PK2Level {
     public String lua_script = "";                        // lua script
     public int game_mode = 0;                                          // game mode
 
+    public int getSpriteIndex(SpritePrototype sprite){
+        for (int i = 0; i < sprites.size(); ++i) {
+            if(SpriteUtils.filenameEquals(sprite, this.sprites.get(i))){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
     /**
      * @param sprite
      * @return The index of added sprite
@@ -53,7 +65,7 @@ public class PK2Level {
 
         // To prevent adding a sprite multiple times
         for (int i = 0; i < sprites.size(); ++i) {
-            if (sprites.get(i).getFilename().equals(sprite.getFilename())) {
+            if(SpriteUtils.filenameEquals(sprite, this.sprites.get(i))){
                 return i;
             }
         }
@@ -116,6 +128,46 @@ public class PK2Level {
             }
         }
     }
+
+
+    public int replaceSprite(SpritePrototype oldSprite, SpritePrototype newSprite) {
+
+        int index = sprites.indexOf(oldSprite);
+
+        if (index != -1 && !SpriteUtils.filenameEquals(oldSprite, newSprite)) {
+            if (index < player_sprite_index) {
+                --player_sprite_index;
+            }
+            else if (index == player_sprite_index) {
+
+                sprites.get(index).setPlayerSprite(false);
+
+            }
+
+            sprites.remove(index);
+            spriteFiles.remove(index);
+
+            int newIndex = this.addSprite(newSprite);
+
+            for (PK2LevelSector sector : sectors) {
+                sector.replaceSprite(index,  newIndex);
+            }
+
+            if (index == player_sprite_index) {
+                this.player_sprite_index = newIndex;
+                newSprite.setPlayerSprite(true);
+            }
+
+            return newIndex;
+        }
+        else{
+            System.out.println("Shit happened!");
+        }
+
+        return index;
+    }
+
+
 
     public void addSector(final PK2LevelSector newSector) {
         if (newSector != null) {

@@ -25,4 +25,20 @@ public final class SpriteUtils {
             }
         }
     }
+
+
+    public static boolean filenameEquals(SpritePrototype sprite1, SpritePrototype sprite2){
+
+        String s1 = sprite1.getFilename().toLowerCase();
+        if(s1.endsWith(".spr")){
+            s1 = s1 + "2";
+        }
+
+        String s2 = sprite2.getFilename().toLowerCase();
+        if(s2.endsWith(".spr")){
+            s2 = s2 + "2";
+        }
+
+        return s1.equals(s2);
+    }
 }

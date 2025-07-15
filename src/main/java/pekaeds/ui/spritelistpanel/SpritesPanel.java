@@ -10,6 +10,7 @@ import pekaeds.ui.listeners.PK2MapConsumer;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.SpritePlacementListener;
 import pekaeds.ui.main.PekaEDSGUI;
+import pekaeds.util.SpriteUtils;
 import pk2.filesystem.PK2FileSystem;
 import pk2.level.PK2Level;
 import pk2.level.PK2LevelSector;
@@ -37,7 +38,7 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
     private JButton btnAdd;
     private JButton btnRemove;
     private JButton btnSetPlayer;
-    //private JButton btnReplace;
+    private JButton btnReplace;
 
     private PekaEDSGUI gui;
 
@@ -57,12 +58,12 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
         btnAdd = new JButton("Add");
         btnRemove = new JButton("Remove");
         btnSetPlayer = new JButton("Set Player");
-        //btnReplace = new JButton("Replace");
+        btnReplace = new JButton("Replace");
 
         var btnPanel = new JPanel();
         btnPanel.add(btnAdd);
         btnPanel.add(btnRemove);
-        //btnPanel.add(btnReplace);
+        btnPanel.add(btnReplace);
         btnPanel.add(btnSetPlayer);
 
         spriteCellRenderer = new SpriteListCellRenderer();
@@ -112,13 +113,11 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
         btnAdd.addActionListener(e -> {
             SpritePrototype spr = SpritesPanel.this.selectSprite();
             if(spr!=null){
-                int index = currentMap.addSprite(spr);               
-                if (index == currentMap.getLastSpriteIndex()) {
-                    // if added a new sprite
+                
+                int index = currentMap.getSpriteIndex(spr);
+                if(index==-1){
+                    index = currentMap.addSprite(spr);
                     listModel.addElement(spr);
-                } else {
-                    // sprite already existed in the list
-                    spr = currentMap.getSprite(index);
                 }
 
                 spriteList.ensureIndexIsVisible(listModel.indexOf(spr));
@@ -162,6 +161,28 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
             gui.repaintView();
 
             changeListener.stateChanged(changeEvent);
+        });
+
+        btnReplace.addActionListener(e->{
+            SpritePrototype newSpr = SpritesPanel.this.selectSprite();
+            SpritePrototype oldSprite = spriteList.getSelectedValue();
+
+            if(newSpr!=null && oldSprite!=null && !SpriteUtils.filenameEquals(oldSprite, newSpr)){
+
+                boolean shouldAddToList = this.currentMap.getSpriteIndex(newSpr)==-1;
+
+                
+                int newIndex = currentMap.replaceSprite(spriteList.getSelectedValue(), newSpr);
+
+                listModel.removeElement(oldSprite);
+                if(shouldAddToList){
+                    listModel.addElement(newSpr);
+                }
+
+                spriteList.setSelectedIndex(newIndex);
+                gui.repaintView();
+                changeListener.stateChanged(changeEvent);
+            }
         });
 
         spriteList.addListSelectionListener(l -> {

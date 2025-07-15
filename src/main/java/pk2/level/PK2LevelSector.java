@@ -226,6 +226,17 @@ public class PK2LevelSector {
         }
     }
 
+    public void replaceSprite(int id, int newID){
+        
+        for (int i = 0; i < spriteLayer.length; ++i) {
+            if (spriteLayer[i] == id) {
+                spriteLayer[i] = newID;
+            } else if (spriteLayer[i] > id && spriteLayer[i] != 255) {
+                spriteLayer[i] -= 1;
+            }
+        }
+    }
+
     public int countTiles(int id) {
         int result = 0;
 
