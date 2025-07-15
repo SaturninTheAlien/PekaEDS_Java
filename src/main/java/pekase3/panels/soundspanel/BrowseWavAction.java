@@ -28,7 +28,7 @@ public class BrowseWavAction extends AbstractAction {
         }
         
         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            tfTarget.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            tfTarget.setText(fileChooser.getSelectedFile().getName());
         }
     }
 }
