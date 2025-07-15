@@ -108,19 +108,19 @@ public class PK2EpisodeAsset {
 
         if(this.type == Type.SPRITE){
 
-            String s1 = this.name;
+            String s1 = this.name.toLowerCase();
             if(s1.endsWith(".spr")){
                 s1+="2";
             }
 
-            String s2 = asset.name;
+            String s2 = asset.name.toLowerCase();
             if(s2.endsWith(".spr")){
                 s2+="2";
             }
             return s1.equals(s2);
         }
         else{
-            return this.name.equals(asset.name);
+            return this.name.toLowerCase().equals(asset.name.toLowerCase());
         }
     }
 
