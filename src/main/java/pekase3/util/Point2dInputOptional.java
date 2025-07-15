@@ -82,7 +82,11 @@ public class Point2dInputOptional extends JPanel{
     public Point2D getValue(){
 
         if(cbHasValue.isSelected()){
-            return new Point2D((double) spX.getValue(), (double) spY.getValue());
+
+            double x = spX.getValue() instanceof Integer? (int) spX.getValue() : (double) spX.getValue();
+            double y = spY.getValue() instanceof Integer? (int) spY.getValue() : (double) spY.getValue();
+
+            return new Point2D(x, y);
         }
         else{
             return null;

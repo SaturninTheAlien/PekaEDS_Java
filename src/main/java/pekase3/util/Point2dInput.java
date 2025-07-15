@@ -42,7 +42,11 @@ public class Point2dInput extends JPanel {
     }
 
     public Point2D getValue(){
-        return new Point2D((double) spX.getValue(), (double) spY.getValue());
+
+        double x = spX.getValue() instanceof Integer? (int) spX.getValue() : (double) spX.getValue();
+        double y = spY.getValue() instanceof Integer? (int) spY.getValue() : (double) spY.getValue();
+
+        return new Point2D(x, y);
     }
 
     public void addChangeListener(ChangeListener listener){
