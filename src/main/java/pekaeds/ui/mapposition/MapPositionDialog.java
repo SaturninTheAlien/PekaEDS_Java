@@ -9,7 +9,6 @@ import java.io.IOException;
 
 import org.tinylog.Logger;
 
-import pekaeds.util.episodemanager.EpisodeManager;
 import pk2.filesystem.PK2FileSystem;
 
 public class MapPositionDialog extends JDialog {
@@ -17,19 +16,15 @@ public class MapPositionDialog extends JDialog {
     private MapIcon mapIcon = null;
     
     private JSpinner spX, spY;
-    
-    private EpisodeManager manager;
-    
-    public MapPositionDialog(EpisodeManager episodeManager) {
+        
+    public MapPositionDialog() {
         try {
             File mapFile = PK2FileSystem.findAsset("map.bmp", PK2FileSystem.GFX_DIR);
             backgroundImage = ImageIO.read(mapFile);
         } catch (IOException e) {
             Logger.error(e);
         }
-        
-        this.manager = episodeManager;
-        
+               
         add(new PositionPanel(), BorderLayout.CENTER);
         
         setTitle("Set icon position on map");
@@ -77,7 +72,7 @@ public class MapPositionDialog extends JDialog {
             addMouseListener(new MapPositionMouseHandler(MapPositionDialog.this));
         }
     
-        private final Composite compAlphaHalf = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f);
+        //private final Composite compAlphaHalf = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f);
         private final Composite compAlphaFull = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f);
         @Override
         public void paintComponent(Graphics g) {
@@ -89,10 +84,10 @@ public class MapPositionDialog extends JDialog {
                 g2.drawImage(backgroundImage, 0, 0, null);
             }
     
-            g2.setComposite(compAlphaHalf);
+            /*g2.setComposite(compAlphaHalf);
             for (var icon : manager.getMapIcons()) {
                 g2.drawImage(icon.getImage(), icon.getPosition().x, icon.getPosition().y, null);
-            }
+            }*/
             
             g2.setComposite(compAlphaFull);
             if (mapIcon != null) {

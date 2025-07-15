@@ -3,7 +3,6 @@ package pekaeds.ui.main;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.io.*;
 
@@ -31,7 +30,6 @@ import pekaeds.ui.spritelistpanel.SpritesPanel;
 import pekaeds.ui.tilesetpanel.TilesetPanel;
 import pekaeds.ui.toolpropertiespanel.ToolPropertiesPanel;
 import pekaeds.util.*;
-import pekaeds.util.episodemanager.EpisodeManager;
 import pekaeds.util.file.AutoSaveManager;
 import pekaeds.util.file.Session;
 import pk2.filesystem.FHSHelper;
@@ -70,7 +68,6 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     private boolean unsavedChanges = false;
 
     private AutoSaveManager autosaveManager;
-    private EpisodeManager episodeManager;
 
     private SectorResizeDialog resizeDialog;
 
@@ -84,8 +81,6 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     void showEditor() {
         // This has to be done before PekaEDSGUIView gets initialized, because it relies on the toolsList in the Tools class.
         registerTools();
-
-        episodeManager = new EpisodeManager();
 
         view = new PekaEDSGUIView(this);
         model = new PekaEDSGUIModel();
@@ -382,7 +377,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
 
         mapPanel.resetView();
 
-        if (episodeManager.hasEpisodeLoaded()) {
+        /*if (episodeManager.hasEpisodeLoaded()) {
             var jopAddToEpisode = JOptionPane.showConfirmDialog(null, "Add file to episode \"" + episodeManager.getEpisode().getEpisodeName() + "\"?", "Add to episode?", JOptionPane.YES_NO_OPTION);
 
             if (jopAddToEpisode == JOptionPane.YES_OPTION) {
@@ -419,7 +414,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
                     JOptionPane.showMessageDialog(null, "File has not been added to episode.", "Not added to episode", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-        }
+        }*/
     }
 
     public void setLayer(int layer) {
@@ -526,17 +521,16 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     private void updateFrameTitle() {
         var sb = new StringBuilder();
 
-        if (episodeManager.hasEpisodeLoaded()) {
+        /*if (episodeManager.hasEpisodeLoaded()) {
             sb.append(episodeManager.getEpisode().getEpisodeName());
             sb.append(" - ");
-        }
+        }*/
 
         if (model.getCurrentMapFile() != null) {
-            if (episodeManager.hasEpisodeLoaded()) {
-                sb.append(model.getCurrentMapFile().getName());
-            } else {
-                sb.append(model.getCurrentMapFile().getParentFile().getName()).append(File.separator).append(model.getCurrentMapFile().getName());
-            }
+
+            //TODO
+            
+            sb.append(model.getCurrentMapFile().getParentFile().getName()).append(File.separator).append(model.getCurrentMapFile().getName());
         } else {
             sb.append("Unnamed");
         }
@@ -639,10 +633,6 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
 
     SectorListPanel getSectorListPanel() {
         return sectorListPanel;
-    }
-
-    public EpisodeManager getEpisodeManager() {
-        return episodeManager;
     }
 
     public void updateAutosaveManager() {
