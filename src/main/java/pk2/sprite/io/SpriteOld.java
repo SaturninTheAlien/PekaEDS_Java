@@ -15,7 +15,8 @@ public class SpriteOld implements SpritePrototype {
     private int type;
     
     protected String imageFile;
-    protected String imageFileIdentifier;
+
+    protected String specialImageId = null;
 
     protected String[] soundFiles = new String[7];
     
@@ -122,8 +123,6 @@ public class SpriteOld implements SpritePrototype {
     
     public void setImageFile(String imageFile) {
         this.imageFile = imageFile;
-
-        imageFileIdentifier = imageFile + color;
     }
     
     public String getFilename() {
@@ -217,12 +216,16 @@ public class SpriteOld implements SpritePrototype {
 
     @Override
     public String getImageFileIdentifier() {
-        return imageFileIdentifier;
+        if(this.specialImageId!=null){
+            return this.specialImageId;
+        }
+
+        return this.imageFile + Integer.toString(this.color);
     }
 
     @Override
     public void setSpecialImageFileIdentifier(String identifier){
-        this.imageFileIdentifier = identifier;
+        this.specialImageId = identifier;
     }
 
     public void setHeight(int height) {

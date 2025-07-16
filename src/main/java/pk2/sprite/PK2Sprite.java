@@ -29,7 +29,9 @@ public class PK2Sprite implements SpritePrototype {
     // This string contains whatever is contained in imageFile and color
     // Let's say the image file is "rooster.bmp" and the color is 64, so imageFileIdentifier will be rooster.bmp64
     // This is used to cache the correctly recolored/palette shifted sprite sheet
-    protected String imageFileIdentifier = "";
+    //protected String imageFileIdentifier = "";
+
+    protected String specialImageId = null;
     
     protected String[] soundFiles = new String[7];
     
@@ -227,19 +229,20 @@ public class PK2Sprite implements SpritePrototype {
 
     @Override
     public String getImageFileIdentifier() {
-        return imageFileIdentifier;
+        if(this.specialImageId!=null){
+            return this.specialImageId;
+        }
+
+        return this.imageFile + Integer.toString(color);
     }
 
     @Override
     public void setSpecialImageFileIdentifier(String identifier){
-        this.imageFileIdentifier = identifier;
+        this.specialImageId = identifier;
     }
 
     public void setImageFile(String imageFile) {
-        this.imageFile = imageFile;
-
-        imageFileIdentifier = imageFile + color;
-        
+        this.imageFile = imageFile;        
         fireChanges();
     }
     
@@ -529,8 +532,7 @@ public class PK2Sprite implements SpritePrototype {
     }
     
     public void setColor(int color) {
-        this.color = color;
-        
+        this.color = color;        
         fireChanges();
     }
     
