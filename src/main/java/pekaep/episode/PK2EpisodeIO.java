@@ -34,12 +34,12 @@ public class PK2EpisodeIO {
     }
 
 
-    public static void saveZip(PK2Episode episode, File zipFile) throws IOException{
+    public static void saveZip(PK2Episode episode, File zipFile, boolean ignoreVanillaAssets) throws IOException{
         FileOutputStream out = new FileOutputStream(zipFile);
         
         ZipOutputStream zipOut = new ZipOutputStream(out);
         for(PK2EpisodeAsset asset: episode.getAssetList()){
-            if(!asset.isVanillaAsset()){
+            if(!asset.isVanillaAsset() || !ignoreVanillaAssets){
                 zipAsset(asset, zipOut, episode);
             }
         }

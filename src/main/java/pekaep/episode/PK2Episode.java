@@ -67,22 +67,46 @@ public class PK2Episode {
         return this.levelFiles;
     }
 
+    private boolean isOptionAsset(File file){
+
+        String nameLowercase = file.getName().toLowerCase();
+
+        if(nameLowercase.endsWith(".map") || nameLowercase.endsWith(".pk2lvl")){
+            return false;
+        }
+        else if(nameLowercase.endsWith(".proxy")){
+            return true;
+        }
+        for(String s: PK2EpisodeAsset.profile.getOptionalMapAssests()){          
+            if(nameLowercase.equals(s)){
+                return true;
+            };
+        }
+
+        return false;
+    }
+
     public void findAssets(){
         this.assetList.clear();
 
         PK2FileSystem.setEpisodeDir(dir);
 
-        for(File levelFile: this.levelFiles){
-            this.findLevel(levelFile);
+        File[] optionalFiles = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return isOptionAsset(pathname);
+            }
+        });
+
+        for(File f: optionalFiles){
+            PK2EpisodeAsset mapAsset = new PK2EpisodeAsset(name, PK2EpisodeAsset.Type.MAP_ASSET);
+            mapAsset.file = f;
+            this.assetList.add(mapAsset);
         }
 
-        for(String s: PK2EpisodeAsset.profile.getOptionalMapAssests()){
-            File f = Paths.get(this.dir.getAbsolutePath(), s).toFile();
-            if(f.exists()){
-                PK2EpisodeAsset mapAsset = new PK2EpisodeAsset(name, PK2EpisodeAsset.Type.MAP_ASSET);
-                mapAsset.file = f;
-                this.assetList.add(mapAsset);
-            }
+
+        for(File levelFile: this.levelFiles){
+            this.findLevel(levelFile);
         }
 
         if(this.shouldListLua()){

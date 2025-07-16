@@ -201,7 +201,7 @@ public class PekaEPGUI extends JFrame {
             }
 
             try{
-                PK2EpisodeIO.saveZip(this.episode, file);
+                PK2EpisodeIO.saveZip(this.episode, file, this.zipPanel.shouldIgnoreVanillaAssets());
                 JOptionPane.showMessageDialog(this,
                 "Successlully packed episode into a zip file:\n"+file.getAbsolutePath(),
                 "Successfully zipped episode",                
