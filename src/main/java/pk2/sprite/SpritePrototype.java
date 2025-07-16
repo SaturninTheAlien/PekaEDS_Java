@@ -1,5 +1,6 @@
 package pk2.sprite;
 
+import java.util.List;
 import java.awt.image.BufferedImage;
 
 public interface SpritePrototype {
@@ -8,6 +9,7 @@ public interface SpritePrototype {
     public static final int TYPE_FOREGROUND = 6;
     public static final int TYPE_CHARACTER = 1;
 
+    public List<Integer> getAiList();
 
     public int getType();
     public String getFilename();

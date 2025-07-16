@@ -493,6 +493,7 @@ public class PK2Sprite implements SpritePrototype {
         fireChanges();
     }
     
+    @Override
     public ArrayList<Integer> getAiList() {
         return aiList;
     }

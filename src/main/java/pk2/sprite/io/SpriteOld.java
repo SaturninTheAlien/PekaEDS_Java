@@ -341,11 +341,11 @@ public class SpriteOld implements SpritePrototype {
         this.attackPause = attackPause;
     }
     
-    public int[] getAiList() {
+    public int[] getAiListOld() {
         return aiList;
     }
     
-    public void setAiList(int[] aiList) {
+    public void setAiListOld(int[] aiList) {
         this.aiList = aiList;
     }
     
@@ -515,5 +515,15 @@ public class SpriteOld implements SpritePrototype {
     
     public void decreasePlacedAmount() {
         if (placedAmount - 1 >= 0) placedAmount--;
+    }
+
+    @Override
+    public List<Integer> getAiList() {
+
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int ai:this.aiList){
+            list.add(ai);
+        }
+        return list;
     }
 }

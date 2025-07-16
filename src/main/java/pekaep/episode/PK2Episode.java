@@ -10,10 +10,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import pekaeds.util.SpriteUtils;
 import pk2.filesystem.PK2FileSystem;
 import pk2.level.PK2Level;
 import pk2.level.PK2LevelIO;
 import pk2.level.PK2LevelSector;
+import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
 import pk2.util.StringNaturalComparator;
@@ -239,6 +241,11 @@ public class PK2Episode {
                     System.out.println(e);
                 }
 
+            }
+
+            List<Integer> unknownAIs = SpriteUtils.getUnknownAIs(sprite, Settings.getSpriteProfile());
+            if(unknownAIs!=null && unknownAIs.size() > 0){
+                asset.unknowsAIs = unknownAIs;
             }
 
             findSprite(sprite.getAttack1SpriteFile(), asset);

@@ -1,6 +1,7 @@
 package pekaep.episode;
 
 import java.io.File;
+import java.util.List;
 
 import org.tinylog.Logger;
 
@@ -66,6 +67,7 @@ public class PK2EpisodeAsset {
 
     public File file = null;
     public Exception loadingException = null;
+    public List<Integer> unknowsAIs = null;
 
     public PK2EpisodeAsset(String name, Type type){
         this(name, type, null);
