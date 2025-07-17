@@ -85,7 +85,7 @@ public class PK2EpisodeAsset {
 
     public String getName(){
         if(this.file!=null){
-            return this.file.getName();
+            return this.file.getName().toLowerCase();
         }
         return this.name;
     }
