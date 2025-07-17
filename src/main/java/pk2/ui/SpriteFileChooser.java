@@ -146,7 +146,7 @@ public class SpriteFileChooser extends JFileChooser implements PropertyChangeLis
         if (e.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
             var selectedFile = (File) e.getNewValue();
             
-            if (selectedFile != null) {
+            if (selectedFile != null && selectedFile.exists()) {
                 try{
                     SpritePrototype spr = SpriteIO.getSpriteReader(selectedFile).readSpriteFile(selectedFile);
 
