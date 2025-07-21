@@ -199,6 +199,7 @@ typeMap:
  4: Teleport
  5: Background
  6: Foreground
+ 7: Checkpoint
  9: Blackhole
 
 destructionType:
