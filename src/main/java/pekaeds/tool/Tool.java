@@ -44,7 +44,7 @@ public abstract class Tool {
 
     private MapPanelPainter mapPainter;
     
-    protected static int selectedLayer;
+    protected static int selectedLayer = Layer.BOTH;
 
     protected final static ToolSelection selection = new ToolSelection();
     protected static boolean selectingTiles;
