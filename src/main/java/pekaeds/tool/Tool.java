@@ -11,6 +11,7 @@ import pekaeds.ui.listeners.TileChangeListener;
 import pekaeds.ui.mappanel.MapPanelPainter;
 import pk2.level.PK2Level;
 import pk2.level.PK2LevelSector;
+import pk2.level.PK2TileArray;
 import pk2.sprite.SpritePrototype;
 import pk2.util.TileUtils;
 
@@ -62,7 +63,7 @@ public abstract class Tool {
 
     private static final ToolUndoManager undoManager = new ToolUndoManager();
     
-    public static void setSelection(int[][] tileSelection) {
+    public static void setSelection(PK2TileArray tileSelection) {
         selection.setTileFGSelection(tileSelection);
         selection.setTileBGSelection(null);
     }
@@ -173,7 +174,7 @@ public abstract class Tool {
 
         for (int i = 0; i < level.getSpriteList().size(); i++) {
             if (level.getSpriteList().get(i) == newSprite) {
-                selection.setSelectionSprites(new int[][]{{ i }});
+                selection.setSelectionSprites(PK2TileArray.singleTile(i));
 
                 break;
             }

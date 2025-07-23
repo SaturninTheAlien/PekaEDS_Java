@@ -1,17 +1,17 @@
 package pekaeds.tool.undomanager;
 
-import java.util.Arrays;
 
 import pekaeds.tool.Tool;
+import pk2.level.PK2TileArray;
 
 public class UndoAction {
     private Tool tool;
     private int x, y;
-    private int[][] newTiles;
-    private int[][] oldTiles;
+    private PK2TileArray newTiles;
+    private PK2TileArray oldTiles;
 
-    private int[][] newTilesBG;
-    private int[][] oldTilesBG;
+    private PK2TileArray newTilesBG;
+    private PK2TileArray oldTilesBG;
 
     private int layer;
     private ActionType type;
@@ -19,11 +19,11 @@ public class UndoAction {
     
     public UndoAction(Tool tool, ActionType undoType, ActionType actionType, int x, int y,
     
-            int[][] newTile,
-            int[][] oldTile,
+            PK2TileArray newTile,
+            PK2TileArray oldTile,
 
-            int[][] newTilesBG,
-            int[][] oldTilesBG,
+            PK2TileArray newTilesBG,
+            PK2TileArray oldTilesBG,
 
             int layer) {
 
@@ -46,7 +46,7 @@ public class UndoAction {
     }
     
     // Constructor for sprites
-    public UndoAction(Tool tool, ActionType undoType, ActionType actionType, int x, int y, int[][] newTile, int[][] oldTile) {
+    public UndoAction(Tool tool, ActionType undoType, ActionType actionType, int x, int y, PK2TileArray newTile, PK2TileArray oldTile) {
         this.tool = tool;
         
         this.undoType = undoType;
@@ -77,8 +77,8 @@ public class UndoAction {
                 "tool=" + tool +
                 ", x=" + x +
                 ", y=" + y +
-                ", newTiles=" + Arrays.deepToString(newTiles) +
-                ", oldTiles=" + Arrays.deepToString(oldTiles) +
+                ", newTiles=" + newTiles.toString() +
+                ", oldTiles=" + oldTiles.toString() +
                 ", layer=" + layer +
                 ", type=" + type +
                 '}';
@@ -96,19 +96,19 @@ public class UndoAction {
         return y;
     }
     
-    public int[][] getNewTiles() {
+    public PK2TileArray getNewTiles() {
         return newTiles;
     }
     
-    public int[][] getOldTiles() {
+    public PK2TileArray getOldTiles() {
         return oldTiles;
     }
 
-    public int[][] getNewTilesBG(){
+    public PK2TileArray getNewTilesBG(){
         return this.newTilesBG;
     }
 
-    public int[][] getOldTilesBG(){
+    public PK2TileArray getOldTilesBG(){
         return this.oldTilesBG;
     }
     

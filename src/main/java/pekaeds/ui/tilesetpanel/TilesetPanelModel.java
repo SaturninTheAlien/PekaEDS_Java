@@ -13,15 +13,7 @@ public class TilesetPanelModel {
     private BufferedImage tilesetImage;
     
     private PK2LevelSector map;
-    
-    private int[][] selection;
-    
-    public void setSelection(int[][] sel) {
-        pcs.firePropertyChange("tileSelection", this.selection, sel);
-        
-        this.selection = sel;
-    }
-    
+
     public void setMap(PK2LevelSector m) {
         this.map = m;
     }
@@ -29,11 +21,7 @@ public class TilesetPanelModel {
     public PK2LevelSector getMap() {
         return map;
     }
-    
-    public int[][] getSelection() {
-        return selection;
-    }
-    
+        
     public void setTilesetImage(BufferedImage image) {
         this.tilesetImage = image;
     }

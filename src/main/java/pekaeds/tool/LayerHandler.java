@@ -7,6 +7,7 @@ import pekaeds.ui.listeners.SpritePlacementListener;
 import pekaeds.ui.listeners.TileChangeListener;
 import pk2.level.PK2Level;
 import pk2.level.PK2LevelSector;
+import pk2.level.PK2TileArray;
 import pk2.util.TileUtils;
 
 import javax.swing.event.ChangeEvent;
@@ -84,16 +85,16 @@ public final class LayerHandler {
         }
     }
 
-    public void placeTilesScreen(int x, int y, int layer, int[][] tiles) {
-        int selectionWidth = tiles[0].length;
-        int selectionHeight = tiles.length;
-
-        for (int sx = 0; sx < selectionWidth; sx++) {
-            for (int sy = 0; sy < selectionHeight; sy++) {
+    public void placeTilesScreen(int x, int y, int layer, PK2TileArray tiles) {
+        int selectionWidth = tiles.getWidth();
+        int selectionHeight = tiles.getHeight();
+        
+        for (int sy = 0; sy < selectionHeight; sy++) {
+            for (int sx = 0; sx < selectionWidth; sx++) {
                 int xx = x + (sx * 32);
                 int yy = y + (sy * 32);
 
-                placeTileScreen(xx, yy, tiles[sy][sx], layer);
+                placeTileScreen(xx, yy, tiles.get(sx, sy), layer);
             }
         }
     }
@@ -145,13 +146,13 @@ public final class LayerHandler {
      * <p>
      * selectionRect's values should be in sector coordinates. Meaning they should be x >= 0; x < MAP_WIDTH, y >= 0; y < MAP_HEIGHT
      */
-    public int[][] getTilesFromRect(Rectangle selectionRect, int layer) {
+    public PK2TileArray getTilesFromRect(Rectangle selectionRect, int layer) {
         // TODO FIX: For some reason this can throw: java.lang.NegativeArraySizeException: -2 even though it should never be negative to begin with?!
-        var tempSelection = new int[selectionRect.height][selectionRect.width];
+        PK2TileArray tempSelection = new PK2TileArray(selectionRect.width, selectionRect.height);
 
         for (int sx = 0; sx < selectionRect.width; sx++) {
             for (int sy = 0; sy < selectionRect.height; sy++) {
-                tempSelection[sy][sx] = getTileAt(layer, selectionRect.x + sx, selectionRect.y + sy);
+                tempSelection.set(sx, sy, getTileAt(layer, selectionRect.x + sx, selectionRect.y + sy));
             }
         }
 
@@ -168,19 +169,21 @@ public final class LayerHandler {
      * @param layer
      * @return
      */
-    public int[][] getTilesFromArea(int x, int y, int width, int height, int layer) {
-        var tempSelection = new int[height][width];
+
+    public PK2TileArray getTilesFromArea(int x, int y, int width, int height, int layer){
+        PK2TileArray tempSelection = new PK2TileArray(width, height);
 
         x /= 32;
         y /= 32;
 
         for (int sx = 0; sx < width; sx++) {
             for (int sy = 0; sy < height; sy++) {
-                tempSelection[sy][sx] = getTileAt(layer, x + sx, y + sy);
+                tempSelection.set(sx, sy, getTileAt(layer, x + sx, y + sy));
             }
         }
 
         return tempSelection;
+
     }
 
     public void removeTilesArea(Rectangle area, int layer) {
@@ -199,7 +202,7 @@ public final class LayerHandler {
     }
 
     public int getSpriteAt(int x, int y) {
-        int spr = selection.getSelectionSprites()[0][0];
+        int spr = selection.getFirstSprite();
 
         if (sector != null) {
             spr = sector.getSpriteTile(x / 32, y / 32);
@@ -208,12 +211,13 @@ public final class LayerHandler {
         return spr;
     }
 
-    public int[][] getSpritesFromRect(Rectangle selectionRect) {
-        var tempSelection = new int[selectionRect.height][selectionRect.width];
+    public PK2TileArray getSpritesFromRect(Rectangle selectionRect) {
+
+        PK2TileArray tempSelection =  new PK2TileArray(selectionRect.width, selectionRect.height);
 
         for (int sx = 0; sx < selectionRect.width; sx++) {
             for (int sy = 0; sy < selectionRect.height; sy++) {
-                tempSelection[sy][sx] = getSpriteAt((selectionRect.x + sx) * 32, (selectionRect.y + sy) * 32);
+                tempSelection.set(sx, sy, getSpriteAt((selectionRect.x + sx) * 32, (selectionRect.y + sy) * 32));
             }
         }
 
@@ -242,10 +246,10 @@ public final class LayerHandler {
     }
 
     public void placeSprite(Point position) {
-        placeSprite(position, selection.getSelectionSprites()[0][0]);
+        placeSprite(position, selection.getFirstSprite());
     }
 
-    public void placeSpritesScreen(int x, int y, int[][] sprites) {
+    public void placeSpritesScreen(int x, int y, PK2TileArray sprites) {
         placeSprites(x / 32, y / 32, sprites);
     }
 
@@ -256,26 +260,26 @@ public final class LayerHandler {
      * @param y
      * @param spritesLayer
      */
-    public void placeSprites(int x, int y, int[][] spritesLayer) {
-        for (int sy = 0; sy < spritesLayer.length; sy++) {
-            for (int sx = 0; sx < spritesLayer[0].length; sx++) {
+    public void placeSprites(int x, int y, PK2TileArray spritesLayer) {
+        for (int sy = 0; sy < spritesLayer.getHeight(); sy++) {
+            for (int sx = 0; sx < spritesLayer.getWidth(); sx++) {
                 int xAdjusted = x + sx;
                 int yAdjusted = y + sy;
 
-                sector.setSpriteTile(xAdjusted, yAdjusted, spritesLayer[sy][sx]);
+                sector.setSpriteTile(xAdjusted, yAdjusted, spritesLayer.get(sx, sy));
             }
         }
     }
 
-    public int[][] getSpritesFromArea(int x, int y, int width, int height) {
-        var sprites = new int[height][width];
+    public PK2TileArray getSpritesFromArea(int x, int y, int width, int height){
+        PK2TileArray sprites = new PK2TileArray(width, height);
 
         x /= 32;
         y /= 32;
 
         for (int yy = 0; yy < height; yy++) {
             for (int xx = 0; xx < width; xx++) {
-                sprites[yy][xx] = sector.getSpriteTile(x + xx, y + yy);
+                sprites.set(xx, yy, sector.getSpriteTile(x + xx, y + yy));
             }
         }
 

@@ -66,7 +66,6 @@ public class SelectionTool extends Tool {
     private void doTileSelection() {
         selectionRect = TileUtils.calculateSelectionRectangle(selection.getStart(), selection.getEnd(), selectedSector);
 
-        System.out.println("Selected layer: "+ selectedLayer);
         if(selectedLayer==Layer.BOTH){
             selection.setTileFGSelection(layerHandler.getTilesFromRect(selectionRect, Layer.FOREGROUND));
             selection.setTileBGSelection(layerHandler.getTilesFromRect(selectionRect, Layer.BACKGROUND));
@@ -87,7 +86,7 @@ public class SelectionTool extends Tool {
     private void doSpriteSelection() {
         selectionRect = TileUtils.calculateSelectionRectangle(selection.getStart(), selection.getEnd(), selectedSector);
 
-        selection.setSelectionSprites(new int[][]{{ layerHandler.getSpriteAt(selection.getStart().x, selection.getStart().y) }}); // TODO Fix multiselection of sprites
+        //selection.setSelectionSprites(  new int[][]{{ layerHandler.getSpriteAt(selection.getStart().x, selection.getStart().y) }}); // TODO Fix multiselection of sprites
     }
 
     @Override

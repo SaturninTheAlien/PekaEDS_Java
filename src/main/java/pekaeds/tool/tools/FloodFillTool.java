@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import pekaeds.data.Layer;
 import pekaeds.tool.Tool;
+import pk2.level.PK2TileArray;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -14,7 +15,7 @@ import java.util.List;
 public final class FloodFillTool extends Tool {
     // https://lodev.org/cgtutor/floodfill.html#Scanline_Floodfill_Algorithm_With_Stack
 
-    private final List<int[][]> previewLayers = new ArrayList<>();
+    private final List<PK2TileArray> previewLayers = new ArrayList<>();
     
     private boolean fillEmptyTiles = false;
     
@@ -25,7 +26,7 @@ public final class FloodFillTool extends Tool {
         int layer = selectedLayer == Layer.BOTH ? Layer.FOREGROUND : selectedLayer;
 
         resetPreview();
-        fillPreview(mx, my, selection.getFirstTile(), previewLayers.get(layer)[my][mx]);
+        fillPreview(mx, my, selection.getFirstTile(), previewLayers.get(layer).get(mx, my));
     }
     
     @Override
@@ -51,11 +52,11 @@ public final class FloodFillTool extends Tool {
                     if (x < selectedSector.getWidth() && y < selectedSector.getHeight()) {
                         switch (selectedLayer) {
                             case Layer.BOTH, Layer.FOREGROUND -> {
-                                if (previewLayers.get(Layer.FOREGROUND)[y][x] != 255) getMapPanelPainter().drawTile(g, x * 32, y * 32, previewLayers.get(Layer.FOREGROUND)[y][x]);
+                                if (previewLayers.get(Layer.FOREGROUND).get(x,y) != 255) getMapPanelPainter().drawTile(g, x * 32, y * 32, previewLayers.get(Layer.FOREGROUND).get(x,y));
                             }
         
                             case Layer.BACKGROUND -> {
-                                if (previewLayers.get(Layer.BACKGROUND)[y][x] != 255) getMapPanelPainter().drawTile(g, x * 32, y * 32, previewLayers.get(Layer.BACKGROUND)[y][x]);
+                                if (previewLayers.get(Layer.BACKGROUND).get(x,y) != 255) getMapPanelPainter().drawTile(g, x * 32, y * 32, previewLayers.get(Layer.BACKGROUND).get(x,y));
                             }
                         }
                     }
@@ -133,20 +134,20 @@ public final class FloodFillTool extends Tool {
         int layer = selectedLayer == Layer.BOTH ? Layer.FOREGROUND : selectedLayer;
         
         if (oldTile == newTile) return;
-        if (previewLayers.get(layer)[y][x] != oldTile) return;
+        if (previewLayers.get(layer).get(x,y) != oldTile) return;
         if (!fillEmptyTiles && oldTile == 255) return;
         
         int x1 = x;
         
-        while (x1 < selectedSector.getWidth() && previewLayers.get(layer)[y][x1] == oldTile) {
-            previewLayers.get(layer)[y][x1] = newTile;
+        while (x1 < selectedSector.getWidth() && previewLayers.get(layer).get(x1,y) == oldTile) {
+            previewLayers.get(layer).set(x1,y, newTile);
             
             x1++;
         }
         
         x1 = x - 1;
-        while (x1 >= 0 && previewLayers.get(layer)[y][x1] == oldTile) {
-            previewLayers.get(layer)[y][x1] = newTile;
+        while (x1 >= 0 && previewLayers.get(layer).get(x1,y) == oldTile) {
+            previewLayers.get(layer).set(x1,y, newTile);
             
             x1--;
         }
@@ -154,8 +155,8 @@ public final class FloodFillTool extends Tool {
         // test for scanlines above
         x1 = x;
         
-        while (x1 < selectedSector.getWidth() && previewLayers.get(layer)[y][x1] == newTile) {
-            if (y > 0 && previewLayers.get(layer)[y - 1][x1] == oldTile) {
+        while (x1 < selectedSector.getWidth() && previewLayers.get(layer).get(x1,y) == newTile) {
+            if (y > 0 && previewLayers.get(layer).get(x1, y - 1) == oldTile) {
                 fillPreview(x1, y - 1, newTile, oldTile);
             }
             
@@ -163,8 +164,8 @@ public final class FloodFillTool extends Tool {
         }
         
         x1 = x - 1;
-        while (x1 >= 0 && previewLayers.get(layer)[y][x1] == newTile) {
-            if (y > 0 && previewLayers.get(layer)[y - 1][x1] == oldTile) {
+        while (x1 >= 0 && previewLayers.get(layer).get(x1,y) == newTile) {
+            if (y > 0 && previewLayers.get(layer).get(x1, y - 1) == oldTile) {
                 fillPreview(x1, y - 1, newTile, oldTile);
             }
             
@@ -173,8 +174,8 @@ public final class FloodFillTool extends Tool {
         
         // test for new scanlines below
         x1 = x;
-        while (x1 < selectedSector.getWidth() && previewLayers.get(layer)[y][x1] == newTile) {
-            if (y < selectedSector.getHeight() - 1 && previewLayers.get(layer)[y + 1][x1] == oldTile) {
+        while (x1 < selectedSector.getWidth() && previewLayers.get(layer).get(x1,y) == newTile) {
+            if (y < selectedSector.getHeight() - 1 && previewLayers.get(layer).get(x1, y + 1) == oldTile) {
                 fillPreview(x1, y + 1, newTile, oldTile);
             }
             
@@ -182,8 +183,8 @@ public final class FloodFillTool extends Tool {
         }
         
         x1 = x - 1;
-        while (x1 >= 0 && previewLayers.get(layer)[y][x1] == newTile) {
-            if (y < selectedSector.getHeight() - 1 && previewLayers.get(layer)[y + 1][x1] == oldTile) {
+        while (x1 >= 0 && previewLayers.get(layer).get(x1,y) == newTile) {
+            if (y < selectedSector.getHeight() - 1 && previewLayers.get(layer).get(x1, y + 1)  == oldTile) {
                 fillPreview(x1, y + 1, newTile, oldTile);
             }
             
@@ -194,8 +195,8 @@ public final class FloodFillTool extends Tool {
     private void resetPreview() {
         for (int y = 0; y < selectedSector.getHeight(); y++) {
             for (int x = 0; x < selectedSector.getWidth(); x++) {
-                previewLayers.get(Layer.FOREGROUND)[y][x] = selectedSector.getFGTile(x, y);
-                previewLayers.get(Layer.BACKGROUND)[y][x] = selectedSector.getBGTile(x, y);
+                previewLayers.get(Layer.FOREGROUND).set(x, y, selectedSector.getFGTile(x, y));
+                previewLayers.get(Layer.BACKGROUND).set(x, y, selectedSector.getBGTile(x, y));
             }
         }
     }
@@ -203,14 +204,14 @@ public final class FloodFillTool extends Tool {
     @Override
     public void onSelect() {
         if (previewLayers.isEmpty()) {
-            previewLayers.add(new int[selectedSector.getHeight()][selectedSector.getWidth()]);
-            previewLayers.add(new int[selectedSector.getHeight()][selectedSector.getWidth()]);
+            previewLayers.add(new PK2TileArray(selectedSector.getWidth(), selectedSector.getHeight()));
+            previewLayers.add(new PK2TileArray(selectedSector.getWidth(), selectedSector.getHeight()));
         }
         
         for (int y = 0; y < selectedSector.getHeight(); y++) {
             for (int x = 0; x < selectedSector.getWidth(); x++) {
-                previewLayers.get(Layer.FOREGROUND)[y][x] = selectedSector.getFGTile(x, y);;
-                previewLayers.get(Layer.BACKGROUND)[y][x] = selectedSector.getBGTile(x, y);
+                previewLayers.get(Layer.FOREGROUND).set(x,y, selectedSector.getFGTile(x, y));
+                previewLayers.get(Layer.BACKGROUND).set(x,y, selectedSector.getBGTile(x, y));
             }
         }
     }

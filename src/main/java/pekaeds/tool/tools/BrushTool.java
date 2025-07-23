@@ -109,10 +109,10 @@ public class BrushTool extends Tool {
                     int offsetY = (y - (selection.getHeight() / 2)) * 32;
 
                     if(bgSelection!=null && selectedLayer==Layer.BOTH){
-                        getMapPanelPainter().drawTile(g, xAdjusted + offsetX, yAdjusted + offsetY, bgSelection[y][x]);
+                        getMapPanelPainter().drawTile(g, xAdjusted + offsetX, yAdjusted + offsetY, bgSelection.get(x, y));
                     }
 
-                    getMapPanelPainter().drawTile(g, xAdjusted + offsetX, yAdjusted + offsetY, fgSelection[y][x]);
+                    getMapPanelPainter().drawTile(g, xAdjusted + offsetX, yAdjusted + offsetY, fgSelection.get(x, y));
                 }
             }
             
@@ -143,7 +143,7 @@ public class BrushTool extends Tool {
 
         for (int x = 0; x < selection.getWidth(); x++) {
             for (int y = 0; y < selection.getHeight(); y++) {
-                int selectedSprite = selection.getSelectionSprites()[y][x];
+                int selectedSprite = selection.getSelectionSprites().get(x, y);
 
                 if (selectedSprite != 255 && selectedSprite >= 0) {
                     getMapPanelPainter().drawSprite(g, level.getSprite(selectedSprite), getMousePosition().x, getMousePosition().y);

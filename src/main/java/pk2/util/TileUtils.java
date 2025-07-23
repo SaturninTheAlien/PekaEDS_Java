@@ -67,18 +67,6 @@ public final class TileUtils {
         return r;
     }
     
-    public static Point findPlayerStartPosition(int[][] foregroundLayer) {
-        for (int y = 0; y < foregroundLayer.length; y++) {
-            for (int x = 0; x < foregroundLayer[0].length; x++) {
-                if (foregroundLayer[y][x] == 148) {
-                    return new Point(x, y);
-                }
-            }
-        }
-    
-        return new Point(0, 0);
-    }
-
     public static Rectangle calculateOffsets(final int[] layer, int layerWidth, int layerHeight) {
         int startX = layerWidth;
         int width = 0;

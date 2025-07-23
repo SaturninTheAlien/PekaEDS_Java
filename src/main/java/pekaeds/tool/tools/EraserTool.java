@@ -4,9 +4,10 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 import pekaeds.tool.Tool;
+import pk2.level.PK2TileArray;
 
 public class EraserTool extends Tool {
-    private static final int[][] EMPTY_TILE = {{ 255 }};
+    private static final PK2TileArray EMPTY_TILE = PK2TileArray.singleTile(255);
     
     @Override
     public void mousePressed(MouseEvent e) {

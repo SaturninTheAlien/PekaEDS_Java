@@ -5,6 +5,7 @@ import pekaeds.tool.Tool;
 import pekaeds.tool.undomanager.ActionType;
 import pekaeds.tool.undomanager.UndoAction;
 import pekaeds.ui.listeners.CutToolListener;
+import pk2.level.PK2TileArray;
 import pk2.sprite.PK2Sprite;
 import pk2.util.TileUtils;
 
@@ -26,9 +27,9 @@ public final class CutTool extends Tool {
     private boolean cutBackgroundLayer = true;
     private boolean cutSpritesLayer = true;
 
-    private int[][] foregroundLayer = new int[1][1];
-    private int[][] backgroundLayer = new int[1][1];
-    private int[][] spritesLayer = new int[1][1];
+    private PK2TileArray foregroundLayer = PK2TileArray.singleTile(0);
+    private PK2TileArray backgroundLayer = PK2TileArray.singleTile(0);
+    private PK2TileArray spritesLayer = PK2TileArray.singleTile(0);
 
     private Point selectionStart;
     private Rectangle selectionRect = new Rectangle();
@@ -220,7 +221,7 @@ public final class CutTool extends Tool {
         getMapPanelPainter().setCursor(defaultCursor);
     }
     
-    @SuppressWarnings("incomplete-switch")
+    /*@SuppressWarnings("incomplete-switch")
     @Override
     public void onUndo(UndoAction action) {
         super.onUndo(action);
@@ -246,17 +247,17 @@ public final class CutTool extends Tool {
         return action.getType() == ActionType.CUT_TOOL_PLACE_FOREGROUND ||
                 action.getType() == ActionType.CUT_TOOL_PLACE_BACKGROUND ||
                 action.getType() == ActionType.CUT_TOOL_PLACE_SPRITES;
-    }
+    }*/
     
     @Override
     public void onRedo(UndoAction action) {
         super.onRedo(action);
     }
     
-    private void drawLayer(Graphics2D g, int[][] layer, int startX, int startY) {
-        for (int x = 0; x < layer[0].length; x++) {
-            for (int y = 0; y < layer.length; y++) {
-                getMapPanelPainter().drawTile(g, startX + (x * 32), startY + (y * 32), layer[y][x]);
+    private void drawLayer(Graphics2D g, PK2TileArray layer, int startX, int startY) {
+        for (int x = 0; x < layer.getWidth(); x++) {
+            for (int y = 0; y < layer.getHeight(); y++) {
+                getMapPanelPainter().drawTile(g, startX + (x * 32), startY + (y * 32), layer.get(x, y));
             }
         }
     }
@@ -264,8 +265,8 @@ public final class CutTool extends Tool {
     private void drawSelectedSprites(Graphics2D g, Rectangle selection) {
         for (int x = 0; x < selection.width; x++) {
             for (int y = 0; y < selection.height; y++) {
-                if (spritesLayer[y][x] != 255) {
-                    var spr = level.getSprite(spritesLayer[y][x]);
+                if (spritesLayer.get(x, y) != 255) {
+                    var spr = level.getSprite(spritesLayer.get(x, y));
 
                     if (spr != null && spr.getType() != PK2Sprite.TYPE_BACKGROUND) {
                         getMapPanelPainter().drawSprite(g, spr,(selection.x + x) * 32, (selection.y + y) * 32);
@@ -278,8 +279,8 @@ public final class CutTool extends Tool {
     private void drawSelectedBackgroundSprites(Graphics2D g, Rectangle selection) {
         for (int x = 0; x < selection.width; x++) {
             for (int y = 0; y < selection.height; y++) {
-                if (spritesLayer[y][x] != 255) {
-                    var spr = level.getSprite(spritesLayer[y][x]);
+                if (spritesLayer.get(x, y) != 255) {
+                    var spr = level.getSprite(spritesLayer.get(x, y));
 
                     if (spr != null && spr.getType() == PK2Sprite.TYPE_BACKGROUND) {
                         getMapPanelPainter().drawSprite(g, spr,(selection.x + x) * 32, (selection.y + y) * 32);

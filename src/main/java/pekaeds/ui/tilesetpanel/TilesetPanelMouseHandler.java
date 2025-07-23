@@ -5,6 +5,7 @@ import javax.swing.*;
 import pekaeds.tool.Tool;
 import pekaeds.tool.Tools;
 import pekaeds.tool.tools.BrushTool;
+import pk2.level.PK2TileArray;
 import pk2.util.TileUtils;
 
 import java.awt.*;
@@ -59,27 +60,19 @@ public final class TilesetPanelMouseHandler extends MouseAdapter {
     public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
             var rect = TileUtils.calculateSelectionRectangleInScene(selectionStart, selectionEnd, tilesetPanel.getSector());
-            
-            int[][] selection = new int[0][];
-            
-            if (rect.width > 1 || rect.height > 1) {
-                selection = new int[rect.height][rect.width];
-        
-                Point tilePos = new Point(0, 0);
 
-                for (int sx = 0; sx < selection[0].length; sx++) {
-                    for (int sy = 0; sy < selection.length; sy++) {
-                        tilePos.setLocation(rect.x + (sx * 32), rect.y + (sy * 32));
-    
-                        selection[sy][sx] = TileUtils.getTileIdFromTilesetPosition(tilePos);
-                    }
+            PK2TileArray selection = new PK2TileArray(rect.width, rect.height);
+
+            Point tilePos = new Point(0, 0);
+
+            for (int sy = 0; sy < rect.height; sy++){
+                for (int sx = 0; sx < rect.width; sx++) {
+                    tilePos.setLocation(rect.x + (sx * 32), rect.y + (sy * 32));
+
+                    selection.set(sx, sy, TileUtils.getTileIdFromTilesetPosition(tilePos));
                 }
-            } else if (rect.width == 1 && rect.height == 1) {
-                selection = new int[1][1];
-    
-                selection[0][0] = TileUtils.getTileIdFromTilesetPosition(tilesetPanel.getSelectionRectStart());
             }
-    
+
             Tool.setSelectionSize(rect.width, rect.height);
             Tool.setSelection(selection);            
             Tool.setMode(Tool.MODE_TILE);

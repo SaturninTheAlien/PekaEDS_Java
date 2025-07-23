@@ -2,6 +2,8 @@ package pekaeds.tool;
 
 import java.awt.*;
 
+import pk2.level.PK2TileArray;
+
 public final class ToolSelection {
     private Point start;
     private Point end;
@@ -12,10 +14,10 @@ public final class ToolSelection {
      * Foreground = 0
      * Background = 1
      */
-    private int[][] tileFGSelection;
-    private int[][] tileBGSelection;
 
-    private int[][] spritesSelection;
+    private PK2TileArray tileFGSelection;
+    private PK2TileArray tileBGSelection;
+    private PK2TileArray spritesSelection;
 
     private int width;
     private int height;
@@ -23,9 +25,9 @@ public final class ToolSelection {
     private Rectangle rect = new Rectangle();
     
     public void reset() {
-        tileFGSelection = new int[1][1];
-        tileBGSelection = new int[1][1];
-        spritesSelection = new int[1][1];
+        tileFGSelection =  PK2TileArray.singleTile(0);
+        tileBGSelection =  null;
+        spritesSelection =  PK2TileArray.singleTile(0);
 
         width = 1;
         height = 1;
@@ -33,42 +35,45 @@ public final class ToolSelection {
         rect.setRect(0, 0, 0, 0);
     }
 
-    public void setTileFGSelection(int[][] selection) {
+    public void setTileFGSelection(PK2TileArray selection) {
         tileFGSelection = selection;
         tileBGSelection = selection;
         setDimensions(selection);
     }
 
-    public int[][] getTileFGSelection() {
+    public PK2TileArray getTileFGSelection() {
         return tileFGSelection;
     }
 
 
-    public void setTileBGSelection(int[][] selection) {
+    public void setTileBGSelection(PK2TileArray selection) {
         tileBGSelection = selection;
     }
 
-    public int[][] getTileBGSelection() {
+    public PK2TileArray getTileBGSelection() {
         return tileBGSelection;
     }
 
-    public void setSelectionSprites(int[][] selection) {
+    public void setSelectionSprites(PK2TileArray selection) {
         this.spritesSelection = selection;
 
         setDimensions(selection);
     }
 
     @Deprecated
-    public int[][] getTileSelection(int layer) {
+    public PK2TileArray getTileSelection(int layer) {
         return tileFGSelection;
     }
 
-
     public int getFirstTile(){
-        return this.tileFGSelection[0][0];
+        return  this.tileFGSelection.get(0, 0);
     }
 
-    public int[][] getSelectionSprites() {
+    public int getFirstSprite(){
+        return this.spritesSelection.get(0, 0);
+    }
+
+    public PK2TileArray getSelectionSprites() {
         return spritesSelection;
     }
 
@@ -99,8 +104,8 @@ public final class ToolSelection {
         return end;
     }
 
-    private void setDimensions(int[][] selection) {
-        width = selection[0].length;
-        height = selection.length;
+    private void setDimensions(PK2TileArray selection) {
+        width = selection.getWidth();
+        height = selection.getHeight();
     }
 }

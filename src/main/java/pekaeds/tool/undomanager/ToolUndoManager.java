@@ -3,6 +3,7 @@ package pekaeds.tool.undomanager;
 import java.util.Stack;
 
 import pekaeds.tool.Tool;
+import pk2.level.PK2TileArray;
 
 public class ToolUndoManager {
     private static final Stack<UndoAction> undoActionStack = new Stack<>();
@@ -23,10 +24,10 @@ public class ToolUndoManager {
     
     public void pushTilePlaced(Tool tool, ActionType actionType, int x, int y,
         
-        int[][] newTiles,
-        int[][] oldTiles,
-        int[][] newTilesBG,
-        int[][] oldTilesBG,
+        PK2TileArray newTiles,
+        PK2TileArray oldTiles,
+        PK2TileArray newTilesBG,
+        PK2TileArray oldTilesBG,
 
         int layer) {
         undoActionStack.push(new UndoAction(tool, ActionType.UNDO, actionType, x, y, newTiles, oldTiles, newTilesBG, oldTilesBG, layer));
@@ -34,23 +35,23 @@ public class ToolUndoManager {
     
     public void pushTilePlaced(Tool tool, int x, int y,
 
-        int[][] newTiles,
-        int[][] oldTiles,
-        int[][] newTilesBG,
-        int[][] oldTilesBG,
+        PK2TileArray newTiles,
+        PK2TileArray oldTiles,
+        PK2TileArray newTilesBG,
+        PK2TileArray oldTilesBG,
         int layer) {
         pushTilePlaced(tool, ActionType.PLACE_TILE, x, y, newTiles, oldTiles, newTilesBG, oldTilesBG, layer);
     }
     
     public void pushTilePlaced(Tool tool, int x, int y, int newTile, int oldTile, int layer) {
-        pushTilePlaced(tool, x, y, new int[][]{{ newTile }}, new int[][]{{ oldTile }}, null, null, layer);
+        pushTilePlaced(tool, x, y, PK2TileArray.singleTile(newTile), PK2TileArray.singleTile(oldTile), null, null, layer);
     }
     
-    public void pushSpritePlaced(Tool tool, int x, int y, int[][] newSprite, int[][] oldSprite) {
+    public void pushSpritePlaced(Tool tool, int x, int y, PK2TileArray newSprite, PK2TileArray oldSprite) {
         pushSpritePlaced(tool, ActionType.PLACE_SPRITE, x, y, newSprite, oldSprite);
     }
     
-    public void pushSpritePlaced(Tool tool, ActionType actionType, int x, int y, int[][] newSprite, int[][] oldSprite) {
+    public void pushSpritePlaced(Tool tool, ActionType actionType, int x, int y, PK2TileArray newSprite, PK2TileArray oldSprite) {
         undoActionStack.push(new UndoAction(tool, ActionType.UNDO, actionType, x, y, newSprite, oldSprite));
     }
     

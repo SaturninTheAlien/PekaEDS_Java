@@ -1,6 +1,7 @@
 package pk2.level;
 
 import java.awt.Rectangle;
+import java.util.Arrays;
 
 public class PK2TileArray {
     private int mWidth;
@@ -18,6 +19,25 @@ public class PK2TileArray {
             this.mArray[i] = 255;
         }
     }
+
+    /**
+     * 
+     * Copy constructor
+     */
+    public PK2TileArray(PK2TileArray other){
+        this.mWidth = other.mWidth;
+        this.mHeight = other.mHeight;
+
+        this.mArray = Arrays.copyOf(other.mArray, other.mArray.length);
+
+    }
+
+    public static PK2TileArray singleTile(int id){
+        PK2TileArray a  = new PK2TileArray(1, 1);
+        a.set(0, 0, id);
+        return a;
+    }
+
 
     public int getWidth() {
         return this.mWidth;
@@ -111,6 +131,20 @@ public class PK2TileArray {
             }
         }
         return result;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+
+        //TODO
+
+        builder.append("PK2 Tile array ");
+        builder.append(this.mWidth);
+        builder.append("x");
+        builder.append(this.mHeight);
+
+        return builder.toString();
     }
 
 }
