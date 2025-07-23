@@ -334,8 +334,7 @@ public class PK2Episode {
                 asset.loadingException = e2;
             }
         }
-
-        System.out.println(asset.getName());
+        this.assetList.add(asset);
     }
 
     public List<PK2EpisodeAsset> getAssetList(){
