@@ -3,6 +3,7 @@ package pekaeds.tool.tools;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
+import pekaeds.data.Layer;
 import pekaeds.tool.Tool;
 import pk2.level.PK2TileArray;
 
@@ -33,9 +34,18 @@ public class EraserTool extends Tool {
     private void doPlacement(Point position) {
         switch (getMode()) {
             case MODE_TILE -> {
-                getUndoManager().pushTilePlaced(this, position.x, position.y, EMPTY_TILE, layerHandler.getTilesFromArea(position.x, position.y, 1, 1, selectedLayer), null, null, selectedLayer);
-                
-                layerHandler.placeTileScreen(position.x, position.y, 255, selectedLayer);
+                if(selectedLayer==Layer.BOTH){
+                    getUndoManager().pushTilePlaced(this, position.x, position.y,
+                    EMPTY_TILE, layerHandler.getTilesFromArea(position.x, position.y, 1, 1, Layer.FOREGROUND),
+                    EMPTY_TILE, layerHandler.getTilesFromArea(position.x, position.y, 1, 1, Layer.BACKGROUND), selectedLayer);
+                    
+                    layerHandler.placeTileScreen(position.x, position.y, 255, Layer.FOREGROUND);
+                    layerHandler.placeTileScreen(position.x, position.y, 255, Layer.BACKGROUND);
+                }
+                else{
+                    getUndoManager().pushTilePlaced(this, position.x, position.y, EMPTY_TILE, layerHandler.getTilesFromArea(position.x, position.y, 1, 1, selectedLayer), null, null, selectedLayer);
+                    layerHandler.placeTileScreen(position.x, position.y, 255, selectedLayer);
+                }
             }
             
             case MODE_SPRITE -> {
@@ -60,7 +70,7 @@ public class EraserTool extends Tool {
     
     @Override
     public void onSelect() {
-    
+        
     }
     
     @Override
