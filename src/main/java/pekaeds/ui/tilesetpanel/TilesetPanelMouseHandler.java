@@ -3,6 +3,8 @@ package pekaeds.ui.tilesetpanel;
 import javax.swing.*;
 
 import pekaeds.tool.Tool;
+import pekaeds.tool.Tools;
+import pekaeds.tool.tools.BrushTool;
 import pk2.util.TileUtils;
 
 import java.awt.*;
@@ -79,9 +81,10 @@ public final class TilesetPanelMouseHandler extends MouseAdapter {
             }
     
             Tool.setSelectionSize(rect.width, rect.height);
-            Tool.setSelection(selection);
-            
+            Tool.setSelection(selection);            
             Tool.setMode(Tool.MODE_TILE);
+
+            this.tilesetPanel.gui.setSelectedToolIfEraser(Tools.getTool(BrushTool.class));
             
             tilesetPanel.repaint();
         }

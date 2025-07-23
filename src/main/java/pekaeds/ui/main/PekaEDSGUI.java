@@ -576,6 +576,13 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     }
 
 
+    public void setSelectedToolIfEraser(Tool selectedTool){
+        if(this.currentTool == Tools.getTool(EraserTool.class)){
+            this.setSelectedTool(selectedTool);
+        }
+    }
+
+
     public void testLevel(){
 
         if (this.getCurrentFile()==null || this.unsavedChangesPresent()) {

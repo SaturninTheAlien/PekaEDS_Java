@@ -56,6 +56,11 @@ public class PK2FileSystem {
         return Paths.get(mAssetsPath.getPath(), subfolder).toFile();
     }
 
+
+    public static File getEpisodeDir(){
+        return mEpisodePath;
+    }
+
     public static File getEpisodeAssetsPath(String subFolder){        
         return mEpisodePath==null ? null : Paths.get(mEpisodePath.getPath(), subFolder).toFile();
     }

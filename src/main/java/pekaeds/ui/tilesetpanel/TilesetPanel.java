@@ -24,9 +24,12 @@ public class TilesetPanel extends JPanel implements PK2SectorConsumer, RepaintLi
     private boolean isMouseInsidePanel = false;
     
     private boolean useBackgroundTileset = false;
+
+    PekaEDSGUI gui;
     
     public TilesetPanel(PekaEDSGUI mainUI) {
         this.model = new TilesetPanelModel();
+        this.gui = mainUI;
         
         setup();
     }

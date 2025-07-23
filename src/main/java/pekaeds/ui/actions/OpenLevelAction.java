@@ -8,6 +8,7 @@ import pekaeds.ui.misc.UnsavedChangesDialog;
 import pk2.filesystem.PK2FileSystem;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 public class OpenLevelAction extends AbstractAction {
     private final PekaEDSGUI gui;
@@ -18,7 +19,16 @@ public class OpenLevelAction extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        var fc = new JFileChooser(PK2FileSystem.getAssetsPath(PK2FileSystem.EPISODES_DIR));
+
+        File startDir = null;
+        if(PK2FileSystem.isEpisodeSet()){
+            startDir = PK2FileSystem.getEpisodeDir();
+        }
+        else{
+            startDir = PK2FileSystem.getAssetsPath(PK2FileSystem.EPISODES_DIR);
+        }
+
+        JFileChooser fc = new JFileChooser(startDir);
     
         fc.setFileFilter(FileFilters.PK2_MAP_FILTER);
         
