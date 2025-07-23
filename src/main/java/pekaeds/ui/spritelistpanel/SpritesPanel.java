@@ -92,8 +92,38 @@ public class SpritesPanel extends JPanel implements PK2MapConsumer, PK2SectorCon
 
             try{
                 File file = fc.getSelectedFile();
-                SpritePrototype spr = SpriteIO.getSpriteReader(file).readSpriteFile(file);
+
+
+                SpritePrototype spr = null;
+
+                if(file.exists()){
+                    spr = SpriteIO.getSpriteReader(file).readSpriteFile(file);
+                }
+                else{
+                    
+                    String name = file.getName();
+                    if(!name.endsWith(".spr2")){
+
+                        File f2 = new File(file.getAbsolutePath() + ".spr2");
+                        if(f2.exists()){
+                            spr = SpriteIO.getSpriteReader(f2).readSpriteFile(f2);
+                        }
+                        else{
+                            File f3 = new File(file.getAbsolutePath() + ".spr");
+                            if(f3.exists()){
+                                spr = SpriteIO.getSpriteReader(f3).readSpriteFile(f3);
+                            }
+                        }
+                    }
+                }
+
+                if(spr==null){
+                    JOptionPane.showMessageDialog(this, "Selected file:\n" + file.getAbsolutePath() + "\ndoes not exist!",
+                    "File does not exist!", JOptionPane.ERROR_MESSAGE);
+                }
+
                 return spr;
+            
             }
             catch(Exception exception){
                 Logger.error(exception);

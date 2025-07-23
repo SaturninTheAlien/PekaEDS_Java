@@ -333,21 +333,20 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
 
     public void saveLevel(File file) {
         if (file != null) {
-            model.setCurrentMapFile(file);
             
-            {
-                session.putFile(file);
-                setupOpenRecentMenu();
-            }
             mapMetadataPanel.commitValues();
             sectorMetadataPanel.commitValues();
 
             try {
-                if (!file.getName().endsWith(".map")) file = new File(file.getPath() + ".map");
+                if (!file.getName().endsWith(".map")) file = new File(file.getAbsolutePath() + ".map");
 
                 PK2LevelIO.saveLevel(model.getCurrentLevel(), file);
-
                 unsavedChanges = false;
+
+                model.setCurrentMapFile(file);
+                session.putFile(file);
+                setupOpenRecentMenu();
+
 
             } catch (Exception e) {
                 Logger.error(e);
