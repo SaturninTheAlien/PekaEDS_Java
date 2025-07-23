@@ -3,6 +3,7 @@ package pk2.util;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.IndexColorModel;
+import java.awt.image.RasterFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.tinylog.Logger;
 import pk2.filesystem.PK2FileSystem;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.SpritePrototype;
+import pk2.sprite.io.SpriteMissing;
 
 public final class GFXUtils {
     private GFXUtils() {
@@ -71,7 +73,43 @@ public final class GFXUtils {
     }
 
     public static BufferedImage getFirstSpriteFrame(SpritePrototype spr, BufferedImage spriteSheet) {
-        return spriteSheet.getSubimage(spr.getFrameX(), spr.getFrameY(), spr.getFrameWidth(), spr.getFrameHeight());
+
+        try{
+            return spriteSheet.getSubimage(spr.getFrameX(), spr.getFrameY(), spr.getFrameWidth(), spr.getFrameHeight());
+        }
+        catch(RasterFormatException e){
+
+
+            StringBuilder builder = new StringBuilder();
+            builder.append("Sprite: ");
+            
+            builder.append(spr.getName());
+
+            builder.append(" (");
+            builder.append(spr.getFilename());
+            builder.append(" )");
+
+            builder.append(" is badly cropped!");
+
+            builder.append("\nImage size: ");
+            builder.append(spriteSheet.getWidth());
+            builder.append(" x ");
+            builder.append(spriteSheet.getHeight());
+            builder.append(" pixels\n");
+
+            builder.append("Rect: ");
+            builder.append("x: ");
+            builder.append(spr.getFrameX());
+            builder.append(" y: ");
+            builder.append(spr.getFrameY());
+            builder.append(" w: ");
+            builder.append(spr.getFrameWidth());
+            builder.append(" h: ");
+            builder.append(spr.getFrameHeight());
+
+            Logger.error(builder.toString());
+            return SpriteMissing.getMissingTextureImage();
+        }        
     }
 
     public static void adjustSpriteColor(BufferedImage spriteSheet, int paletteIndex) {
