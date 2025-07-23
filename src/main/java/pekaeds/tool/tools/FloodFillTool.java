@@ -25,7 +25,7 @@ public final class FloodFillTool extends Tool {
         int layer = selectedLayer == Layer.BOTH ? Layer.FOREGROUND : selectedLayer;
 
         resetPreview();
-        fillPreview(mx, my, selection.getTileSelection()[0][0], previewLayers.get(layer)[my][mx]);
+        fillPreview(mx, my, selection.getFirstTile(), previewLayers.get(layer)[my][mx]);
     }
     
     @Override
@@ -36,7 +36,7 @@ public final class FloodFillTool extends Tool {
             SwingUtilities.invokeLater(() -> {
                 getUndoManager().startBlock();
                 
-                fill(e.getX() / 32, e.getY() / 32, selection.getTileSelection()[0][0], layerHandler.getTileAt(selectedLayer, e.getX() / 32, e.getY() / 32));
+                fill(e.getX() / 32, e.getY() / 32, selection.getFirstTile(), layerHandler.getTileAt(selectedLayer, e.getX() / 32, e.getY() / 32));
                 
                 getUndoManager().endBlock();
             });

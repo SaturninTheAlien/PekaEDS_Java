@@ -2,6 +2,7 @@ package pekaeds.tool.tools;
 
 import javax.swing.*;
 
+import pekaeds.data.Layer;
 import pekaeds.tool.Tool;
 import pk2.settings.Settings;
 import pk2.util.TileUtils;
@@ -46,10 +47,24 @@ public class BrushTool extends Tool {
                     // TODO Clean this stuff up, it's ugly.
                     int px = ((e.getX() / 32 * 32) - ((selection.getWidth() / 2) * 32) + (32 / 2));
                     int py = ((e.getY() / 32 * 32) - ((selection.getHeight() / 2) * 32) + (32 / 2));
-                    
-                    getUndoManager().pushTilePlaced(this, px, py, selection.getTileSelection(), layerHandler.getTilesFromArea(px, py, selection.getWidth(), selection.getHeight(), selectedLayer), selectedLayer);
-                    
-                    layerHandler.placeTilesScreen(px, py, selectedLayer, selection.getTileSelection());
+
+                    var fgSelection = selection.getTileFGSelection();
+                    var bgSelection = selection.getTileBGSelection();
+
+
+                    if(selectedLayer==Layer.BOTH && bgSelection!=null){
+
+                        var oldFGTiles = layerHandler.getTilesFromArea(px, py, selection.getWidth(), selection.getHeight(), Layer.FOREGROUND);
+                        var oldBGTiles = layerHandler.getTilesFromArea(px, py, selection.getWidth(), selection.getHeight(), Layer.BACKGROUND);
+                        getUndoManager().pushTilePlaced(this, px, py, fgSelection, oldFGTiles, bgSelection, oldBGTiles, Layer.BOTH);
+
+                        layerHandler.placeTilesScreen(px, py, Layer.BACKGROUND, bgSelection);
+                        layerHandler.placeTilesScreen(px, py, Layer.FOREGROUND, fgSelection);
+                    }
+                    else{
+                        getUndoManager().pushTilePlaced(this, px, py, fgSelection, layerHandler.getTilesFromArea(px, py, selection.getWidth(), selection.getHeight(), selectedLayer), null, null, selectedLayer);
+                        layerHandler.placeTilesScreen(px, py, selectedLayer, selection.getTileFGSelection());
+                    }
                 }
                 
                 case MODE_SPRITE -> {
@@ -83,14 +98,21 @@ public class BrushTool extends Tool {
             // Make the selected tiles appear to be on a 32 * 32 grid.
             int xAdjusted = (getMousePosition().x / 32 * 32);
             int yAdjusted = (getMousePosition().y / 32 * 32);
+
+            var bgSelection = selection.getTileBGSelection();
+            var fgSelection = selection.getTileFGSelection();
             
             for (int y = 0; y < selection.getHeight(); y++) {
                 for (int x = 0; x < selection.getWidth(); x++) {
                     // Offset the selections position by half its size (selection width and height), so it is centered at the position of the mouse cursor.
                     int offsetX = (x - (selection.getWidth() / 2)) * 32;
                     int offsetY = (y - (selection.getHeight() / 2)) * 32;
-                    
-                    getMapPanelPainter().drawTile(g, xAdjusted + offsetX, yAdjusted + offsetY, selection.getTileSelection()[y][x]);
+
+                    if(bgSelection!=null && selectedLayer==Layer.BOTH){
+                        getMapPanelPainter().drawTile(g, xAdjusted + offsetX, yAdjusted + offsetY, bgSelection[y][x]);
+                    }
+
+                    getMapPanelPainter().drawTile(g, xAdjusted + offsetX, yAdjusted + offsetY, fgSelection[y][x]);
                 }
             }
             

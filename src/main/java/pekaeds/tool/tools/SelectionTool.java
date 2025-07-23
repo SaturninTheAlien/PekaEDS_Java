@@ -2,6 +2,7 @@ package pekaeds.tool.tools;
 
 import javax.swing.*;
 
+import pekaeds.data.Layer;
 import pekaeds.tool.Tool;
 import pk2.settings.Settings;
 import pk2.util.TileUtils;
@@ -65,7 +66,15 @@ public class SelectionTool extends Tool {
     private void doTileSelection() {
         selectionRect = TileUtils.calculateSelectionRectangle(selection.getStart(), selection.getEnd(), selectedSector);
 
-        selection.setTileSelection(layerHandler.getTilesFromRect(selectionRect, selectedLayer));
+        System.out.println("Selected layer: "+ selectedLayer);
+        if(selectedLayer==Layer.BOTH){
+            selection.setTileFGSelection(layerHandler.getTilesFromRect(selectionRect, Layer.FOREGROUND));
+            selection.setTileBGSelection(layerHandler.getTilesFromRect(selectionRect, Layer.BACKGROUND));
+        }
+        else{
+            selection.setTileFGSelection(layerHandler.getTilesFromRect(selectionRect, selectedLayer));
+            selection.setTileBGSelection(null);
+        }
 
         selectionRect.x = -1;
         selectionRect.y = -1;

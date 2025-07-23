@@ -109,7 +109,7 @@ public final class CutTool extends Tool {
                 if (cutForegroundLayer) {
                     foregroundLayer = layerHandler.getTilesFromRect(selectionRect, Layer.FOREGROUND);
         
-                    getUndoManager().pushTilePlaced(this, ActionType.CUT_TOOL_CUT_FOREGROUND, selectionRect.x * 32, selectionRect.y * 32, foregroundLayer, layerHandler.getTilesFromRect(selectionRect, Layer.FOREGROUND), Layer.FOREGROUND);
+                    getUndoManager().pushTilePlaced(this, ActionType.CUT_TOOL_CUT_FOREGROUND, selectionRect.x * 32, selectionRect.y * 32, foregroundLayer, layerHandler.getTilesFromRect(selectionRect, Layer.FOREGROUND), null, null, Layer.FOREGROUND);
         
                     layerHandler.removeTilesArea(selectionRect, Layer.FOREGROUND);
                 }
@@ -117,7 +117,7 @@ public final class CutTool extends Tool {
                 if (cutBackgroundLayer) {
                     backgroundLayer = layerHandler.getTilesFromRect(selectionRect, Layer.BACKGROUND);
         
-                    getUndoManager().pushTilePlaced(this, ActionType.CUT_TOOL_CUT_BACKGROUND, selectionRect.x * 32, selectionRect.y * 32, backgroundLayer, layerHandler.getTilesFromRect(selectionRect, Layer.BACKGROUND), Layer.BACKGROUND);
+                    getUndoManager().pushTilePlaced(this, ActionType.CUT_TOOL_CUT_BACKGROUND, selectionRect.x * 32, selectionRect.y * 32, backgroundLayer, layerHandler.getTilesFromRect(selectionRect, Layer.BACKGROUND), null, null, Layer.BACKGROUND);
         
                     layerHandler.removeTilesArea(selectionRect, Layer.BACKGROUND);
                 }
@@ -192,13 +192,13 @@ public final class CutTool extends Tool {
         getUndoManager().startBlock();
         
         if (cutForegroundLayer) {
-            getUndoManager().pushTilePlaced(this, ActionType.CUT_TOOL_PLACE_FOREGROUND, selectionRect.x * 32, selectionRect.y * 32, foregroundLayer, layerHandler.getTilesFromRect(selectionRect, Layer.FOREGROUND), Layer.FOREGROUND);
+            getUndoManager().pushTilePlaced(this, ActionType.CUT_TOOL_PLACE_FOREGROUND, selectionRect.x * 32, selectionRect.y * 32, foregroundLayer, layerHandler.getTilesFromRect(selectionRect, Layer.FOREGROUND), null, null, Layer.FOREGROUND);
             
             layerHandler.placeTilesScreen(selectionRect.x * 32, selectionRect.y * 32, Layer.FOREGROUND, foregroundLayer);
         }
     
         if (cutBackgroundLayer) {
-            getUndoManager().pushTilePlaced(this, ActionType.CUT_TOOL_PLACE_BACKGROUND, selectionRect.x * 32, selectionRect.y * 32, backgroundLayer, layerHandler.getTilesFromRect(selectionRect, Layer.BACKGROUND), Layer.BACKGROUND);
+            getUndoManager().pushTilePlaced(this, ActionType.CUT_TOOL_PLACE_BACKGROUND, selectionRect.x * 32, selectionRect.y * 32, backgroundLayer, layerHandler.getTilesFromRect(selectionRect, Layer.BACKGROUND),null, null, Layer.BACKGROUND);
     
             layerHandler.placeTilesScreen(selectionRect.x * 32, selectionRect.y * 32, Layer.BACKGROUND, backgroundLayer);
         }

@@ -12,7 +12,9 @@ public final class ToolSelection {
      * Foreground = 0
      * Background = 1
      */
-    private int[][] tileSelection;
+    private int[][] tileFGSelection;
+    private int[][] tileBGSelection;
+
     private int[][] spritesSelection;
 
     private int width;
@@ -21,8 +23,8 @@ public final class ToolSelection {
     private Rectangle rect = new Rectangle();
     
     public void reset() {
-        tileSelection = new int[1][1];
-
+        tileFGSelection = new int[1][1];
+        tileBGSelection = new int[1][1];
         spritesSelection = new int[1][1];
 
         width = 1;
@@ -31,14 +33,23 @@ public final class ToolSelection {
         rect.setRect(0, 0, 0, 0);
     }
 
-    public void setTileSelection(int[][] selection) {
-        tileSelection = selection;
-
+    public void setTileFGSelection(int[][] selection) {
+        tileFGSelection = selection;
+        tileBGSelection = selection;
         setDimensions(selection);
     }
 
-    public int[][] getTileSelection() {
-        return tileSelection;
+    public int[][] getTileFGSelection() {
+        return tileFGSelection;
+    }
+
+
+    public void setTileBGSelection(int[][] selection) {
+        tileBGSelection = selection;
+    }
+
+    public int[][] getTileBGSelection() {
+        return tileBGSelection;
     }
 
     public void setSelectionSprites(int[][] selection) {
@@ -47,8 +58,14 @@ public final class ToolSelection {
         setDimensions(selection);
     }
 
+    @Deprecated
     public int[][] getTileSelection(int layer) {
-        return tileSelection;
+        return tileFGSelection;
+    }
+
+
+    public int getFirstTile(){
+        return this.tileFGSelection[0][0];
     }
 
     public int[][] getSelectionSprites() {

@@ -21,16 +21,29 @@ public class ToolUndoManager {
         undoBlockStack.push(new UndoBlock(blockStartSize, undoActionStack.size()));
     }
     
-    public void pushTilePlaced(Tool tool, ActionType actionType, int x, int y, int[][] newTiles, int[][] oldTiles, int layer) {
-        undoActionStack.push(new UndoAction(tool, ActionType.UNDO, actionType, x, y, newTiles, oldTiles, layer));
+    public void pushTilePlaced(Tool tool, ActionType actionType, int x, int y,
+        
+        int[][] newTiles,
+        int[][] oldTiles,
+        int[][] newTilesBG,
+        int[][] oldTilesBG,
+
+        int layer) {
+        undoActionStack.push(new UndoAction(tool, ActionType.UNDO, actionType, x, y, newTiles, oldTiles, newTilesBG, oldTilesBG, layer));
     }
     
-    public void pushTilePlaced(Tool tool, int x, int y, int[][] newTiles, int[][] oldTiles, int layer) {
-        pushTilePlaced(tool, ActionType.PLACE_TILE, x, y, newTiles, oldTiles, layer);
+    public void pushTilePlaced(Tool tool, int x, int y,
+
+        int[][] newTiles,
+        int[][] oldTiles,
+        int[][] newTilesBG,
+        int[][] oldTilesBG,
+        int layer) {
+        pushTilePlaced(tool, ActionType.PLACE_TILE, x, y, newTiles, oldTiles, newTilesBG, oldTilesBG, layer);
     }
     
     public void pushTilePlaced(Tool tool, int x, int y, int newTile, int oldTile, int layer) {
-        pushTilePlaced(tool, x, y, new int[][]{{ newTile }}, new int[][]{{ oldTile }}, layer);
+        pushTilePlaced(tool, x, y, new int[][]{{ newTile }}, new int[][]{{ oldTile }}, null, null, layer);
     }
     
     public void pushSpritePlaced(Tool tool, int x, int y, int[][] newSprite, int[][] oldSprite) {

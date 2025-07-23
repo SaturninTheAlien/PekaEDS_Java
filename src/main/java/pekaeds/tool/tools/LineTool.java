@@ -92,13 +92,13 @@ public class LineTool extends Tool {
         
         for (int x = x0; x <= x1; x++) {
             if (g != null) {
-                getMapPanelPainter().drawTile(g, x * 32, y * 32, selection.getTileSelection(selectedLayer)[0][0]);
+                getMapPanelPainter().drawTile(g, x * 32, y * 32, selection.getFirstTile());
     
                 drawSelectionRect(g, x * 32, y * 32, 32, 32);
             } else {
-                getUndoManager().pushTilePlaced(this, x * 32, y * 32, selection.getTileSelection()[0][0], layerHandler.getTileAt(selectedLayer, x, y), selectedLayer);
+                getUndoManager().pushTilePlaced(this, x * 32, y * 32, selection.getFirstTile(), layerHandler.getTileAt(selectedLayer, x, y), selectedLayer);
                 
-                layerHandler.placeTileScreen(x * 32, y * 32, selection.getTileSelection(selectedLayer)[0][0], selectedLayer);
+                layerHandler.placeTileScreen(x * 32, y * 32, selection.getFirstTile(), selectedLayer);
             }
             
             if (d > 0) {
@@ -126,13 +126,13 @@ public class LineTool extends Tool {
         
         for (int y = y0; y <= y1; y++) {
             if (g != null) {
-                getMapPanelPainter().drawTile(g, x * 32, y * 32, selection.getTileSelection(selectedLayer)[0][0]);
+                getMapPanelPainter().drawTile(g, x * 32, y * 32, selection.getFirstTile());
     
                 drawSelectionRect(g, x * 32, y * 32, 32, 32);
             } else {
-                getUndoManager().pushTilePlaced(this, x * 32, y * 32, selection.getTileSelection()[0][0], layerHandler.getTileAt(selectedLayer, x, y), selectedLayer);
+                getUndoManager().pushTilePlaced(this, x * 32, y * 32, selection.getFirstTile(), layerHandler.getTileAt(selectedLayer, x, y), selectedLayer);
                 
-                layerHandler.placeTileScreen(x * 32, y * 32, selection.getTileSelection(selectedLayer)[0][0], selectedLayer);
+                layerHandler.placeTileScreen(x * 32, y * 32, selection.getFirstTile(), selectedLayer);
             }
             
             if (d > 0) {
@@ -150,7 +150,7 @@ public class LineTool extends Tool {
             if (start != null) {
                 plotLine(g, start.x, start.y, end.x, end.y);
             } else {
-                getMapPanelPainter().drawTile(g, getMousePosition().x, getMousePosition().y, selection.getTileSelection(selectedLayer)[0][0]);
+                getMapPanelPainter().drawTile(g, getMousePosition().x, getMousePosition().y, selection.getFirstTile());
             }
         }
     }

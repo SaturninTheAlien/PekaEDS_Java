@@ -9,11 +9,25 @@ public class UndoAction {
     private int x, y;
     private int[][] newTiles;
     private int[][] oldTiles;
+
+    private int[][] newTilesBG;
+    private int[][] oldTilesBG;
+
     private int layer;
     private ActionType type;
     private ActionType undoType;
     
-    public UndoAction(Tool tool, ActionType undoType, ActionType actionType, int x, int y, int[][] newTile, int[][] oldTile, int layer) {
+    public UndoAction(Tool tool, ActionType undoType, ActionType actionType, int x, int y,
+    
+            int[][] newTile,
+            int[][] oldTile,
+
+            int[][] newTilesBG,
+            int[][] oldTilesBG,
+
+            int layer) {
+
+
         this.tool = tool;
         
         this.undoType = undoType;
@@ -24,6 +38,9 @@ public class UndoAction {
         
         this.newTiles = newTile;
         this.oldTiles = oldTile;
+
+        this.newTilesBG = newTilesBG;
+        this.oldTilesBG = oldTilesBG;
         
         this.layer = layer;
     }
@@ -40,6 +57,10 @@ public class UndoAction {
         
         this.newTiles = newTile;
         this.oldTiles = oldTile;
+
+
+        this.newTilesBG = null;
+        this.oldTilesBG = null;
     }
     
     public void changeIntoRedo() {
@@ -81,6 +102,14 @@ public class UndoAction {
     
     public int[][] getOldTiles() {
         return oldTiles;
+    }
+
+    public int[][] getNewTilesBG(){
+        return this.newTilesBG;
+    }
+
+    public int[][] getOldTilesBG(){
+        return this.oldTilesBG;
     }
     
     public int getLayer() {

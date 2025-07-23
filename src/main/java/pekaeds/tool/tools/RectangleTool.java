@@ -73,15 +73,15 @@ public class RectangleTool extends Tool {
             for (int y = rect.y; y < rect.y + rect.height; y++) {
                 // TODO support a tile selection greater than one
                 if (fill) {
-                    getUndoManager().pushTilePlaced(this, x * 32, y * 32, selection.getTileSelection()[0][0], layerHandler.getTileAt(selectedLayer, x, y), selectedLayer);
+                    getUndoManager().pushTilePlaced(this, x * 32, y * 32, selection.getFirstTile(), layerHandler.getTileAt(selectedLayer, x, y), selectedLayer);
                     
-                    layerHandler.placeTileScreen(x * 32, y * 32, selection.getTileSelection()[0][0], selectedLayer);
+                    layerHandler.placeTileScreen(x * 32, y * 32, selection.getFirstTile(), selectedLayer);
                 } else {
                     if (x == rect.x || x == rect.x + (rect.width - 1) ||
                             y == rect.y || y == rect.y + (rect.height - 1)) {
-                        getUndoManager().pushTilePlaced(this, x * 32, y * 32, selection.getTileSelection()[0][0], layerHandler.getTileAt(selectedLayer, x, y), selectedLayer);
+                        getUndoManager().pushTilePlaced(this, x * 32, y * 32, selection.getFirstTile(), layerHandler.getTileAt(selectedLayer, x, y), selectedLayer);
 
-                        layerHandler.placeTileScreen(x * 32, y * 32, selection.getTileSelection()[0][0], selectedLayer);
+                        layerHandler.placeTileScreen(x * 32, y * 32, selection.getFirstTile(), selectedLayer);
                     }
                 }
             }
@@ -98,11 +98,11 @@ public class RectangleTool extends Tool {
                     for (int y = rect.y; y < rect.y + rect.height; y++) {
                         // TODO support a tile selection greater than one
                         if (fill) {
-                            getMapPanelPainter().drawTile(g, x * 32, y * 32, selection.getTileSelection(selectedLayer)[0][0]);
+                            getMapPanelPainter().drawTile(g, x * 32, y * 32, selection.getFirstTile());
                         } else {
                             if (x == rect.x || x == rect.x + (rect.width - 1) ||
                                     y == rect.y || y == rect.y + (rect.height - 1)) {
-                                getMapPanelPainter().drawTile(g, x * 32, y * 32, selection.getTileSelection(selectedLayer)[0][0]);
+                                getMapPanelPainter().drawTile(g, x * 32, y * 32, selection.getFirstTile());
                             }
                         }
                     }
@@ -130,7 +130,7 @@ public class RectangleTool extends Tool {
                     }
                 }
             } else {
-                getMapPanelPainter().drawTile(g, getMousePosition().x, getMousePosition().y, selection.getTileSelection(selectedLayer)[0][0]);
+                getMapPanelPainter().drawTile(g, getMousePosition().x, getMousePosition().y, selection.getFirstTile());
     
                 if (Settings.highlightSelection()) {
                     drawSelectionRect(g, getMousePosition().x, getMousePosition().y, 32, 32);

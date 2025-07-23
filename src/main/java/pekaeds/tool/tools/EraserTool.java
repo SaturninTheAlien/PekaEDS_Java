@@ -32,7 +32,7 @@ public class EraserTool extends Tool {
     private void doPlacement(Point position) {
         switch (getMode()) {
             case MODE_TILE -> {
-                getUndoManager().pushTilePlaced(this, position.x, position.y, EMPTY_TILE, layerHandler.getTilesFromArea(position.x, position.y, 1, 1, selectedLayer), selectedLayer);
+                getUndoManager().pushTilePlaced(this, position.x, position.y, EMPTY_TILE, layerHandler.getTilesFromArea(position.x, position.y, 1, 1, selectedLayer), null, null, selectedLayer);
                 
                 layerHandler.placeTileScreen(position.x, position.y, 255, selectedLayer);
             }

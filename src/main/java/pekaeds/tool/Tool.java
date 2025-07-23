@@ -63,7 +63,8 @@ public abstract class Tool {
     private static final ToolUndoManager undoManager = new ToolUndoManager();
     
     public static void setSelection(int[][] tileSelection) {
-        selection.setTileSelection(tileSelection);
+        selection.setTileFGSelection(tileSelection);
+        selection.setTileBGSelection(null);
     }
 
     protected boolean useRightMouseButton = false;
@@ -154,9 +155,11 @@ public abstract class Tool {
     }
     
     public static void setSelectedLayer(int layer) {
-        selectedLayer = layer == Layer.BOTH ? Layer.FOREGROUND : layer;
+        //selectedLayer = layer == Layer.BOTH ? Layer.FOREGROUND : layer;
 
         //layerHandler.setCurrentLayer(selectedLayer);
+
+        selectedLayer = layer;
         
         onLayerChange();
     }
@@ -255,7 +258,23 @@ public abstract class Tool {
                     CUT_TOOL_PLACE_FOREGROUND,
                     CUT_TOOL_PLACE_BACKGROUND,
                     CUT_TOOL_CUT_FOREGROUND,
-                    CUT_TOOL_CUT_BACKGROUND -> layerHandler.placeTilesScreen(action.getX(), action.getY(), action.getLayer(), action.getOldTiles());
+                    CUT_TOOL_CUT_BACKGROUND -> {
+                        int layer = action.getLayer();
+                        if(layer==Layer.BOTH){
+
+                            int x = action.getX();
+                            int y = action.getY();
+                            layerHandler.placeTilesScreen(x, y, Layer.FOREGROUND, action.getOldTiles());
+
+                            var oldTilesBG = action.getOldTilesBG();
+                            if(oldTilesBG!=null){
+                                layerHandler.placeTilesScreen(x, y, Layer.BACKGROUND, oldTilesBG);
+                            }
+                        }
+                        else{
+                            layerHandler.placeTilesScreen(action.getX(), action.getY(), layer, action.getOldTiles());
+                        }
+                    }
             
             case PLACE_SPRITE,
                     CUT_TOOL_PLACE_SPRITES,
@@ -272,7 +291,23 @@ public abstract class Tool {
                     CUT_TOOL_PLACE_FOREGROUND,
                     CUT_TOOL_PLACE_BACKGROUND,
                     CUT_TOOL_CUT_FOREGROUND,
-                    CUT_TOOL_CUT_BACKGROUND -> layerHandler.placeTilesScreen(action.getX(), action.getY(), action.getLayer(), action.getNewTiles());
+                    CUT_TOOL_CUT_BACKGROUND -> {
+                        int layer = action.getLayer();
+                        if(layer==Layer.BOTH){
+
+                            int x = action.getX();
+                            int y = action.getY();
+                            layerHandler.placeTilesScreen(x, y, Layer.FOREGROUND, action.getNewTiles());
+
+                            var newTilesBG = action.getNewTilesBG();
+                            if(newTilesBG!=null){
+                                layerHandler.placeTilesScreen(x, y, Layer.BACKGROUND, newTilesBG);
+                            }
+                        }
+                        else{
+                            layerHandler.placeTilesScreen(action.getX(), action.getY(), layer, action.getNewTiles());
+                        }
+                    }
             
             case PLACE_SPRITE,
                     CUT_TOOL_PLACE_SPRITES,
