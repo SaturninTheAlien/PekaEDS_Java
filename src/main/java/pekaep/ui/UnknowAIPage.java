@@ -29,7 +29,7 @@ public class UnknowAIPage extends JPanel {
         JLabel title = new JLabel("<html> <span style=\"font-weight:bold; color:orange; font-size: 25px\"> Warning! </span> </html>");
 
 
-        JLabel info = new JLabel("<html> These sprites contain unknown AIs! <br> It will cause problems when the game is updated! To fix it, remove listed AIs! </html>");
+        JLabel info = new JLabel("<html> These sprites contain unknown AIs! <br> Unknown AIs can pose problems when the game is updated! </html>");
         
         this.add(title, "cell 0 0");
         this.add(info, "cell 0 1");
@@ -43,7 +43,7 @@ public class UnknowAIPage extends JPanel {
         this.assetInfoPanel = new AssetInfoPanel();
         this.assetInfoPanel.setVisible(false);
 
-        this.cbUnknowAIs = new JCheckBox("Remove unknown sprite AIs (recommended)");
+        this.cbUnknowAIs = new JCheckBox("Remove unknown sprite AIs (highly recommended!)");
         this.cbUnknowAIs.setSelected(false);
 
         this.add(this.cbUnknowAIs, "cell 0 2");

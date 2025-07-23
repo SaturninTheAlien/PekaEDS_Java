@@ -91,6 +91,9 @@ public class InitialSetupDialog extends JDialog {
             if (!tfPath.getText().isBlank()) {
                 Settings.reset();
 
+                String theme = (String)this.cbTheme.getSelectedItem();
+                Settings.setLookAndFeel(theme);
+
                 Settings.setDefaultAuthor(tfDefaultAuthor.getText());
                 Settings.setBasePath(tfPath.getText());
 
