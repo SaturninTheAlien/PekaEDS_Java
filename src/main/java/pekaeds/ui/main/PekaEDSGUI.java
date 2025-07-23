@@ -256,6 +256,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         Tools.addTool(LineTool.class);
         Tools.addTool(RectangleTool.class);
         Tools.addTool(EraserTool.class);
+        Tools.addTool(AreaEraserTool.class);
         Tools.addTool(FloodFillTool.class);
         Tools.addTool(CutTool.class);
     }
@@ -577,7 +578,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
 
 
     public void setSelectedToolIfEraser(Tool selectedTool){
-        if(this.currentTool == Tools.getTool(EraserTool.class)){
+        if(this.currentTool.isEraser()){
             this.setSelectedTool(selectedTool);
         }
     }

@@ -317,4 +317,9 @@ public abstract class Tool {
         
         action.changeIntoUndo();
     }
+
+
+    public boolean isEraser(){
+        return false;
+    }
 }

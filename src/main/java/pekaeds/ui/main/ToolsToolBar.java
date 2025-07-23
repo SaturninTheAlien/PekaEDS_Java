@@ -40,6 +40,7 @@ public class ToolsToolBar extends JToolBar {
         
         buttonMap.put(BrushTool.class, new JToggleButton("Brush"));
         buttonMap.put(EraserTool.class, new JToggleButton("Eraser"));
+        buttonMap.put(AreaEraserTool.class, new JToggleButton("Area Eraser"));
         buttonMap.put(LineTool.class, new JToggleButton("Line"));
         buttonMap.put(RectangleTool.class, new JToggleButton("Rect"));
         buttonMap.put(FloodFillTool.class, new JToggleButton("Flood Fill"));
@@ -69,6 +70,7 @@ public class ToolsToolBar extends JToolBar {
         buttonMap.get(BrushTool.class).addActionListener(new SetSelectedToolAction(gui, Tools.getTool(BrushTool.class)));
         buttonMap.get(EraserTool.class).addActionListener(new SetSelectedToolAction(gui, Tools.getTool(EraserTool.class)));
         buttonMap.get(LineTool.class).addActionListener(new SetSelectedToolAction(gui, Tools.getTool(LineTool.class)));
+        buttonMap.get(AreaEraserTool.class).addActionListener(new SetSelectedToolAction(gui, Tools.getTool(AreaEraserTool.class)));
         buttonMap.get(RectangleTool.class).addActionListener(new SetSelectedToolAction(gui, Tools.getTool(RectangleTool.class)));
         buttonMap.get(FloodFillTool.class).addActionListener(new SetSelectedToolAction(gui, Tools.getTool(FloodFillTool.class)));
         buttonMap.get(CutTool.class).addActionListener(new SetSelectedToolAction(gui, Tools.getTool(CutTool.class)));

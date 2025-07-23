@@ -77,4 +77,9 @@ public class EraserTool extends Tool {
     public void onDeselect(boolean ignorePrompts) {
     
     }
+
+    @Override
+    public boolean isEraser(){
+        return true;
+    }
 }
