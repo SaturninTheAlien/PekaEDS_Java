@@ -23,6 +23,7 @@ import pekaep.episode.PK2EpisodeIO;
 import pekaep.ui.EpisodePage;
 import pekaep.ui.LevelListPage;
 import pekaep.ui.MissingAssetsPage;
+import pekaep.ui.UnknowAIPage;
 import pekaep.ui.ZipPage;
 
 public class PekaEPGUI extends JFrame {
@@ -31,6 +32,7 @@ public class PekaEPGUI extends JFrame {
         EPISODE("episode", true, false),
         LEVELS("levels", true, true),
         MISSING("missing", false, true),
+        WARNING("warning", true, true),
         FINAL("zip", true, true);
 
         private final String name;
@@ -60,6 +62,7 @@ public class PekaEPGUI extends JFrame {
     private EpisodePage episodePanel;
     private LevelListPage levelListPanel;
     private MissingAssetsPage missingAssetListPanel;
+    private UnknowAIPage uknownAiPage;
     private ZipPage zipPanel;
 
 
@@ -95,7 +98,10 @@ public class PekaEPGUI extends JFrame {
         cardPanel.add( this.levelListPanel, Page.LEVELS.getName());
 
         this.missingAssetListPanel = new MissingAssetsPage();        
-        cardPanel.add(missingAssetListPanel, Page.MISSING.getName());
+        cardPanel.add(this.missingAssetListPanel, Page.MISSING.getName());
+
+        this.uknownAiPage = new UnknowAIPage();
+        cardPanel.add(this.uknownAiPage, Page.WARNING.getName());
 
         this.zipPanel = new ZipPage();
         cardPanel.add(new JScrollPane(this.zipPanel), Page.FINAL.getName());
@@ -180,11 +186,19 @@ public class PekaEPGUI extends JFrame {
         this.missingAssetListPanel.update(missingAssets);
 
         if(missingAssets.isEmpty()){
-            this.currentPage = Page.FINAL;
+            List<PK2EpisodeAsset> warningAssets = this.episode.getSuspiciousAssetsList();
+
+            this.uknownAiPage.update(warningAssets);
+            if(warningAssets.isEmpty()){
+                this.currentPage = Page.FINAL;
+            }
+            else{
+                this.currentPage = Page.WARNING;
+            }
         }
         else{
             this.currentPage = Page.MISSING;
-        }  
+        }
 
     }
 
@@ -201,6 +215,19 @@ public class PekaEPGUI extends JFrame {
             }
 
             try{
+                
+                if(this.uknownAiPage.shouldRemoveUnknownAIs()){
+                    this.episode.removeUnknownSpriteAIs();
+                }
+
+                if(this.zipPanel.shouldPackPK2stuff()){
+                    this.episode.findPK2Stuff("pk2stuff");
+                }
+
+                if(this.zipPanel.shouldPackPK2stuff2()){
+                    this.episode.findPK2Stuff("pk2stuff2");
+                }
+
                 PK2EpisodeIO.saveZip(this.episode, file, this.zipPanel.shouldIgnoreVanillaAssets());
                 JOptionPane.showMessageDialog(this,
                 "Successlully packed episode into a zip file:\n"+file.getAbsolutePath(),
@@ -234,6 +261,10 @@ public class PekaEPGUI extends JFrame {
                 this.loadAssets();
                              
                 break;
+
+            case WARNING:
+                this.currentPage = Page.FINAL;
+                break;
             
             case FINAL:
                 this.createZip();
@@ -257,6 +288,11 @@ public class PekaEPGUI extends JFrame {
             case MISSING:
                 this.currentPage = Page.LEVELS;
                 break;
+
+            case WARNING:
+                this.currentPage = Page.LEVELS;
+                break;
+
             case FINAL:
                 this.currentPage = Page.LEVELS;
                 break;                

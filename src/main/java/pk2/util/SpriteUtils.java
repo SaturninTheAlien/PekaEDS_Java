@@ -1,9 +1,11 @@
-package pekaeds.util;
+package pk2.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import pk2.profile.SpriteProfile;
+import pk2.sprite.PK2Sprite;
 import pk2.sprite.SpritePrototype;
 
 public final class SpriteUtils {
@@ -24,9 +26,20 @@ public final class SpriteUtils {
         return s1.equals(s2);
     }
 
+    private static boolean isUnknownAI(int ai, Map<Integer, String> map){
+        return (ai<200 || ai > 301) && map.get(ai)==null;
+    }
+
     public static List<Integer> getUnknownAIs(SpritePrototype sprite, SpriteProfile profile){
 
         Map<Integer, String> map = profile.getAiPatternMap();
-        return sprite.getAiList().stream().filter( ai-> (ai<200 || ai > 301) && map.get(ai)==null ).toList();
+        return sprite.getAiList().stream().filter( ai-> isUnknownAI(ai, map) ).toList();
+    }
+    
+
+    public static void removeUnknownAIs(PK2Sprite sprite, SpriteProfile profile){
+        Map<Integer, String> map = profile.getAiPatternMap();
+        List<Integer> ailist = sprite.getAiList().stream().filter( ai -> !isUnknownAI(ai, map)).toList();
+        sprite.setAiList(new ArrayList<>(ailist));
     }
 }

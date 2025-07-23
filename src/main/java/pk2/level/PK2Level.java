@@ -12,10 +12,9 @@ import pk2.filesystem.PK2FileSystem;
 import pk2.sprite.SpritePrototype;
 import pk2.sprite.io.SpriteMissing;
 import pk2.util.GFXUtils;
+import pk2.util.SpriteUtils;
 
 import javax.imageio.ImageIO;
-
-import pekaeds.util.SpriteUtils;
 
 public class PK2Level {
     public List<PK2LevelSector> sectors = new ArrayList<>();

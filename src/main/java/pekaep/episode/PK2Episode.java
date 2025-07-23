@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import pekaeds.util.SpriteUtils;
 import pk2.filesystem.PK2FileSystem;
 import pk2.level.PK2Level;
 import pk2.level.PK2LevelIO;
@@ -18,6 +17,7 @@ import pk2.level.PK2LevelSector;
 import pk2.settings.Settings;
 import pk2.sprite.PK2Sprite;
 import pk2.sprite.io.SpriteIO;
+import pk2.util.SpriteUtils;
 import pk2.util.StringNaturalComparator;
 
 public class PK2Episode {
@@ -34,6 +34,31 @@ public class PK2Episode {
 
     public PK2Episode(File dir){
         this.findLevels(dir);
+    }
+
+    public void removeUnknownSpriteAIs(){
+        for(PK2EpisodeAsset asset : assetList){
+            if(asset.getType()==PK2EpisodeAsset.Type.SPRITE && asset.file!=null
+            && asset.isSuspicious()){
+
+                try{
+                    if(tmpDir==null){
+                        this.tmpDir = Files.createTempDirectory("pk2-packer").toFile();
+                    }
+
+                    File newFile = Paths.get(this.tmpDir.getAbsolutePath(), asset.file.getName()).toFile();
+
+                    PK2Sprite sprite = SpriteIO.loadSpriteFile(asset.file);
+                    SpriteUtils.removeUnknownAIs(sprite, Settings.getSpriteProfile());
+
+                    SpriteIO.saveSprite(sprite, newFile);
+                    asset.file = newFile;
+                }
+                catch(Exception e){
+                    System.out.println(e);
+                }               
+            }
+        }
     }
 
 
@@ -285,11 +310,43 @@ public class PK2Episode {
         }
     }
 
+
+    public void findPK2Stuff(String name){
+
+        PK2EpisodeAsset asset = new PK2EpisodeAsset(name, PK2EpisodeAsset.Type.GFX, null);
+        for(PK2EpisodeAsset a: this.assetList){
+            if(a.equals(asset))return;
+        }
+
+        try {
+            File file = PK2FileSystem.findAsset(name + ".png",  PK2FileSystem.GFX_DIR);
+            asset.file = file;
+        }
+        catch (FileNotFoundException e) {
+
+            try{
+                File file = PK2FileSystem.findAsset(name + ".bmp",  PK2FileSystem.GFX_DIR);
+                asset.file = file;
+            }
+            catch (FileNotFoundException e2){
+
+                System.out.println(e2);
+                asset.loadingException = e2;
+            }
+        }
+
+        System.out.println(asset.getName());
+    }
+
     public List<PK2EpisodeAsset> getAssetList(){
         return this.assetList;
     }
 
     public List<PK2EpisodeAsset> getMissingAssetsList(){
         return this.assetList.stream().filter( a -> !a.isGood()).toList();
+    }
+
+    public List<PK2EpisodeAsset> getSuspiciousAssetsList(){
+        return this.assetList.stream().filter( a -> a.isSuspicious()).toList();
     }
 }

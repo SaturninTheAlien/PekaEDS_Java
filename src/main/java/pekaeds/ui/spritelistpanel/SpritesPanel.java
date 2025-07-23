@@ -10,13 +10,13 @@ import pekaeds.ui.listeners.PK2MapConsumer;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.SpritePlacementListener;
 import pekaeds.ui.main.PekaEDSGUI;
-import pekaeds.util.SpriteUtils;
 import pk2.filesystem.PK2FileSystem;
 import pk2.level.PK2Level;
 import pk2.level.PK2LevelSector;
 import pk2.sprite.SpritePrototype;
 import pk2.sprite.io.SpriteIO;
 import pk2.ui.SpriteFileChooser;
+import pk2.util.SpriteUtils;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

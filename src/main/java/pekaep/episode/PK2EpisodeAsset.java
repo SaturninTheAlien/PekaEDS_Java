@@ -98,6 +98,10 @@ public class PK2EpisodeAsset {
         return this.file != null && this.loadingException == null;
     }
 
+    public boolean isSuspicious(){
+        return this.unknowsAIs!=null && !this.unknowsAIs.isEmpty();
+    }
+
 
     public boolean equals(PK2EpisodeAsset asset){
         if(asset==null)return false;

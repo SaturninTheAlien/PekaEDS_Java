@@ -39,6 +39,8 @@ public class PK2EpisodeIO {
         
         ZipOutputStream zipOut = new ZipOutputStream(out);
         for(PK2EpisodeAsset asset: episode.getAssetList()){
+            if(asset.file==null)continue;
+
             if(!asset.isVanillaAsset() || !ignoreVanillaAssets){
                 zipAsset(asset, zipOut, episode);
             }

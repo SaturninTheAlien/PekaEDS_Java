@@ -100,6 +100,11 @@ aiPatternMap:
  91: Trigger "Event 2" if Damaged
  92: Transform if "Event 2" is triggered
  93: Die if "Event 2" is triggered
+ 94: Transform if Keylocks open	
+ 95: Die if Keylocks open
+ 96: Trigger "Event 1" if Bonus is collected
+ 97: Trigger "Event 2" if Bonus is collected
+ 98: Change Skull Blocks if Bonus is collected
 
  101: Background Sprite Moon
  102: Background Sprite Moves to Left
@@ -156,6 +161,7 @@ aiPatternMap:
  161: Attack 2 - if Player is nearby
  162: Transform if it touches the Floor
  163: Transform if it touches a Wall
+ 164: Transform if player in front
  
  170: Egg 2
 
@@ -165,6 +171,9 @@ aiPatternMap:
  173: AI_START_UP
  174: AI_START_LEFT
  175: AI_START_RIGHT
+
+ 176: Look at the Player
+ 177: Run Away from Supermode Player
 
  302: Info if Touches Player
  303: Info if Damaged

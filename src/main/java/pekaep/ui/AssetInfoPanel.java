@@ -22,6 +22,22 @@ public class AssetInfoPanel extends JPanel {
         return "<html> <span style=\"font-weight:bold; color:green\">"+ content+"</span> </html>";
     }
 
+
+
+    private String listUnknowAIs(PK2EpisodeAsset asset){
+        StringBuilder builder = new StringBuilder();
+        builder.append("<html> <span style=\"font-weight:bold; color:orange\">Uknown AIs:</span> <ul>");
+
+        for(int ai: asset.unknowsAIs){
+            builder.append("<li>");
+            builder.append(ai);
+            builder.append("</li>");
+        }
+
+        builder.append("</ul> </html>");
+        return builder.toString();
+    }
+
     private JLabel lFilename;
     private JLabel lError;
     private JLabel lType;
@@ -65,7 +81,13 @@ public class AssetInfoPanel extends JPanel {
         }
 
         if(asset.isGood()){
-            this.lError.setText(getOkayString("No problems with this file!"));
+
+            if(asset.unknowsAIs!=null && !asset.unknowsAIs.isEmpty()){
+                this.lError.setText(listUnknowAIs(asset));
+            }
+            else{
+                this.lError.setText(getOkayString("No problems with this file!"));
+            }            
         }
         else{
             if(asset.loadingException==null || asset.loadingException instanceof FileNotFoundException){
