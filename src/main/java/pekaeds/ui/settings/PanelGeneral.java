@@ -15,12 +15,7 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
     private JButton btnSetPath;
     private JTextField tfGamePath;
     
-    //private JLabel lblTestingParameters;
-
-    //private JTextField tfTestingParameters;
-    
     private ButtonGroup buttonGroup;
-    private JRadioButton rbLoadEpisode;
     private JRadioButton rbLoadMap;
     private JRadioButton rbNewMap;
       
@@ -50,7 +45,6 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
         
         var lblStartup = new JLabel("On startup:");
         add(lblStartup, "cell 0 3");
-        add(rbLoadEpisode, "cell 0 4");
         add(rbLoadMap, "cell 0 5");
         add(rbNewMap, "cell 0 6");
     
@@ -101,15 +95,12 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
     private void setupButtonGroup() {
         buttonGroup = new ButtonGroup();
         
-        rbLoadEpisode = new JRadioButton("Load last episode");
         rbLoadMap = new JRadioButton("Load last map");
         rbNewMap = new JRadioButton("Create new map");
     
         rbNewMap.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.NEW_MAP);
         rbLoadMap.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.LOAD_LAST_MAP);
-        rbLoadEpisode.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.LOAD_LAST_EPISODE);
         
-        buttonGroup.add(rbLoadEpisode);
         buttonGroup.add(rbLoadMap);
         buttonGroup.add(rbNewMap);
     }
@@ -156,7 +147,6 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
 
         rbNewMap.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.NEW_MAP);
         rbLoadMap.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.LOAD_LAST_MAP);
-        rbLoadEpisode.setSelected(Settings.getDefaultStartupBehavior() == StartupBehavior.LOAD_LAST_EPISODE);
         
         cbShowTileNumbers.setSelected(Settings.showTilesetNumberInTileset());
         
@@ -171,7 +161,6 @@ public class PanelGeneral extends JPanel implements ISettingsPanel {
         
         if (rbNewMap.isSelected()) behavior = StartupBehavior.NEW_MAP;
         if (rbLoadMap.isSelected()) behavior = StartupBehavior.LOAD_LAST_MAP;
-        if (rbLoadEpisode.isSelected()) behavior = StartupBehavior.LOAD_LAST_EPISODE;
         
         return behavior;
     }    
