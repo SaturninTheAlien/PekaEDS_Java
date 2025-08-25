@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import pekaeds.data.Layer;
 import pekaeds.tool.Tool;
+import pk2.level.PK2TileArray;
 import pk2.settings.Settings;
 import pk2.util.TileUtils;
 
@@ -30,6 +31,8 @@ public class SelectionTool extends Tool {
     
     @Override
     public void mouseReleased(MouseEvent e) {
+
+        //TODO Fix multiple sprites selection
         if (layerHandler.getSpriteAt(e.getPoint()) == 255 || !Settings.showSprites) {
             setMode(MODE_TILE);
     
@@ -86,7 +89,8 @@ public class SelectionTool extends Tool {
     private void doSpriteSelection() {
         selectionRect = TileUtils.calculateSelectionRectangle(selection.getStart(), selection.getEnd(), selectedSector);
 
-        //selection.setSelectionSprites(  new int[][]{{ layerHandler.getSpriteAt(selection.getStart().x, selection.getStart().y) }}); // TODO Fix multiselection of sprites
+        //selection.setSelectionSprites(layerHandler.getSpritesFromRect(selectionRect));
+        selection.setSelectionSprites( PK2TileArray.singleTile(layerHandler.getSpriteAt(selection.getStart().x, selection.getStart().y))); // TODO Fix multiselection of sprites
     }
 
     @Override
