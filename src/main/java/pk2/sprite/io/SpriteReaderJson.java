@@ -191,6 +191,10 @@ class SpriteReaderJson implements SpriteReader {
             sprite.setAttack2Offset(this.parsePoint2D(json, "attack2_offset"));
         }
 
+        if(json.has("parallax_type")){
+            sprite.setParallaxFactor(json.getInt("parallax_type"));
+        }
+
         return sprite;
     }
 

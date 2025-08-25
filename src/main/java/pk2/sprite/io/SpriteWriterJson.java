@@ -174,6 +174,8 @@ class SpriteWriterJson {
             this.putPoint2D(json, sprite.getAttack2Offset(), "attack2_offset");
         }
 
+        json.put("parallax_type", sprite.getParallaxFactor());
+
 
         Map<String, Object> map = json.toMap();
 
