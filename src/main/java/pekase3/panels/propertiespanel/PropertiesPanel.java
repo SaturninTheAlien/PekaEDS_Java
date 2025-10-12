@@ -86,7 +86,7 @@ public final class PropertiesPanel extends PekaSE2Panel {
         
         cbType = new JComboBox<>();
         
-        spWeight = new JSpinner(new SpinnerNumberModel(0, 0.0, 100000.0, 1.0));
+        spWeight = new JSpinner(new SpinnerNumberModel(0, -100000.0, 100000.0, 1.0));
         
         spEnergy = new JSpinner(new SpinnerNumberModel());
         spScore = new JSpinner(new SpinnerNumberModel());
