@@ -47,7 +47,7 @@ public class MiniMapPanel extends JPanel implements
     }
     
     private void paintLayer(Graphics g, final int[] layer, boolean bg) {
-        if (currentSector.tilesetImage != null) { // && layer.getWidth() == currentSector.getWidth() && layer.getHeight() == 224) {
+        if (currentSector.getTilesetImage() != null) { // && layer.getWidth() == currentSector.getWidth() && layer.getHeight() == 224) {
             g.setColor(LookAndFeelHelper.getBGColor());
             g.fillRect(0, 0, currentSector.getWidth(), currentSector.getHeight());
 
@@ -63,7 +63,7 @@ public class MiniMapPanel extends JPanel implements
                         if (bg && currentSector.getBackgroundTilesetImage() != null) {
                             g.setColor(new Color(currentSector.getBackgroundTilesetImage().getRGB(tileX, tileY))); // TODO Maybe don't create a new Color object every loop
                         } else {
-                            g.setColor(new Color(currentSector.tilesetImage.getRGB(tileX, tileY))); // TODO Maybe don't create a new Color object every loop
+                            g.setColor(new Color(currentSector.getTilesetImage().getRGB(tileX, tileY))); // TODO Maybe don't create a new Color object every loop
                         }
                         g.drawLine(x, y, x + 1, y + 1);
                     }

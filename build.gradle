@@ -16,9 +16,6 @@ java {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-
     implementation 'org.tinylog:tinylog-api:2.6.0'
     implementation 'org.tinylog:tinylog-impl:2.6.0'
     implementation 'com.formdev:flatlaf:3.5.2'

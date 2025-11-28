@@ -315,7 +315,9 @@ public class SectorMetadataPanel extends JPanel
                     tilesetImage = GFXUtils.setPaletteToBackgrounds(tilesetImage, sector.getBackgroundImage());
 
                     sector.tilesetName = fc.getSelectedFile().getName();
-                    sector.tilesetImage = tilesetImage;
+
+                    sector.setTilesetImage(tilesetImage);
+
                     tfTileset.setText(sector.tilesetName);
 
                     if (editingExistingSector) {
@@ -344,7 +346,8 @@ public class SectorMetadataPanel extends JPanel
                     tilesetImage = GFXUtils.setPaletteToBackgrounds(tilesetImage, sector.getBackgroundImage());
 
                     sector.tilesetBgName = fc.getSelectedFile().getName();
-                    sector.tilesetBgImage = tilesetImage;
+
+                    sector.setTilesetBgImage(tilesetImage);
 
                     tfBgTileset.setText(sector.tilesetBgName);
 
@@ -374,10 +377,11 @@ public class SectorMetadataPanel extends JPanel
                     // The tileset should only have its palette adjusted when a tileset image has been loaded, which is not the case when adding a new sector
                     if (editingExistingSector) {
                         var tilesetImage = GFXUtils.setPaletteToBackgrounds(sector.getTilesetImage(), backgroundImage);
-                        sector.tilesetImage = tilesetImage;
 
-                        if (sector.tilesetBgImage != null) {
-                            sector.tilesetBgImage = GFXUtils.setPaletteToBackgrounds(sector.getTilesetBgImage(), backgroundImage);
+                        sector.setTilesetImage(tilesetImage);
+
+                        if (sector.getTilesetBgImage() != null) {
+                            sector.setTilesetBgImage(GFXUtils.setPaletteToBackgrounds(sector.getTilesetBgImage(), backgroundImage));
                         }
                     }
 
@@ -415,7 +419,8 @@ public class SectorMetadataPanel extends JPanel
 
         btnRemoveBgTileset.addActionListener(e -> {
             sector.tilesetBgName = null;
-            sector.tilesetBgImage = null;
+
+            sector.setTilesetBgImage(null);
             tfBgTileset.setText("");
 
             if (editingExistingSector)  {

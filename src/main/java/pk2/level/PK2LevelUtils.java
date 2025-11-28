@@ -41,7 +41,7 @@ public class PK2LevelUtils {
     /**
      * To prevent loading a tileset multiple times
      */
-    static BufferedImage findTileset(String name, PK2Level level) {
+    /*static BufferedImage findTileset(String name, PK2Level level) {
 
         name = name.toLowerCase();
         for (PK2LevelSector sector : level.sectors) {
@@ -53,15 +53,18 @@ public class PK2LevelUtils {
         }
 
         return null;
-    }
+    }*/
 
     public static void loadTileset(PK2LevelSector sector) {
         try {
             File tilesetFile = PK2FileSystem.findAsset(sector.tilesetName, PK2FileSystem.TILESET_DIR);
 
             BufferedImage tileset = ImageIO.read(tilesetFile);
-            sector.tilesetImage = GFXUtils.setPaletteToBackgrounds(tileset, sector.getBackgroundImage());
-            sector.tilesetImage = GFXUtils.makeTransparent(sector.tilesetImage);
+            tileset = GFXUtils.setPaletteToBackgrounds(tileset, sector.getBackgroundImage());
+            tileset = GFXUtils.makeTransparent(tileset);
+
+            sector.setTilesetImage(tileset);
+
         } catch (IOException e) {
             Logger.error(e);
             JOptionPane.showMessageDialog(null, "Unable to load: \"" + sector.tilesetName + "\"", "Unable to find tileset", JOptionPane.ERROR_MESSAGE);
@@ -69,7 +72,7 @@ public class PK2LevelUtils {
             //fallback to default
             try {
                 File tilesetFile = PK2FileSystem.findAsset(Settings.getDefaultTileset(), PK2FileSystem.TILESET_DIR);
-                sector.tilesetImage = GFXUtils.makeTransparent(ImageIO.read(tilesetFile));
+                sector.setTilesetImage(GFXUtils.makeTransparent(ImageIO.read(tilesetFile)));
             } catch (IOException e2) {
                 Logger.error(e2);
             }
@@ -84,11 +87,13 @@ public class PK2LevelUtils {
             File tilesetBgFile = PK2FileSystem.findAsset(sector.tilesetBgName, PK2FileSystem.TILESET_DIR);
 
             BufferedImage tileset = ImageIO.read(tilesetBgFile);
-            sector.tilesetBgImage = GFXUtils.setPaletteToBackgrounds(tileset, sector.getBackgroundImage());
-            sector.tilesetBgImage = GFXUtils.makeTransparent(sector.tilesetBgImage);
+            tileset = GFXUtils.setPaletteToBackgrounds(tileset, sector.getBackgroundImage());
+            tileset = GFXUtils.makeTransparent(tileset);
+            sector.setTilesetBgImage(tileset);
+
         } catch (IOException e) {
             Logger.error(e);
-            sector.tilesetBgImage = null;
+            sector.setTilesetBgImage(null);
         }
     }
 
@@ -101,12 +106,12 @@ public class PK2LevelUtils {
             JOptionPane.showMessageDialog(null, "Unable to load: \"" + sector.backgroundName + "\"", "Unable to find background", JOptionPane.ERROR_MESSAGE);
 
             //fallback to default
-            try {
-                File backgroundFile = PK2FileSystem.findAsset(Settings.getDefaultBackground(), PK2FileSystem.TILESET_DIR);
-                sector.tilesetImage = ImageIO.read(backgroundFile);
-            } catch (IOException e2) {
-                Logger.error(e2);
-            }
+            // try {
+            //     File backgroundFile = PK2FileSystem.findAsset(Settings.getDefaultBackground(), PK2FileSystem.TILESET_DIR);
+            //     sector.tilesetImage = ImageIO.read(backgroundFile);
+            // } catch (IOException e2) {
+            //     Logger.error(e2);
+            // }
         }
     }
 

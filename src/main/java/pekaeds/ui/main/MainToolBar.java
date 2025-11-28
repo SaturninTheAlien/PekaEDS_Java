@@ -31,6 +31,7 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
     private JToggleButton tbShowSprites;
     private JToggleButton tbShowBgSprites;
     private JToggleButton tbShowTransparentLayers;
+    private JToggleButton tbShowBrokenSlopes;
     
     private final Settings settings;
     
@@ -64,6 +65,9 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
 
         tbShowTransparentLayers = new JToggleButton("Show another layer as transparent");
         tbShowTransparentLayers.setSelected(Settings.showTransparentLayers);
+
+        this.tbShowBrokenSlopes = new JToggleButton("Show broken slopes");
+        this.tbShowBrokenSlopes.setSelected(Settings.showBrokenSlopes);
         
         btnNew.addActionListener(new NewLevelAction(gui));
         btnOpen.addActionListener(new OpenLevelAction(gui));
@@ -89,6 +93,11 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
             Settings.showTransparentLayers = tbShowTransparentLayers.isSelected();
             gui.getMapPanel().repaint();
 
+        });
+
+        this.tbShowBrokenSlopes.addActionListener(e->{
+            Settings.showBrokenSlopes = tbShowBrokenSlopes.isSelected();
+            gui.getMapPanel().repaint();
         });
         
         lblLayer = new JLabel("Layer:");
@@ -131,6 +140,7 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
         add(tbShowSprites);
         add(tbShowBgSprites);
         add(tbShowTransparentLayers);
+        add(tbShowBrokenSlopes);
     }
     
     private void addListeners() {

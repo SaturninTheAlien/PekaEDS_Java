@@ -3,6 +3,7 @@ package pk2.level;
 import pk2.sprite.SpritePrototype;
 import pk2.sprite.io.SpriteMissing;
 import pk2.util.GFXUtils;
+import pk2.util.TileProfile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,8 +17,11 @@ public class PK2LevelSector {
     public static final int CLASSIC_WIDTH = 256;
     public static final int CLASSIC_HEIGHT = 224;
 
-    public BufferedImage tilesetImage;
-    public BufferedImage tilesetBgImage;
+    private BufferedImage tilesetImage;
+    private BufferedImage tilesetBgImage;
+    private TileProfile tileProfile;
+
+
     private BufferedImage backgroundImage;
 
     public String name = "untitled";
@@ -52,6 +56,8 @@ public class PK2LevelSector {
     public PK2LevelSector(int sectorWidth, int sectorHeight) {
         width = sectorWidth;
         height = sectorHeight;
+
+        tileProfile = new TileProfile();
 
         backgroundLayer = new int[sectorWidth * sectorHeight];
         foregroundLayer = new int[sectorWidth * sectorHeight];
@@ -216,6 +222,33 @@ public class PK2LevelSector {
         return 255;
     }
 
+
+    public TileProfile.Type getFGTileType(int posX, int posY){
+        return this.tileProfile.getTypeByID(this.getFGTile(posX, posY));
+    }
+
+
+    public boolean checkBrokenSlope(int posX, int posY){
+
+        if(this.getFGTileType(posX, posY)==TileProfile.Type.SOLID){
+
+            if(this.getFGTileType(posX + 1, posY) == TileProfile.Type.SLOPE_LEFT){
+
+                TileProfile.Type upper = this.getFGTileType(posX, posY-1);
+                return upper!=TileProfile.Type.SOLID && upper!=TileProfile.Type.SLOPE_RIGHT &&
+                    this.getFGTileType(posX + 1, posY - 1) == TileProfile.Type.EMPTY;
+            }
+            else if(this.getFGTileType(posX - 1, posY) ==TileProfile.Type.SLOPE_RIGHT){
+                TileProfile.Type upper = this.getFGTileType(posX, posY-1);
+                return upper!=TileProfile.Type.SOLID && upper!=TileProfile.Type.SLOPE_LEFT &&
+                    this.getFGTileType(posX - 1, posY - 1) == TileProfile.Type.EMPTY;
+            }
+
+        }
+
+        return false;
+    }
+
     public void removeSprite(int id) {
         for (int i = 0; i < spriteLayer.length; ++i) {
             if (spriteLayer[i] == id) {
@@ -308,6 +341,17 @@ public class PK2LevelSector {
     public String getBackgroundName() {
         return backgroundName;
     }
+
+
+    public void setTilesetImage(BufferedImage image){
+        this.tilesetImage = image;
+        this.tileProfile.setImage(image);
+    }
+
+    public void setTilesetBgImage(BufferedImage image){
+        this.tilesetBgImage = image;
+    }
+
 
     public BufferedImage getTilesetImage() {
         return tilesetImage;

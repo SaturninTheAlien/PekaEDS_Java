@@ -99,6 +99,11 @@ public class MapPanel extends JComponent implements
             painter.drawForegroundSprites(g2);
         }
 
+
+        if(Settings.showBrokenSlopes){
+            painter.drawBrokenSlopes(g2);
+        }
+
         if (resizingSector) {
             g2.setColor(Color.black);
             g2.setComposite(compAlphaHalf);

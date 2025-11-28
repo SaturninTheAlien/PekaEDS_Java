@@ -74,6 +74,49 @@ public class MapPanelPainter {
         }
     }
 
+    private void drawBrokenSlope(Graphics2D g, int posX, int posY){
+
+        int x = 32 * posX;
+        int y = 32 * posY;
+        int width = 32;
+        int height = 32;
+
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+    
+        g.setColor(Color.YELLOW);
+        g.fillRect(x, y, 32, 32);
+        
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, width, height); // Draw outer black part
+        g.drawRect(x + 2, y + 2, width - 4, height - 4); // Draw inner black part
+        
+        // Draw white middle part
+        g.setColor(Color.YELLOW);
+        g.drawRect(x + 1, y + 1, width - 2, height - 2);
+    }
+
+
+
+    public void drawBrokenSlopes(Graphics2D g){
+        if(this.mapPanel.sector() != null){
+
+
+            final PK2LevelSector sector = this.mapPanel.sector();
+            final int width  = mapPanel.sector().getWidth();
+            final int height = mapPanel.sector().getHeight();
+
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    if(sector.checkBrokenSlope(x, y)){
+                        this.drawBrokenSlope(g, x, y);
+                    }
+                }
+            }   
+        }
+    }
+
     private void drawBackgroundLayer(Graphics2D g) {
         final int[] layer = mapPanel.sector().getBackgroundLayer();
 
@@ -88,8 +131,8 @@ public class MapPanelPainter {
         int sectorWidth = mapPanel.sector().getWidth();
         int sectorHeight = mapPanel.sector().getHeight();
 
-        for (int x = 0; x < sectorWidth; x++) {
-            for (int y = 0; y < sectorHeight; y++) {
+        for (int y = 0; y < sectorHeight; y++) {
+            for (int x = 0; x < sectorWidth; x++) {
                 /*
                      screenX and Y are the coordinates of the tiles on the mapPanel itself.
                      The mapPanel itself is only as big as the JPanel, what you see.
