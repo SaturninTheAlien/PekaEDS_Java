@@ -39,10 +39,10 @@ public final class SpriteMissing extends SpriteOld {
     }
     
     public static BufferedImage getMissingImage() {
-        return image;
+        return image2;
     }
 
     public static BufferedImage getMissingTextureImage() {
-        return image2;
+        return image;
     }
 }

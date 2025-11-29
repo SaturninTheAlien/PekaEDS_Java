@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 public class PK2FileSystem {
 
     public static final String PK2_STUFF_NAME = "pk2stuff.bmp";
+    public static final String PK2_STUFF2_NAME = "pk2stuff2.bmp";
     public static final String SPRITES_DIR = "sprites";
     public static final String EPISODES_DIR = "episodes";
 
@@ -68,6 +69,11 @@ public class PK2FileSystem {
     public static File getPK2StuffFile() {
         return Paths.get(mAssetsPath.getPath(), "gfx", PK2_STUFF_NAME).toFile();
     }
+
+    public static File getPK2Stuff2File() {
+        return Paths.get(mAssetsPath.getPath(), "gfx", PK2_STUFF2_NAME).toFile();
+    }
+
 
     public static void setEpisodeDir(File dir){
         if(dir!=null && dir.exists()){

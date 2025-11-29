@@ -6,6 +6,7 @@ import pekaeds.ui.mapposition.MapPositionDialog;
 import pk2.filesystem.PK2FileSystem;
 import pk2.level.PK2Level;
 import pk2.settings.Settings;
+import pk2.sprite.io.SpriteMissing;
 import pk2.util.GFXUtils;
 import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.listeners.PK2MapConsumer;
@@ -17,7 +18,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.awt.image.RasterFormatException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,8 @@ import java.util.Map;
 import org.tinylog.Logger;
 
 public class MapMetadataPanel extends JPanel implements PK2MapConsumer, ActionListener, ChangeListener {
+
+    private static final int ICONS_NUMBER = 44;
 
     private boolean canFireChanges = false;
     private ChangeListener changeListener;
@@ -59,20 +62,65 @@ public class MapMetadataPanel extends JPanel implements PK2MapConsumer, ActionLi
         setupUI();
         setListeners();
     }
+
+    private static String getIconName(int id){
+        var iconNames = Settings.getMapProfile().getMapIconNames();
+        if(id < iconNames.size()){
+            return iconNames.get(id);
+        }
+        else if(id < 22){
+            return ("Custom Icon #"+(id+1));
+        }
+        else{
+            return "PK2stuff2.bmp Custom Icon #"+(id - 21);
+        }
+    }
+
     
     // TODO Optimization: Put this in a SwingWorker?
     private void loadIcons() {
-        try {
-            var iconSheet = ImageIO.read( PK2FileSystem.getPK2StuffFile());
-            iconSheet = GFXUtils.makeTransparent(iconSheet);
-            
-            for (int i = 0; i < Settings.getMapProfile().getIconNames().length; i++) {
-                var img = iconSheet.getSubimage(1 + (i * 28), 452, 27, 27);
-                
-                iconMap.put(Settings.getMapProfile().getIconNames()[i], img);
-            }
-        } catch (IOException e) {
+
+        BufferedImage sheet1, sheet2;
+
+        try{
+            sheet1 = ImageIO.read( PK2FileSystem.getPK2StuffFile());
+        }
+        catch(Exception e){
             Logger.warn(e, "Unable to load icon image file: {}", PK2FileSystem.getPK2StuffFile());
+            sheet1 = null;
+        }
+
+        try{
+            sheet2 = ImageIO.read( PK2FileSystem.getPK2Stuff2File());
+        }
+        catch(Exception e){
+            Logger.warn(e, "Unable to load icon image file: {}", PK2FileSystem.getPK2StuffFile());
+            sheet2 = null;
+        }
+
+        for (int i = 0; i < ICONS_NUMBER; i++) {
+            BufferedImage img = null;
+
+            try{
+                if(i < 22 && sheet1!=null){
+                    img = sheet1.getSubimage(1 + (i * 28), 452, 27, 27);
+                }
+                else if(sheet2!=null){
+                    img = sheet2.getSubimage(1 + ((i - 22) * 28), 452, 27, 27);
+                }
+            }
+            catch(RasterFormatException e){
+                Logger.warn(e, "Unable to get subimage for icon: "+i);
+            }
+
+            if(img==null){
+                img = SpriteMissing.getMissingTextureImage();
+            }
+            else{
+                img = GFXUtils.makeTransparent(img);
+            }
+
+            iconMap.put(getIconName(i), img);
         }
     }
     
@@ -107,9 +155,9 @@ public class MapMetadataPanel extends JPanel implements PK2MapConsumer, ActionLi
         for(String s: Settings.getMapProfile().getGameModes()){
             cbGameMode.addItem(s);
         }
-        
-        for (var s : Settings.getMapProfile().getIconNames()) {
-            cbIcons.addItem(s);
+
+        for(int i=0;i<ICONS_NUMBER;++i){
+            cbIcons.addItem(getIconName(i));
         }
         
         cbIcons.setRenderer(new MapIconRenderer(iconMap));
@@ -181,9 +229,8 @@ public class MapMetadataPanel extends JPanel implements PK2MapConsumer, ActionLi
         spMapPosY.setValue(level.icon_y);
 
         cbIcons.setSelectedIndex(level.icon_id);
-        cbGameMode.setSelectedIndex(level.game_mode);
-        
-        mapPositionDialog.setMapIcon(iconMap.get(Settings.getMapProfile().getIconNames()[level.icon_id]), new Point(level.icon_x, level.icon_y));
+        cbGameMode.setSelectedIndex(level.game_mode);        
+        mapPositionDialog.setMapIcon(iconMap.get(getIconName(level.icon_id)), new Point(level.icon_x, level.icon_y));
 
         this.canFireChanges = true;
     }
@@ -285,7 +332,7 @@ public class MapMetadataPanel extends JPanel implements PK2MapConsumer, ActionLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mapPositionDialog.updateIconImage(iconMap.get(Settings.getMapProfile().getIconNames()[cbIcons.getSelectedIndex()]));
+        mapPositionDialog.updateIconImage(iconMap.get(getIconName(cbIcons.getSelectedIndex())));
 
         // This is needed for the ChangeListener to be triggered, so the editor can ask the user if they want to save unsaved changes
         fireChanges();

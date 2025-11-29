@@ -45,7 +45,7 @@ public class Settings {
 
     public static LevelTestingSettings levelTestingSettings = new LevelTestingSettings();
     
-    private static LevelProfile mapProfile = LevelProfile.getDefaultProfile();
+    private static LevelProfile levelProfile;
     private static SpriteProfile spriteProfile;
         
     public static boolean highlightSprites = true;
@@ -148,6 +148,17 @@ public class Settings {
             Logger.warn(e, "Unable to load the sprite profile file.");
             spriteProfile = new SpriteProfile();
         }
+
+        //Load level profile
+        try{
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            levelProfile = mapper.readValue(LevelProfile.class.getResourceAsStream("/profiles/level.yml"), LevelProfile.class);
+        }
+        catch(Exception e){
+            Logger.warn(e, "Unable to load the level profile file.");
+            levelProfile = new LevelProfile();
+        }
+
     }
     
     public static void save(File file) {
@@ -275,7 +286,7 @@ public class Settings {
     }
     
     public static LevelProfile getMapProfile() {
-        return mapProfile;
+        return levelProfile;
     }
     
     public static String getDefaultAuthor() {
@@ -303,7 +314,7 @@ public class Settings {
     }
     
     public void setMapProfile(LevelProfile mProfile) {
-        mapProfile = mProfile;
+        levelProfile = mProfile;
     }
     
     public static SpriteProfile getSpriteProfile() {
