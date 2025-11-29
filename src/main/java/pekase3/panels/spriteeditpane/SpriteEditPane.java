@@ -17,6 +17,8 @@ import pk2.profile.SpriteProfile;
 import pk2.sprite.PK2Sprite;
 import pk2.util.GFXUtils;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,8 +90,14 @@ public class SpriteEditPane extends JTabbedPane {
     
     public void setSprite(PK2Sprite sprite) {
         unsavedChangesListener.setIgnoreChanges(true);
-        
-        sprite.setFramesList(GFXUtils.cutFrames(sprite.getImage(), sprite.getFramesAmount(), sprite.getFrameX(), sprite.getFrameY(), sprite.getFrameWidth(), sprite.getFrameHeight()));
+
+        try{
+            sprite.setFramesList(GFXUtils.cutFrames(sprite.getImage(), sprite.getFramesAmount(), sprite.getFrameX(), sprite.getFrameY(), sprite.getFrameWidth(), sprite.getFrameHeight()));
+        }
+        catch(RasterFormatException e){
+            JOptionPane.showMessageDialog(this, "Your sprite could be badly cropped!","Cannot cut sprite frames!", JOptionPane.WARNING_MESSAGE);
+            sprite.setFramesList(new ArrayList<BufferedImage>());
+        }
         
         model.setSprite(sprite);
         for(PekaSE2Panel p: panels){
