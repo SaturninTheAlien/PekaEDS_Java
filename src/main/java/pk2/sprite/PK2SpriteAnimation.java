@@ -9,11 +9,18 @@ public final class PK2SpriteAnimation {
     
     private int frames; // amount of frames
     private boolean loop; // whether the animation loops or not
+    private int intro;
+
     
-    public PK2SpriteAnimation(byte[] sequence, int frames, boolean loop) {
+    public PK2SpriteAnimation(byte[] sequence, int frames, boolean loop, int intro) {
         this.sequence = sequence;
         this.frames = frames;
         this.loop = loop;
+        this.intro = intro;
+    }
+
+    public PK2SpriteAnimation(byte[] sequence, int frames, boolean loop){
+        this(sequence, frames, loop, 0);
     }
     
     public PK2SpriteAnimation() {
@@ -46,5 +53,13 @@ public final class PK2SpriteAnimation {
     
     public void setLoop(boolean loop) {
         this.loop = loop;
+    }
+
+    public int getIntro(){
+        return this.intro;
+    }
+
+    public void setIntro(int intro){
+        this.intro = intro;
     }
 }

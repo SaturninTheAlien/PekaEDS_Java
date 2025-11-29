@@ -14,6 +14,7 @@ public class AnimationManager extends AbstractAction {
     private FrameImagePanel imagePanel;
     private byte[] frameSequence;
     private boolean loop;
+    private int intro;
     
     private int frameRate;
     
@@ -36,10 +37,11 @@ public class AnimationManager extends AbstractAction {
         this.frameRate = frameRate;
     }
     
-    public void play(List<BufferedImage> frames, byte[] frameSequence, boolean loop, int framesAmount) {
+    public void play(List<BufferedImage> frames, byte[] frameSequence, boolean loop, int intro, int framesAmount) {
         this.framesList = frames;
         this.frameSequence = frameSequence;
         this.loop = loop;
+        this.intro = intro;
         this.framesAmount = framesAmount;
         
         frameTimer = 0;
@@ -73,7 +75,7 @@ public class AnimationManager extends AbstractAction {
                 currentIndex++;
             } else { // If not loop or stop the timer
                 if (loop) {
-                    currentIndex = 0;
+                    currentIndex = this.intro;
                 } else {
                     timer.stop();
                 }

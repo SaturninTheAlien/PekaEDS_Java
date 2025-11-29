@@ -207,11 +207,17 @@ class SpriteReaderJson implements SpriteReader {
         JSONArray jsonArray = json.getJSONArray("sequence");
         boolean loop = json.getBoolean("loop");
         
+        int intro = 0;
+        if(json.has("intro")){
+            intro = json.getInt("intro");
+        }
+
+        
         byte[] sequence = new byte[jsonArray.length()];                
         for (int i = 0; i < jsonArray.length(); ++i) {
             sequence[i] = (byte) jsonArray.getInt(i);
         }        
-        return new PK2SpriteAnimation(sequence, sequence.length, loop);
+        return new PK2SpriteAnimation(sequence, sequence.length, loop, intro);
     }
     
 }

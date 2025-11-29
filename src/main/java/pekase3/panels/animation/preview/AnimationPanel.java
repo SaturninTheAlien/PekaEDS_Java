@@ -17,7 +17,8 @@ import java.util.List;
 
 public final class AnimationPanel extends JPanel {
     private JCheckBox cbLoop;
-    
+    private JSpinner spIntro;
+
     private List<AnimationContainer> containers;
     
     private AnimationsEditModel editModel;
@@ -49,6 +50,7 @@ public final class AnimationPanel extends JPanel {
     
     private void setup() {
         cbLoop = new JCheckBox("Loop");
+        spIntro = new JSpinner(new SpinnerNumberModel(0, 0, 10, 1));
         
         setLayout(new MigLayout());
         
@@ -88,6 +90,7 @@ public final class AnimationPanel extends JPanel {
         var pnlPreview = new JPanel();
         pnlPreview.setLayout(new MigLayout("flowy"));
         pnlPreview.add(cbLoop);
+        pnlPreview.add(spIntro);
         pnlPreview.add(animationPreview);
         pnlPreview.add(btnPlay);
         pnlPreview.add(btnStop);
@@ -107,6 +110,11 @@ public final class AnimationPanel extends JPanel {
     }
     
     private void addListeners() {
+
+        cbLoop.addActionListener( e->{
+            spIntro.setEnabled(cbLoop.isSelected());
+        });
+
         btnCopy.addActionListener(e -> {
             editModel.setAnimationFrames(getAnimationFrames());
         });
@@ -132,9 +140,8 @@ public final class AnimationPanel extends JPanel {
                 
                 animationPreview.setImage(null);
             }
-        });
-        
-        btnPlay.addActionListener(e -> animationManager.play(sprite.getFramesList(), getAnimationFrames(), cbLoop.isSelected(), getFramesAmount()));
+        });        
+        btnPlay.addActionListener(e -> animationManager.play(sprite.getFramesList(), getAnimationFrames(), this.loop(), this.getIntro(), getFramesAmount()));
         btnStop.addActionListener(e -> animationManager.stop());
     }
     
@@ -158,6 +165,8 @@ public final class AnimationPanel extends JPanel {
            var animation = sprite.getAnimationsList().get(animationIndex);
            
            cbLoop.setSelected(animation.loop());
+           spIntro.setValue(animation.getIntro());
+           spIntro.setEnabled(animation.loop());
            
            AnimationContainer.setFramesList(sprite.getFramesList());
            
@@ -204,6 +213,7 @@ public final class AnimationPanel extends JPanel {
     
     public void reset() {
         cbLoop.setSelected(false);
+        spIntro.setValue(0);
         
         animationPreview.setImage(null);
         
@@ -237,6 +247,15 @@ public final class AnimationPanel extends JPanel {
     
     public boolean loop() {
         return cbLoop.isSelected();
+    }
+
+    public int getIntro(){
+        int intro = ((Number) spIntro.getValue()).intValue();
+        if(intro >= this.getFramesAmount()){
+            intro = 0;
+        }
+
+        return intro;
     }
     
     public void setUnsavedChangesListener(UnsavedChangesListener listener) {

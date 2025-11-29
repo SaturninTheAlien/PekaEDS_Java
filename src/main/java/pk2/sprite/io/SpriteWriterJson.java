@@ -209,6 +209,7 @@ class SpriteWriterJson {
         
         json.put(name, new JSONObject()
                 .put("loop", animation.loop())
-                .put("sequence", sequence));
+                .put("sequence", sequence)
+                .put("intro", animation.getIntro()));
     }
 }
