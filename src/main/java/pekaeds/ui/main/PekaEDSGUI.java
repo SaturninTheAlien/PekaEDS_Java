@@ -11,7 +11,6 @@ import java.time.LocalTime;
 
 import org.tinylog.Logger;
 
-import pekaeds.data.EditorConstants;
 import pekaeds.data.Layer;
 import pekaeds.data.PekaEDSVersion;
 import pekaeds.tool.*;
@@ -44,7 +43,8 @@ import pk2.settings.StartupBehavior;
 import pk2.util.LevelTestingUtil;
 
 public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
-    //private ChangeEvent changeEvent = new ChangeEvent(this);
+
+    private static final String LAST_SESSION_FILE = "last.session";
 
     private PekaEDSGUIView view;
     private PekaEDSGUIModel model;
@@ -112,7 +112,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     }
 
     private void handleStartup() {
-        var fLastSession = FHSHelper.getPrefPath(EditorConstants.LAST_SESSION_FILE);
+        var fLastSession = FHSHelper.getPrefPath(LAST_SESSION_FILE);
         if (fLastSession.exists()) {
             try {
                 Logger.info("Trying to load last.session...");
@@ -505,7 +505,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
      * This method gets called when the whole application shuts down.
      */
     public void close() {
-        session.save(FHSHelper.getPrefPath(EditorConstants.LAST_SESSION_FILE));
+        session.save(FHSHelper.getPrefPath(LAST_SESSION_FILE));
 
         System.exit(0);
     }
