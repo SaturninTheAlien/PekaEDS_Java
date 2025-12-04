@@ -230,7 +230,9 @@ public class PK2LevelSector {
 
     public boolean checkBrokenSlope(int posX, int posY){
 
-        if(this.getFGTileType(posX, posY)==TileProfile.Type.SOLID){
+        TileProfile.Type type = this.getFGTileType(posX, posY);
+
+        if(type==TileProfile.Type.SOLID){
 
             if(this.getFGTileType(posX + 1, posY) == TileProfile.Type.SLOPE_LEFT){
 
@@ -246,7 +248,7 @@ public class PK2LevelSector {
 
         }
 
-        return false;
+        return type==TileProfile.Type.SKULL_BG;
     }
 
     public void removeSprite(int id) {

@@ -13,7 +13,8 @@ public class TileProfile {
         BARRIER_DOWN,
         WATER,
         FIRE,
-        SWITCH
+        SWITCH,
+        SKULL_BG
     }
 
 
@@ -47,6 +48,8 @@ public class TileProfile {
         types[146] = Type.SWITCH;
         types[147] = Type.SWITCH;
         types[40] = Type.BARRIER_DOWN;
+
+        types[49] = Type.SKULL_BG;
 
         try{
             Raster raster = tilesetImage.getRaster();
