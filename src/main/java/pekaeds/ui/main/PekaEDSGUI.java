@@ -8,6 +8,8 @@ import java.io.*;
 
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.tinylog.Logger;
 
@@ -17,6 +19,8 @@ import pekaeds.tool.*;
 import pekaeds.tool.tools.*;
 import pekaeds.ui.actions.*;
 import pekaeds.ui.listeners.MainUIWindowListener;
+import pekaeds.ui.listeners.PK2MapConsumer;
+import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.RepaintListener;
 import pekaeds.ui.mapmetadatapanel.MapMetadataPanel;
 import pekaeds.ui.sector.SectorMetadataPanel;
@@ -47,8 +51,6 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     private static final String LAST_SESSION_FILE = "last.session";
 
     private PekaEDSGUIView view;
-    private PekaEDSGUIModel model;
-
     private TilesetPanel tilesetPanel;
     private MapPanel mapPanel;
 
@@ -73,6 +75,13 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
 
     protected final Session session = new Session();
 
+
+    private PK2Level currentLevel;
+    private File currentFile = null;    
+    private final List<PK2MapConsumer> mapConsumers = new ArrayList<>();
+    private final List<PK2SectorConsumer> sectorConsumers = new ArrayList<>();
+    private final List<RepaintListener> repaintListeners = new ArrayList<>();
+
     public PekaEDSGUI() {
         showEditor();
     }
@@ -83,12 +92,10 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         registerTools();
 
         view = new PekaEDSGUIView(this);
-        model = new PekaEDSGUIModel();
 
         setupComponents();
         registerMapConsumers();
         registerRepaintListeners();
-        registerPropertyListeners();
 
         Tool.setToolModeListener(mainToolBar);
 
@@ -101,7 +108,7 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         mapPanel.setLeftMouseTool(new BrushTool());
         mapPanel.setRightMouseTool(new SelectionTool());
 
-        autosaveManager = new AutoSaveManager(this, model.getCurrentMapFile());
+        autosaveManager = new AutoSaveManager(this, this.currentFile);
         autosaveManager.start();
 
         setSelectedTool(Tools.getTool(BrushTool.class));
@@ -192,11 +199,11 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     }
 
     private void registerMapConsumers() {
-        model.addMapConsumer(spritesPanel);
-        model.addMapConsumer(mapMetadataPanel);
-        model.addMapConsumer(mapPanel);
-        model.addMapConsumer(sectorMetadataPanel);
-        model.addMapConsumer(sectorListPanel);
+        this.mapConsumers.add(spritesPanel);
+        this.mapConsumers.add(mapMetadataPanel);
+        this.mapConsumers.add(mapPanel);
+        this.mapConsumers.add(sectorMetadataPanel);
+        this.mapConsumers.add(sectorListPanel);
 
         sectorListPanel.addSectorConsumer(sectorMetadataPanel);
         sectorListPanel.addSectorConsumer(miniMapPanel);
@@ -205,12 +212,12 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         sectorListPanel.addSectorConsumer(spritesPanel);
         sectorListPanel.addSectorConsumer(resizeDialog);
 
-        model.addSectorConsumer(resizeDialog);
+        this.sectorConsumers.add(resizeDialog);
     }
 
     private void registerRepaintListeners() {
-        model.addRepaintListener(mapPanel);
-        model.addRepaintListener(tilesetPanel);
+        this.repaintListeners.add(mapPanel);
+        this.repaintListeners.add(tilesetPanel);
     }
 
     private void registerChangeListeners() {
@@ -243,12 +250,8 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         mapPanel.setResizingSector(false);
     }
 
-    private void registerPropertyListeners() {
-        model.addPropertyChangeListener(mainToolBar);
-    }
-
     public void updateRepaintListeners() {
-        model.getRepaintListeners().forEach(RepaintListener::doRepaint);
+        this.repaintListeners.forEach(RepaintListener::doRepaint);
     }
 
     private void registerTools() {
@@ -261,29 +264,44 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         Tools.addTool(CutTool.class);
     }
 
-    /*
-     * Map related methods
-     */
-    public void loadMap(PK2Level map, File mapFile) {
-        model.setCurrentMapFile(mapFile);
-
-        if (mapFile != null) {
-            session.putFile(mapFile);;
+    public void setCurrentFile(File file){       
+        this.currentFile = file;
+        autosaveManager.setFile(file);
+        if(file!=null){
+            session.putFile(file);
             setupOpenRecentMenu();
+            PK2FileSystem.setEpisodeDir(file.getParentFile());
         }
+    }
 
-        PK2LevelUtils.loadLevelAssets(map);
+
+    public void setCurrentSector(PK2LevelSector sector){
+        Tool.setSector(sector);
+        for (var m : this.sectorConsumers) {
+            m.setSector(sector);
+        }
+    }
+
+    public void setCurrentLevel(PK2Level level){
+
+        this.currentLevel = level;
+
+        PK2LevelUtils.loadLevelAssets(level);
 
         Tool.reset();
         setSelectedTool(Tools.getTool(BrushTool.class));
 
-        model.setCurrentMap(map);
 
-        updateMapHolders();
-        updateSectorHolders(map.sectors.get(0));
+        Tool.setLevel(this.currentLevel);
+        for (var m : this.mapConsumers) {
+            m.setMap(this.currentLevel);
+        }
 
+        this.setCurrentSector(level.sectors.get(0));
+
+        tilesetPanel.resetSelection();
         sectorListPanel.setSelectedSector(0);
-        mapPanel.setSelectedLayer(Layer.BOTH);
+        //mapPanel.setSelectedLayer(Layer.BOTH);
 
         mapPanel.resetView();
 
@@ -293,7 +311,8 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     public void loadMap(File file) {
         try {
             PK2Level level = PK2LevelIO.loadLevel(file);
-            loadMap(level, file);
+            this.setCurrentFile(file);
+            this.setCurrentLevel(level);
 
             unsavedChanges = false;
         } catch (Exception e) {
@@ -315,21 +334,18 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
 
     public void saveLevel() {
         // If the file has not been saved yet, ask the user to give it a name and location
-        if (model.getCurrentMapFile() == null) {
+        if (this.currentFile == null) {
             var fc = new JFileChooser(PK2FileSystem.getAssetsPath(PK2FileSystem.EPISODES_DIR));
-            fc.setDialogTitle("Save map...");
+            fc.setDialogTitle("Save level...");
 
             if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 var file = fc.getSelectedFile();
-
-                if (!file.getName().endsWith(".map")) file = new File(file.getPath() + ".map");
-
-                model.setCurrentMapFile(file);
-                autosaveManager.setFile(model.getCurrentMapFile());
+                this.saveLevel(file);       
             }
         }
-
-        saveLevel(model.getCurrentMapFile());
+        else{
+            this.saveLevel(this.currentFile);
+        }
     }
 
     public void saveLevel(File file) {
@@ -341,13 +357,9 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
             try {
                 if (!file.getName().endsWith(".map")) file = new File(file.getAbsolutePath() + ".map");
 
-                PK2LevelIO.saveLevel(model.getCurrentLevel(), file);
+                PK2LevelIO.saveLevel(this.currentLevel, file);
+                this.setCurrentFile(file);
                 unsavedChanges = false;
-
-                model.setCurrentMapFile(file);
-                session.putFile(file);
-                setupOpenRecentMenu();
-
 
             } catch (Exception e) {
                 Logger.error(e);
@@ -365,56 +377,9 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         setSelectedTool(Tools.getTool(BrushTool.class));
 
         PK2Level level = PK2LevelUtils.createDefaultLevel();
-        loadMap(level, null);
-
-        model.setCurrentMapFile(null);
-        autosaveManager.setFile(null);
+        this.setCurrentFile(null);
+        this.setCurrentLevel(level);
         unsavedChanges = false;
-
-        tilesetPanel.resetSelection();
-
-        sectorListPanel.setSelectedSector(0);
-
-        mapPanel.resetView();
-
-        /*if (episodeManager.hasEpisodeLoaded()) {
-            var jopAddToEpisode = JOptionPane.showConfirmDialog(null, "Add file to episode \"" + episodeManager.getEpisode().getEpisodeName() + "\"?", "Add to episode?", JOptionPane.YES_NO_OPTION);
-
-            if (jopAddToEpisode == JOptionPane.YES_OPTION) {
-                var fc = new JFileChooser(episodeManager.getEpisode().getEpisodeFolder());
-                fc.setFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getName().endsWith(".map");
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return "Pekka Kana 2 map file (*.map)";
-                    }
-                }); // TODO Create PK2MapFilterFilter?
-
-                // TODO Create a PK2MapFileChooser?
-                fc.setDialogTitle("Save map file as...");
-
-                if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    var selectedFile = fc.getSelectedFile();
-
-                    if (!selectedFile.getName().endsWith(".map")) {
-                        selectedFile = new File(selectedFile.getAbsolutePath() + ".map");
-                    }
-
-                    episodeManager.addFileToEpisode(selectedFile);
-
-                    model.setCurrentMapFile(selectedFile);
-
-
-                    saveLevel(selectedFile);
-                } else {
-                    JOptionPane.showMessageDialog(null, "File has not been added to episode.", "Not added to episode", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        }*/
     }
 
     public void setLayer(int layer) {
@@ -479,20 +444,6 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         ShortcutUtils.install(mapPanel, Shortcuts.TOOL_FLOOD_FILL, new SetSelectedToolAction(this, Tools.getTool(FloodFillTool.class)));
     }
 
-    private void updateMapHolders() {
-        Tool.setLevel(model.getCurrentLevel());
-        for (var m : model.getMapConsumers()) {
-            m.setMap(model.getCurrentLevel());
-        }
-    }
-
-    private void updateSectorHolders(PK2LevelSector sector) {
-        Tool.setSector(sector);
-        for (var m : model.getSectorConsumers()) {
-            m.setSector(sector);
-        }
-    }
-
     public void repaintView() {
         mapPanel.repaint();
     }
@@ -511,12 +462,9 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     }
 
     public File getCurrentFile() {
-        return model.getCurrentMapFile();
+        return this.currentFile;
     }
 
-    public void setCurrentFile(File file) {
-        model.setCurrentMapFile(file);
-    }
 
     private void updateFrameTitle() {
         var sb = new StringBuilder();
@@ -526,11 +474,11 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
             sb.append(" - ");
         }*/
 
-        if (model.getCurrentMapFile() != null) {
+        if (this.currentFile != null) {
 
             //TODO
             
-            sb.append(model.getCurrentMapFile().getParentFile().getName()).append(File.separator).append(model.getCurrentMapFile().getName());
+            sb.append(this.currentFile.getParentFile().getName()).append(File.separator).append(this.currentFile.getName());
         } else {
             sb.append("Unnamed");
         }

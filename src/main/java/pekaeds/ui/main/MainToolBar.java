@@ -11,10 +11,8 @@ import pekaeds.ui.actions.PlayLevelAction;
 import pk2.settings.Settings;
 
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-public class MainToolBar extends JToolBar implements PropertyChangeListener, ToolModeListener {
+public class MainToolBar extends JToolBar implements  ToolModeListener {
     private JButton btnNew;
     private JButton btnOpen;
     private JButton btnSave;
@@ -164,14 +162,14 @@ public class MainToolBar extends JToolBar implements PropertyChangeListener, Too
     }
     
     // TODO Delete this
-    @Override
+    /*@Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getSource() instanceof PekaEDSGUIModel) {
             if (evt.getPropertyName().equals("currentMode")) {
                 cbToolMode.setSelectedIndex((int) evt.getNewValue());
             }
         }
-    }
+    }*/
     
     public void setToolMode(int mode) {
         cbToolMode.setSelectedIndex(mode);
