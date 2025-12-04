@@ -3,6 +3,7 @@ package pekaep.episode;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -160,6 +161,35 @@ public class PK2Episode {
         return false;
     }
 
+    private String getLuaSpriteName(String luaCode, int index){
+
+        int state = 0;
+        int beginning = 0;
+        while (index < luaCode.length()) {
+
+            char c = luaCode.charAt(index);
+
+            switch (state) {
+                case 0:
+                    if(c=='\"' || c=='\''){
+                        state=1;
+                        beginning = index + 1;
+                    }
+                    break;
+                case 1:
+                    if(c=='\"' || c=='\''){
+                        return luaCode.substring(beginning, index);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            ++index;
+        }
+
+        throw new RuntimeException("Lua parsing error");
+    }
+
     private void listLuaDir(File dir){
         File[] luaFiles = dir.listFiles(new FileFilter() {
             @Override
@@ -169,17 +199,31 @@ public class PK2Episode {
         });
 
         for(File luaFile: luaFiles){
-            this.addLuaAsset(luaFile);   
+
+            PK2EpisodeAsset luaAsset = this.addLuaAsset(luaFile);
+            try {
+                String luaSource = Files.readString(luaFile.toPath());
+
+                int index = 0;
+                while ((index = luaSource.indexOf(".loadSpritePrototype", index)) != -1) {
+                    index += 20;
+                    this.findSprite(this.getLuaSpriteName(luaSource, index), luaAsset);
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void addLuaAsset(File luaFile){
+    private PK2EpisodeAsset addLuaAsset(File luaFile){
         PK2EpisodeAsset asset = new PK2EpisodeAsset(luaFile.getName(),PK2EpisodeAsset.Type.LUA);
         asset.file = luaFile;
         for(PK2EpisodeAsset asset2: this.assetList){
-            if(asset2.equals(asset))return;
+            if(asset2.equals(asset))return asset2;
         }
         this.assetList.add(asset);
+        return asset;
     }
 
     public void sortAssets(){
