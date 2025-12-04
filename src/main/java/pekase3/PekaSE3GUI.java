@@ -279,7 +279,24 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
             if (loadedFile != null) fc.setSelectedFile(loadedFile);
             
             if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                saveSprite(fc.getSelectedFile());
+                File selectedFile = fc.getSelectedFile();
+                if(selectedFile.exists() && selectedFile.isFile()){
+
+                    int overwrite = JOptionPane.showConfirmDialog(
+                        PekaSE3GUI.this,
+                        "The file already exists.\nDo you want to replace it?",
+                        "Overwrite File?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                    );
+
+                    if(overwrite == JOptionPane.YES_OPTION){
+                        saveSprite(selectedFile);
+                    }
+                }
+                else{
+                    saveSprite(selectedFile);
+                }
             }
         });
         

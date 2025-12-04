@@ -8,6 +8,7 @@ import pekaeds.ui.actions.NewLevelAction;
 import pekaeds.ui.actions.OpenFolderAction;
 import pekaeds.ui.actions.OpenLevelAction;
 import pekaeds.ui.actions.SaveLevelAction;
+import pekaeds.ui.filefilters.PK2MapFileFilter;
 import pekaeds.ui.listeners.MainUIWindowListener;
 import pekaeds.ui.mappanel.MapPanelView;
 import pekaeds.ui.settings.SettingsDialog;
@@ -16,7 +17,6 @@ import pk2.filesystem.PK2FileSystem;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -305,22 +305,28 @@ public class PekaEDSGUIView {
             var fc = new JFileChooser("Save as...");
             if (edsUI.getCurrentFile() != null) fc.setCurrentDirectory(edsUI.getCurrentFile().getParentFile());
 
-            fc.setFileFilter(new FileFilter() {
-                @Override
-                public boolean accept(File f) {
-                    return f.isDirectory() || f.getName().toLowerCase().endsWith(".map");
-                }
-
-                @Override
-                public String getDescription() {
-                    return "Pekka Kana 2 map file (*.map)";
-                }
-            });
+            fc.setFileFilter(new PK2MapFileFilter());
 
             if (fc.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
-                edsUI.setCurrentFile(fc.getSelectedFile());
 
-                edsUI.saveLevel();
+                File selectedFile = fc.getSelectedFile();
+                if(selectedFile.exists() && selectedFile.isFile()){
+
+                    int overwrite = JOptionPane.showConfirmDialog(
+                        frame,
+                        "The file already exists.\nDo you want to replace it?",
+                        "Overwrite File?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                    );
+
+                    if(overwrite == JOptionPane.YES_OPTION){
+                        edsUI.saveLevel(selectedFile);
+                    }
+                }
+                else{
+                    edsUI.saveLevel(selectedFile);
+                }
             }
         });
 
