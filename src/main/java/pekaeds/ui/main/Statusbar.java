@@ -22,7 +22,7 @@ public class Statusbar extends JPanel implements ChangeListener {
     private JLabel lblSpriteVal;
     private JLabel lblSpriteFilename;
     
-    private JLabel lblSpritesPlacedVal;
+    //private JLabel lblSpritesPlacedVal;
     
     private JLabel lblLastSavedVal;
     
@@ -59,15 +59,15 @@ public class Statusbar extends JPanel implements ChangeListener {
         
         lblSpriteFilename = new JLabel("(none)");
         
-        var lblSpritesPlaced = new JLabel("Sprites placed: ");
-        lblSpritesPlacedVal = new JLabel("0");
+        /*var lblSpritesPlaced = new JLabel("Sprites placed: ");
+        lblSpritesPlacedVal = new JLabel("0");*/
         
         var lblLastSaved = new JLabel("Last saved:");
         lblLastSavedVal = new JLabel("Not yet");
 
         setLayout(new MigLayout());
-        add(lblSpritesPlaced);
-        add(lblSpritesPlacedVal);
+        //add(lblSpritesPlaced);
+        //add(lblSpritesPlacedVal);
         
         add(new JSeparator());
         add(lblMouseX);

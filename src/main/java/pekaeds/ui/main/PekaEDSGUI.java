@@ -18,6 +18,7 @@ import pekaeds.data.PekaEDSVersion;
 import pekaeds.tool.*;
 import pekaeds.tool.tools.*;
 import pekaeds.ui.actions.*;
+import pekaeds.ui.decorator.DecoratorDialog;
 import pekaeds.ui.listeners.MainUIWindowListener;
 import pekaeds.ui.listeners.PK2MapConsumer;
 import pekaeds.ui.listeners.PK2SectorConsumer;
@@ -25,6 +26,7 @@ import pekaeds.ui.listeners.RepaintListener;
 import pekaeds.ui.mapmetadatapanel.MapMetadataPanel;
 import pekaeds.ui.sector.SectorMetadataPanel;
 import pekaeds.ui.sector.SectorResizeDialog;
+import pekaeds.ui.sector.SectorStatisticsDialog;
 import pekaeds.ui.mappanel.MapPanel;
 import pekaeds.ui.minimappanel.MiniMapPanel;
 import pekaeds.ui.misc.UnsavedChangesDialog;
@@ -72,6 +74,9 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
     private AutoSaveManager autosaveManager;
 
     private SectorResizeDialog resizeDialog;
+
+    protected SectorStatisticsDialog statisticsDialog;
+    protected DecoratorDialog decoratorDialog;
 
     protected final Session session = new Session();
 
@@ -196,6 +201,8 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         miniMapPanel.setMapPanel(mapPanel);
 
         resizeDialog = new SectorResizeDialog(this);
+        statisticsDialog = new SectorStatisticsDialog();
+        decoratorDialog = new DecoratorDialog(this);
     }
 
     private void registerMapConsumers() {
@@ -211,6 +218,8 @@ public class PekaEDSGUI implements ChangeListener, IPekaEdsApp {
         sectorListPanel.addSectorConsumer(tilesetPanel);
         sectorListPanel.addSectorConsumer(spritesPanel);
         sectorListPanel.addSectorConsumer(resizeDialog);
+        sectorListPanel.addSectorConsumer(statisticsDialog);
+        sectorListPanel.addSectorConsumer(decoratorDialog);
 
         this.sectorConsumers.add(resizeDialog);
     }

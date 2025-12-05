@@ -53,6 +53,8 @@ public class PekaEDSGUIView {
     private JMenu mOther;
     private JMenuItem mOtherSettings;
     private JMenuItem mOtherAbout;
+    private JMenuItem mOtherStatistics;
+    private JMenuItem mOtherDecorators;
 
 
     private JMenu mOpenRecent;
@@ -200,8 +202,13 @@ public class PekaEDSGUIView {
             JOptionPane.showMessageDialog(frame, PekaEDSVersion.VERSION_STRING + "\nhttps://github.com/SaturninTheAlien/PekaEDS_Java", "PekaEDS", JOptionPane.INFORMATION_MESSAGE);
         });
 
+        mOtherStatistics = new JMenuItem("Statistics");
+        mOtherDecorators = new JMenuItem("Decorators");
+
         mOther.add(mOtherSettings);
         mOther.add(mOtherAbout);
+        mOther.add(mOtherStatistics);
+        mOther.add(mOtherDecorators);
 
         JMenu mFolders = new JMenu("Folders");
         mfBase = new JMenuItem("Base");
@@ -336,6 +343,26 @@ public class PekaEDSGUIView {
             }
 
             settingsDialog.setVisible(true);
+        });
+
+        mOtherStatistics.addActionListener(e->{
+            edsUI.statisticsDialog.calculate();
+            edsUI.statisticsDialog.setVisible(true);
+        });
+
+
+        mOtherDecorators.addActionListener(e->{
+            int confirmed = JOptionPane.showConfirmDialog(
+                frame,
+                "Decorators are experimental features that may destroy your level.\n" +
+                "Are you sure you want to continue?",
+                "Experimental feature!",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+            if(confirmed == JOptionPane.YES_OPTION){
+                edsUI.decoratorDialog.setVisible(true);
+            }
         });
 
         mFileExit.addActionListener(e -> System.exit(0));
