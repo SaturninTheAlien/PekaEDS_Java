@@ -69,7 +69,7 @@ class SpriteReaderJson implements SpriteReader {
         sprite.setKey(json.getBoolean("can_open_locks"));
         sprite.setSwim(json.getBoolean("can_swim"));
         
-        sprite.setAttackPause(json.getInt("charge_time"));
+        sprite.setAttackPause(json.getInt("projectile_charge_time"));
         
         sprite.setTileCheck(json.getBoolean("check_tiles"));
         
@@ -130,7 +130,7 @@ class SpriteReaderJson implements SpriteReader {
         sprite.setName(json.getString("name"));
         sprite.setImageFile(json.getString("picture"));
         
-        sprite.setLoadTime(json.getInt("projectile_charge_time"));
+        sprite.setLoadTime(json.getInt("charge_time"));
         sprite.setRandomSoundFrequency(json.getBoolean("random_sound_frequency"));
         
         sprite.setScore(json.getInt("score"));

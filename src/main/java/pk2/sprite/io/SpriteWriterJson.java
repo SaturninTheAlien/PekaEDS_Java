@@ -64,7 +64,7 @@ class SpriteWriterJson {
         json.put("can_open_locks", sprite.isKey());
         json.put("can_swim", sprite.canSwim());
         
-        json.put("charge_time", sprite.getAttackPause());
+        json.put("charge_time", sprite.getLoadTime());
         
         json.put("check_tiles", sprite.isTileCheck());
         
@@ -117,7 +117,7 @@ class SpriteWriterJson {
         
         json.put("picture", sprite.getImageFile());
         
-        json.put("projectile_charge_time", sprite.getLoadTime());
+        json.put("projectile_charge_time", sprite.getAttackPause());
         
         json.put("random_sound_frequency", sprite.isRandomSoundFrequency());
         

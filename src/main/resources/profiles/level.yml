@@ -35,6 +35,8 @@ weatherTypes:
 gameModes:
 - "classic"
 - "kill all enemies"
+- "carry chick to exit"
+- "lua-driven exit"
 fireColors:
   0: "Gray"
   32: "Blue"
