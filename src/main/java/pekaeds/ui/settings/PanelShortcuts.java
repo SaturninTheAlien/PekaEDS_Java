@@ -39,6 +39,8 @@ public class PanelShortcuts extends JPanel implements ISettingsPanel {
         
         addShortcutEntry("Brush tool", Shortcuts.TOOL_BRUSH);
         addShortcutEntry("Eraser tool", Shortcuts.TOOL_ERASER);
+        addShortcutEntry("Area eraser tool", Shortcuts.TOOL_AREA_ERASER);
+
         addShortcutEntry("Line tool", Shortcuts.TOOL_LINE);
         addShortcutEntry("Rectangle tool", Shortcuts.TOOL_RECT);
         addShortcutEntry("Cut tool", Shortcuts.TOOL_CUT);

@@ -91,6 +91,7 @@ public class Settings {
         
         keyboardShortcuts.put(Shortcuts.TOOL_BRUSH, KeyStroke.getKeyStroke(KeyEvent.VK_W, 0));
         keyboardShortcuts.put(Shortcuts.TOOL_ERASER, KeyStroke.getKeyStroke(KeyEvent.VK_E, 0));
+        keyboardShortcuts.put(Shortcuts.TOOL_AREA_ERASER, KeyStroke.getKeyStroke(KeyEvent.VK_A, 0));
         keyboardShortcuts.put(Shortcuts.TOOL_LINE, KeyStroke.getKeyStroke(KeyEvent.VK_R, 0));
         keyboardShortcuts.put(Shortcuts.TOOL_RECT, KeyStroke.getKeyStroke(KeyEvent.VK_T, 0));
         keyboardShortcuts.put(Shortcuts.TOOL_CUT, KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0));
@@ -123,6 +124,7 @@ public class Settings {
             autosaveFileCount = dis.readInt();
 
            
+            resetKeyboardShortcuts();
             int shortcutAmount = dis.readInt();
             for (int i = 0; i < shortcutAmount; i++) {
                 setKeyboardShortcutFor(dis.readUTF(), KeyStroke.getKeyStroke(dis.readInt(), dis.readInt()));
