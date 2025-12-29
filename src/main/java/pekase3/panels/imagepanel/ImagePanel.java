@@ -16,14 +16,12 @@ import org.tinylog.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ImagePanel extends PekaSE2Panel implements ChangeListener {
+public class ImagePanel extends PekaSE2Panel {
     private static final ImageFilter BMP_IMG_FILTER = new ImageFilter();
     
     private JTextField tfImage;
@@ -64,7 +62,6 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
     
     public void setup() {
         spriteSheetPanel = new SpriteSheetPanel();
-        spriteSheetPanel.getModel().addListener(this);
         
         setLayout(new MigLayout());
         
@@ -407,8 +404,9 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         }
     }
     
-    // It'd be better to create multiple change events/listeners, like FrameDataChangeListener, ModeListener, but I'm to lazy do change it now.
-    @Override
+    //Why does it exist?
+    //It caused GUI BUGS, so I commented it out
+    /*@Override
     public void stateChanged(ChangeEvent e) {
         var frame = spriteSheetPanel.getModel().getCurrentFrameData();
         
@@ -433,5 +431,5 @@ public class ImagePanel extends PekaSE2Panel implements ChangeListener {
         
         // Kinda hacky workaround for something I don't want to deal with right now lol
         spriteSheetPanel.setCursor(Cursor.getDefaultCursor());
-    }
+    }*/
 }

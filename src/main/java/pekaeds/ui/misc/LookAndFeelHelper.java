@@ -66,6 +66,10 @@ public class LookAndFeelHelper {
         return UIManager.getColor("Component.borderColor");
     }
 
+    public static Color getComponentBGColor(){
+        return UIManager.getColor("Component.background");
+    }
+
     public static Color getBGColor(){
         return UIManager.getColor("TextField.background");
     }
