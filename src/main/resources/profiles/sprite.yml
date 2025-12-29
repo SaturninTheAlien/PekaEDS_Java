@@ -175,6 +175,10 @@ aiPatternMap:
  176: Look at the Player
  177: Run Away from Supermode Player
 
+ 178: Follow target X
+ 179: Follow target Y
+ 180: Follow target diagonally
+
  302: Info if Touches Player
  303: Info if Damaged
  304: Info if Dead
