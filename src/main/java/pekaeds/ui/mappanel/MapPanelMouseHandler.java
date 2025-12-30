@@ -143,14 +143,31 @@ public final class MapPanelMouseHandler extends MouseAdapter {
     
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        // mapPanel.getModel().setZoomPosition(e.getPoint());
-        
-        if (e.getPreciseWheelRotation() < 0) {
-            //mapPanel.getModel().setZoomAmount(mapPanel.getModel().getZoomAmount() + 0.01f);
-        } else {
-            //mapPanel.getModel().setZoomAmount(mapPanel.getModel().getZoomAmount() - 0.01f);
+        Rectangle viewport = this.mapPanel.viewport();
+
+        double dy = 32. *e.getPreciseWheelRotation();
+        int dy_i = (int)dy;
+
+        if(dy_i==0){
+            dy_i = e.getPreciseWheelRotation() <= 0 ? -1 : 1;
         }
-        
+
+        if(e.isShiftDown()){
+            int newX = viewport.x + dy_i;
+            if(newX < 0){
+                newX = 0;
+            }
+
+            mapPanel.updateViewportPosition(newX, viewport.y);
+        }
+        else{
+            int newY = viewport.y + dy_i;
+            if(newY < 0){
+                newY = 0;
+            }
+            mapPanel.updateViewportPosition(viewport.x, newY);
+        }
+        e.consume();              
         mapPanel.repaint();
     }
     

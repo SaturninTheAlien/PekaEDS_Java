@@ -94,7 +94,7 @@ public class MiniMapPanel extends JPanel implements
 
     private void setViewportPosition(Point pos) {
         if (pos.x + (viewport.width / 2) >= currentSector.getWidth()) {
-            viewport.x = currentSector.getWidth() - viewport.width; // TODO -1 here too?
+            viewport.x = currentSector.getWidth() - viewport.width + 1;
         } else if (pos.x - (viewport.width / 2) <= 0) {
             viewport.x = 0;
         } else {
@@ -102,7 +102,7 @@ public class MiniMapPanel extends JPanel implements
         }
 
         if (pos.y + (viewport.height / 2) >= currentSector.getHeight()) {
-            viewport.y = currentSector.getHeight() - viewport.height; // -1 to prevent it from going out of bounds
+            viewport.y = currentSector.getHeight() - viewport.height + 1;
         } else if (pos.y - (viewport.height / 2) <= 0) {
             viewport.y = 0;
         } else {
