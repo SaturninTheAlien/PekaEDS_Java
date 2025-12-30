@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import org.tinylog.Logger;
 
@@ -169,19 +170,26 @@ public final class GFXUtils {
         
         sprite.setImage(img);
     }
+
     
+
     public static void loadSpriteImageSheet(PK2Sprite sprite) throws IOException {
+        loadSpriteImageSheet(sprite, PK2FileSystem.findAsset(sprite.getImageFile(), PK2FileSystem.SPRITES_DIR));
+    }
 
-        try {
 
-            File file = PK2FileSystem.findAsset(sprite.getImageFile(), PK2FileSystem.SPRITES_DIR);
-            var spriteImageSheet = ImageIO.read(file);
-            adjustSpriteColor(spriteImageSheet, sprite.getColor());
-            spriteImageSheet = makeTransparent(spriteImageSheet);
-            sprite.setImage(spriteImageSheet);
+    public static void loadSpriteImageSheet(PK2Sprite sprite, File file) throws IOException{
+        var spriteImageSheet = ImageIO.read(file);
+        adjustSpriteColor(spriteImageSheet, sprite.getColor());
+        spriteImageSheet = makeTransparent(spriteImageSheet);
+        sprite.setImage(spriteImageSheet);
+
+        try{
+            sprite.setFramesList(GFXUtils.cutFrames(sprite.getImage(), sprite.getFramesAmount(), sprite.getFrameX(), sprite.getFrameY(), sprite.getFrameWidth(), sprite.getFrameHeight()));
         }
-        catch (IOException e) {
-            Logger.error(e, "Unable to load first frame for sprite. Image file: '" + sprite.getImageFile() + "'");
+        catch(RasterFormatException e){
+            JOptionPane.showMessageDialog(null, "Your sprite could be badly cropped!","Cannot cut sprite frames!", JOptionPane.WARNING_MESSAGE);
+            sprite.setFramesList(new ArrayList<BufferedImage>());
         }
     }
 }

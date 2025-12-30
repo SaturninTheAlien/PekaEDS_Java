@@ -6,8 +6,8 @@ import pekaeds.tool.Tool;
 import pekaeds.ui.listeners.PK2SectorConsumer;
 import pekaeds.ui.listeners.TileChangeListener;
 import pekaeds.ui.mappanel.MapPanel;
-import pekaeds.ui.misc.LookAndFeelHelper;
 import pk2.level.PK2LevelSector;
+import pk2.util.LookAndFeelHelper;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

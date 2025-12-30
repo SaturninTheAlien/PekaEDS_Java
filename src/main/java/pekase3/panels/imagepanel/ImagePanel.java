@@ -4,6 +4,7 @@ import net.miginfocom.swing.MigLayout;
 import pekase3.filefilters.ImageFilter;
 import pekase3.listener.UnsavedChangesListener;
 import pekase3.panels.PekaSE2Panel;
+import pekase3.panels.animation.AnimationsEditPanel;
 import pekase3.panels.imagepanel.spritesheetpanel.SpriteSheetPanel;
 import pekase3.panels.imagepanel.spritesheetpanel.FrameEditMode.*;
 import pekase3.panels.spriteeditpane.SpriteEditPaneModel;
@@ -14,7 +15,6 @@ import pk2.util.GFXUtils;
 
 import org.tinylog.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -54,9 +54,13 @@ public class ImagePanel extends PekaSE2Panel {
     private JToggleButton lastSelectedButton;
 
     private SpriteProfile profile;
+    private PK2Sprite sprite;
+
+    private final AnimationsEditPanel animationPanel;
     
-    public ImagePanel(SpriteEditPaneModel spriteModel) {
-        this.spriteEditModel = spriteModel;        
+    public ImagePanel(SpriteEditPaneModel spriteModel, AnimationsEditPanel animationPanel) {
+        this.spriteEditModel = spriteModel;
+        this.animationPanel = animationPanel;
         setup();
     }
     
@@ -286,7 +290,8 @@ public class ImagePanel extends PekaSE2Panel {
     }
     
     @Override
-    public void setSprite(PK2Sprite sprite) {       
+    public void setSprite(PK2Sprite sprite) {
+        this.sprite = sprite; 
         tfImage.setText(sprite.getImageFile());
         
         this.image = sprite.getImage();
@@ -393,12 +398,14 @@ public class ImagePanel extends PekaSE2Panel {
         this.image = null;
         
         try {
-            this.image = ImageIO.read(file);
-            this.image = GFXUtils.makeTransparent(this.image);
             
-            //spriteEditModel.setSpriteImage(this.image);
-            spriteSheetPanel.setImage(this.image, resetFrameData);
-            //pnlBorderColor.setBackground(spriteSheetPanel.getBorderColor());
+            this.sprite.setImageFile(file.getName());
+            GFXUtils.loadSpriteImageSheet(this.sprite, file);
+            this.spriteSheetPanel.setImage(this.sprite.getImage(), resetFrameData); 
+
+            this.animationPanel.setSprite(this.sprite); //To update sprite animations
+            
+
         } catch (IOException ex) {
             Logger.warn(ex);
         }

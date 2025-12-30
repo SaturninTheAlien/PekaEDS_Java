@@ -14,12 +14,12 @@ import pekaeds.ui.main.PekaEDSGUI;
 import pekaeds.ui.misc.AppEnum;
 import pekaeds.ui.misc.AppSelectionDialog;
 import pekaeds.ui.misc.InitialSetupDialog;
-import pekaeds.ui.misc.LookAndFeelHelper;
 import pekaep.PekaEPGUI;
 import pekase3.PekaSE3GUI;
 import pk2.filesystem.FHSHelper;
 import pk2.filesystem.PK2FileSystem;
 import pk2.settings.Settings;
+import pk2.util.LookAndFeelHelper;
 
 public class PekaEDS {
     private static AppEnum selectedApp = AppEnum.NOT_SELECTED;

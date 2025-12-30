@@ -2,7 +2,7 @@ package pekase3.panels;
 
 import javax.swing.*;
 
-import pekaeds.ui.misc.LookAndFeelHelper;
+import pk2.util.LookAndFeelHelper;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

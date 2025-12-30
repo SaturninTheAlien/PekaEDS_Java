@@ -4,6 +4,7 @@ import net.miginfocom.swing.MigLayout;
 import pekaeds.data.PekaEDSVersion;
 import pk2.filesystem.FHSHelper;
 import pk2.settings.Settings;
+import pk2.util.LookAndFeelHelper;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

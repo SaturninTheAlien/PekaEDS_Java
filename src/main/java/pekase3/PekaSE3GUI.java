@@ -118,6 +118,14 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
     
     
     private void loadSprite(File file) {
+
+        if (this.editPane!=null && this.editPane.unsavedChangesPresent()) {
+            int result = JOptionPane.showConfirmDialog(null, "Unsaved changes. Save?");
+            if(result==JOptionPane.YES_OPTION){
+                this.saveSprite();
+            }
+        }
+
         PK2Sprite sprite = null;
         
         try {
@@ -157,6 +165,19 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
             JOptionPane.showMessageDialog(null, "Unable to load the sprite file.\n" + e.getMessage(), "Unable to load sprite!", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    private void saveSprite(){
+        if (this.loadedFile == null) {
+            var fc = new SpriteFileChooser();
+            
+            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                saveSprite(fc.getSelectedFile());
+            }
+        } else {
+            saveSprite(loadedFile);
+        }
+    }
+    
     
     private void saveSprite(File file) {
 
@@ -245,6 +266,8 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         //menuBar.add(mProfiles);
         menuBar.add(mOther);
     }
+
+
     
     private void addListeners() {
         
@@ -263,15 +286,7 @@ public class PekaSE3GUI extends JFrame implements ChangeListener, IPekaEdsApp {
         });
         
         miFSave.addActionListener(e -> {
-            if (loadedFile == null) {
-                var fc = new SpriteFileChooser();
-                
-                if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                    saveSprite(fc.getSelectedFile());
-                }
-            } else {
-                saveSprite(loadedFile);
-            }
+            saveSprite();            
         });
         
         miFSaveAs.addActionListener(e -> {

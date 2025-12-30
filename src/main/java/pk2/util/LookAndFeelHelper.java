@@ -1,4 +1,4 @@
-package pekaeds.ui.misc;
+package pk2.util;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class LookAndFeelHelper {
     }
 
     public static Color getComponentBGColor(){
-        return UIManager.getColor("Component.background");
+        return UIManager.getColor("Panel.background");
     }
 
     public static Color getBGColor(){

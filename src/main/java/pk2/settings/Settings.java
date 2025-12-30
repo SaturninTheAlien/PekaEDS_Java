@@ -15,9 +15,9 @@ import org.tinylog.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import pekaeds.ui.misc.LookAndFeelHelper;
 import pk2.profile.LevelProfile;
 import pk2.profile.SpriteProfile;
+import pk2.util.LookAndFeelHelper;
 
 /**
  * TODO: This class shouldn't have anything static in it.
