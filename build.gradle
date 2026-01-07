@@ -22,9 +22,13 @@ dependencies {
     implementation 'com.miglayout:miglayout-swing:11.0'
     implementation 'org.json:json:20231013'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.14.0'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0-rc3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.20.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.20.1'
+
+    implementation 'party.iroiro.luajava:luajava:4.0.2'
+    implementation 'party.iroiro.luajava:lua54:4.0.2'
+    runtimeOnly 'party.iroiro.luajava:lua54-platform:4.0.2:natives-desktop'
 }
 
 application {

@@ -195,8 +195,8 @@ public final class FloodFillTool extends Tool {
     private void resetPreview() {
         for (int y = 0; y < selectedSector.getHeight(); y++) {
             for (int x = 0; x < selectedSector.getWidth(); x++) {
-                previewLayers.get(Layer.FOREGROUND).set(x, y, selectedSector.getFGTile(x, y));
-                previewLayers.get(Layer.BACKGROUND).set(x, y, selectedSector.getBGTile(x, y));
+                previewLayers.get(Layer.FOREGROUND).set(x, y, selectedSector.getFgTile(x, y));
+                previewLayers.get(Layer.BACKGROUND).set(x, y, selectedSector.getBgTile(x, y));
             }
         }
     }
@@ -210,8 +210,8 @@ public final class FloodFillTool extends Tool {
         
         for (int y = 0; y < selectedSector.getHeight(); y++) {
             for (int x = 0; x < selectedSector.getWidth(); x++) {
-                previewLayers.get(Layer.FOREGROUND).set(x,y, selectedSector.getFGTile(x, y));
-                previewLayers.get(Layer.BACKGROUND).set(x,y, selectedSector.getBGTile(x, y));
+                previewLayers.get(Layer.FOREGROUND).set(x,y, selectedSector.getFgTile(x, y));
+                previewLayers.get(Layer.BACKGROUND).set(x,y, selectedSector.getBgTile(x, y));
             }
         }
     }

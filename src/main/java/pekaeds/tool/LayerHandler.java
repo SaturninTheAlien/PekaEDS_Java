@@ -35,11 +35,11 @@ public final class LayerHandler {
 
         switch (layer) {
             case Layer.BACKGROUND:
-                sector.setBackgroundTile(x, y, tileID);
+                sector.setBgTile(x, y, tileID);
                 break;
 
             case Layer.FOREGROUND:
-                sector.setForegroundTile(x, y, tileID);
+                sector.setFgTile(x, y, tileID);
                 break;
 
             case Layer.SPRITES:
@@ -47,8 +47,8 @@ public final class LayerHandler {
                 break;
 
             case Layer.BOTH:
-                sector.setBackgroundTile(x, y, tileID);
-                sector.setForegroundTile(x, y, tileID);
+                sector.setBgTile(x, y, tileID);
+                sector.setFgTile(x, y, tileID);
                 break;
 
             default:
@@ -113,17 +113,17 @@ public final class LayerHandler {
 
                 switch (layer) {
                     case Layer.BACKGROUND:
-                        tile = sector.getBGTile(x, y);
+                        tile = sector.getBgTile(x, y);
                         break;
 
                     case Layer.BOTH:
-                        tile = sector.getFGTile(x, y);
+                        tile = sector.getFgTile(x, y);
                         if (tile == 255) {
-                            tile = sector.getBGTile(x, y);
+                            tile = sector.getBgTile(x, y);
                         }
                         break;
                     case Layer.FOREGROUND:
-                        tile = sector.getFGTile(x, y);
+                        tile = sector.getFgTile(x, y);
                         break;
 
                     case Layer.SPRITES:

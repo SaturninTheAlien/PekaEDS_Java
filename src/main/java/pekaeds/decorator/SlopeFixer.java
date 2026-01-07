@@ -14,22 +14,22 @@ public class SlopeFixer implements ISectorDecorator {
 
                 if(sector.checkBrokenSlope(x, y)){
 
-                    int tileid = sector.getFGTile(x, y);
+                    int tileid = sector.getFgTile(x, y);
 
                     //bad skull
                     if(tileid==49){
-                        sector.setForegroundTile(x, y, 255);
-                        sector.setBackgroundTile(x, y, 49);
+                        sector.setFgTile(x, y, 255);
+                        sector.setBgTile(x, y, 49);
                     }
                     else if(tileid==0 && sector.getFGTileType(x, y-1) != TileProfile.Type.EMPTY){
-                        sector.setForegroundTile(x, y, 129);
+                        sector.setFgTile(x, y, 129);
                     }
                     else if(tileid==1){
-                        sector.setForegroundTile(x, y, 56);
+                        sector.setFgTile(x, y, 56);
                     }
                     else{
-                        sector.setForegroundTile(x, y, 40);
-                        sector.setBackgroundTile(x, y, tileid);
+                        sector.setFgTile(x, y, 40);
+                        sector.setBgTile(x, y, tileid);
                     }
                 }
             }

@@ -57,7 +57,7 @@ public class DecoratorDialog extends JFrame implements PK2SectorConsumer{
         ISectorDecorator fullDecorator = new ISectorDecorator() {
 
             @Override
-            public void perform(PK2LevelSector sector) {
+            public void perform(PK2LevelSector sector) throws Exception {
                 placeSolidGrass.perform(sector);
                 placeSparseGrass.perform(sector);
                 slopeFixer.perform(sector);

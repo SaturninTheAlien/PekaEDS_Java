@@ -45,15 +45,15 @@ public class GrassPlacer implements ISectorDecorator {
         for(int y=0; y < height - 1; ++y){
             for(int x=0;x < width; ++x){
 
-                int tileid = sector.getFGTile(x, y);
-                if(acceptedTiles.contains(tileid) && baseTiles.contains(sector.getFGTile(x, y + 1 ))){
+                int tileid = sector.getFgTile(x, y);
+                if(acceptedTiles.contains(tileid) && baseTiles.contains(sector.getFgTile(x, y + 1 ))){
 
                     int r = this.random.nextInt(this.weightSum + 1);
                     for(int i=0; i < this.resultTiles.size();++i){
                         
                         r-= this.resultWeights.get(i);
                         if( r <= 0){
-                            sector.setForegroundTile(x, y, this.resultTiles.get(i));
+                            sector.setFgTile(x, y, this.resultTiles.get(i));
                             break;
                         }
                     }               

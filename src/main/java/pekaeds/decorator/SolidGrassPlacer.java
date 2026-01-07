@@ -30,22 +30,22 @@ public class SolidGrassPlacer implements ISectorDecorator {
         for(int y=1; y < height; ++y){
             for(int x=0;x < width; ++x){
 
-                int tileid = sector.getFGTile(x, y);
+                int tileid = sector.getFgTile(x, y);
                 if(tileid==50 && sector.getFGTileType(x + 1, y - 1) == TileProfile.Type.EMPTY){
-                    sector.setForegroundTile(x, y, 58);
+                    sector.setFgTile(x, y, 58);
                 }
                 else if(tileid==51 && sector.getFGTileType(x - 1, y - 1) == TileProfile.Type.EMPTY){
-                    sector.setForegroundTile(x, y, 59);
+                    sector.setFgTile(x, y, 59);
                 }
-                else if(sector.getFGTileType(x, y - 1) == TileProfile.Type.EMPTY && sector.getFGTile(x, y - 1) != 129){
+                else if(sector.getFGTileType(x, y - 1) == TileProfile.Type.EMPTY && sector.getFgTile(x, y - 1) != 129){
                     if(tileid==3){
-                        sector.setForegroundTile(x, y, 5);
+                        sector.setFgTile(x, y, 5);
                     }
                     else if(tileid==4){
-                        sector.setForegroundTile(x, y, 6);
+                        sector.setFgTile(x, y, 6);
                     }
                     else if(acceptedTiles.contains(tileid)){
-                        sector.setForegroundTile(x, y, 1);
+                        sector.setFgTile(x, y, 1);
                     }
                 }
             }

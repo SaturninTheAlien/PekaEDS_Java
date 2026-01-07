@@ -198,7 +198,7 @@ public class PK2LevelSector {
         return baseSpriteSheets.get(imageFileIdentifier);
     }
 
-    public int getBGTile(int posX, int posY) {
+    public int getBgTile(int posX, int posY) {
         if (posX >= 0 && posX < width && posY >= 0 && posY < height) {
             return backgroundLayer[width * posY + posX];
         }
@@ -206,7 +206,7 @@ public class PK2LevelSector {
         return 255;
     }
 
-    public int getFGTile(int posX, int posY) {
+    public int getFgTile(int posX, int posY) {
         if (posX >= 0 && posX < width && posY >= 0 && posY < height) {
             return foregroundLayer[width * posY + posX];
         }
@@ -224,7 +224,7 @@ public class PK2LevelSector {
 
 
     public TileProfile.Type getFGTileType(int posX, int posY){
-        return this.tileProfile.getTypeByID(this.getFGTile(posX, posY));
+        return this.tileProfile.getTypeByID(this.getFgTile(posX, posY));
     }
 
 
@@ -304,11 +304,11 @@ public class PK2LevelSector {
         return height;
     }
 
-    public void setBackgroundTile(int posX, int posY, int value) {
+    public void setBgTile(int posX, int posY, int value) {
         backgroundLayer[width * posY + posX] = value;
     }
 
-    public void setForegroundTile(int posX, int posY, int value) {
+    public void setFgTile(int posX, int posY, int value) {
         foregroundLayer[width * posY + posX] = value;
     }
 

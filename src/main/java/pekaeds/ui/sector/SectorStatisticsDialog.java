@@ -68,7 +68,7 @@ public class SectorStatisticsDialog extends JDialog implements PK2SectorConsumer
                     ++this.placedSprites;
                 }
 
-                int fgTile = sector.getFGTile(x, y);
+                int fgTile = sector.getFgTile(x, y);
                 if(fgTile!=255){
                     if(stats.containsKey( fgTile )){
                         TileUsage tileUsage = stats.get(fgTile);
@@ -79,7 +79,7 @@ public class SectorStatisticsDialog extends JDialog implements PK2SectorConsumer
                         stats.put(fgTile, tileUsage);
                     }
                 }
-                int bgTile = sector.getBGTile(x, y);
+                int bgTile = sector.getBgTile(x, y);
                 if(bgTile!=255){
                     if(stats.containsKey(bgTile)){
                         TileUsage tileUsage = stats.get(bgTile);

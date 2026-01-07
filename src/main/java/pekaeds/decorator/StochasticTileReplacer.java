@@ -37,7 +37,7 @@ public class StochasticTileReplacer implements ISectorDecorator {
         for(int y=0; y < height; ++y){
             for(int x=0;x < width; ++x){
 
-                int currentTile = sector.getFGTile(x, y);
+                int currentTile = sector.getFgTile(x, y);
                 if(acceptedTiles.contains(currentTile)){
                     int r = this.random.nextInt(this.weightSum + 1);
 
@@ -45,7 +45,7 @@ public class StochasticTileReplacer implements ISectorDecorator {
                         
                         r-= this.resultWeights.get(i);
                         if( r <= 0){
-                            sector.setForegroundTile(x, y, this.resultTiles.get(i));
+                            sector.setFgTile(x, y, this.resultTiles.get(i));
                             break;
                         }
                     }
