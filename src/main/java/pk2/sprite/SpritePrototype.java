@@ -4,6 +4,8 @@ import java.util.List;
 import java.awt.image.BufferedImage;
 
 public interface SpritePrototype {
+
+    public static final int AI_START_DIRECTION_LEFT = 174;
     
     public static final int TYPE_BACKGROUND = 5;
     public static final int TYPE_FOREGROUND = 6;
@@ -44,4 +46,6 @@ public interface SpritePrototype {
 
     public void increasePlacedAmount();
     public void decreasePlacedAmount();
+
+    public boolean hasAI(int ai);
 }

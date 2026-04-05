@@ -233,10 +233,20 @@ public class MapPanelPainter {
     public void drawSprite(Graphics2D g, SpritePrototype spr, int x, int y) {
         int sprX = x - (spr.getFrameWidth() / 2) + 16;
         int sprY = y - (spr.getFrameHeight() - 32);
+
+        int sprW = sprX + spr.getFrameWidth();
+
+        //Flip the sprite horizontally
+        if(spr.hasAI(SpritePrototype.AI_START_DIRECTION_LEFT)){
+            int t = sprX;
+            sprX = sprW;
+            sprW = t;
+        }
+
         g.drawImage(mapPanel.sector().getSpriteImage(spr.getImageFileIdentifier()),
                 sprX,
                 sprY,
-                sprX + spr.getFrameWidth(),
+                sprW,
                 sprY + spr.getFrameHeight(),
 
                 spr.getFrameX(), spr.getFrameY(),

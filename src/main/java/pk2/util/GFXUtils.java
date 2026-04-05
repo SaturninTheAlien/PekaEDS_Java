@@ -1,5 +1,7 @@
 package pk2.util;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.IndexColorModel;
@@ -73,10 +75,21 @@ public final class GFXUtils {
         return getFirstSpriteFrame(sprite, sprite.getImage());
     }
 
+    public static BufferedImage flipHorizontal(BufferedImage image){
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-image.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        return op.filter(image, null);
+    }
+
     public static BufferedImage getFirstSpriteFrame(SpritePrototype spr, BufferedImage spriteSheet) {
 
         try{
-            return spriteSheet.getSubimage(spr.getFrameX(), spr.getFrameY(), spr.getFrameWidth(), spr.getFrameHeight());
+            BufferedImage res = spriteSheet.getSubimage(spr.getFrameX(), spr.getFrameY(), spr.getFrameWidth(), spr.getFrameHeight());
+            if(spr.hasAI(SpritePrototype.AI_START_DIRECTION_LEFT)){
+                res = flipHorizontal(res);
+            }
+            return res;
         }
         catch(RasterFormatException e){
 

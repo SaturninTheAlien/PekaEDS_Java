@@ -529,4 +529,10 @@ public class SpriteOld implements SpritePrototype {
         }
         return list;
     }
+
+
+    @Override
+    public boolean hasAI(int ai){
+        return false;
+    }
 }

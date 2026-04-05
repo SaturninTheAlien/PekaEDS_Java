@@ -500,6 +500,19 @@ public class PK2Sprite implements SpritePrototype {
     public ArrayList<Integer> getAiList() {
         return aiList;
     }
+
+
+    @Override
+    public boolean hasAI(int ai){
+
+        for(int ai2: this.aiList){
+            if(ai2==ai){
+                return true;
+            }
+        }
+
+        return false;
+    }
     
     public void setAiList(ArrayList<Integer> aiList) {
         this.aiList = aiList;
