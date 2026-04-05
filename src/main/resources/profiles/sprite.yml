@@ -1,8 +1,8 @@
 aiPatternMap:
  0: No AI
- 1: Chicken
- 2: An Egg
- 3: Baby Chicken
+ 1: Rooster
+ 2: Egg
+ 3: Little Chicken
  4: Bonus
  5: Jumper
  6: Basic AI
@@ -17,7 +17,7 @@ aiPatternMap:
  15: Transformation If Energy above 1
  16: Start Directions Towards Player
  17: Ammunition
- 18: Non Stop
+ 18: Non-Stop Horizontal	
  19: Attack 1 If Damaged
  20: Self Destruction
  21: Attack 1 If Player is in Front
@@ -162,6 +162,11 @@ aiPatternMap:
  162: Transform if it touches the Floor
  163: Transform if it touches a Wall
  164: Transform if player in front
+
+ 165: Transform if player nearby
+ 166: Die if player nearby
+ 167: Transform if player away
+ 168: Die if player away
  
  170: Egg 2
 
