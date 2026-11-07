@@ -16,7 +16,7 @@ See the <a href="https://github.com/SaturninTheAlien/PekaEDS_Java/releases">Rele
 To run it, you need Java 21 or newer.
 
 If you are on Windows, I recommend this version: <br>
-https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.msi <br>
+https://download.oracle.com/java/25/latest/jdk-25_windows-x64_bin.msi <br>
 On Windows, you can usually run the .jar file by double-clicking it in File Explorer.
 
 To run it on Linux or macOS, use the command line:
@@ -35,7 +35,7 @@ If you want to open old levels made for older PK2 versions, the answer is yes. S
 
 Make sure you have installed Java 21 JDK or a newer version.
 You can download it from Oracle here: <br>
-https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.msi
+https://download.oracle.com/java/25/latest/jdk-25_windows-x64_bin.msi
 
 If Java 8 is installed on your system, I highly recommend uninstalling it and switching to Java 21 or newer, as Java 8 is outdated and unsupported for most modern applications.
 
